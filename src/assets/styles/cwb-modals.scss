@@ -1,0 +1,116 @@
+.modal-header{
+    background: #f0f2f5;
+    border-radius: 4px 4px 0px 0px;
+    opacity: 1;; 
+    padding: 0 0 0 0;   
+    top: 0px;
+    position: sticky;
+    z-index: 1;
+    color: #007bff !important ;
+    .header-text{
+        padding-left: 10px;
+        margin: 0;
+        color: #000;
+        font-size: 18px;
+    }
+    .close{
+    margin-right: 10px;
+    margin-bottom: 0.5%;
+    font-size: 25px;
+    color: #000;
+    cursor: pointer;
+    }
+}
+.main-modal-div
+{
+    width: 40vw;
+    overflow-x: hidden;
+    // height: auto;
+    // overflow: scroll;
+    // overflow-x: hidden;
+    // overflow-y: auto;
+    // max-height: 85vh;
+}
+
+
+.modal-form-control{
+    line-height: 0.5;
+    height: 30px;
+    border: 1px solid #929EB8;
+    border-radius: 2px;
+    width: 91%;
+    ::placeholder{
+        font-size: 10px;
+    }
+}
+input:focus{
+    -webkit-box-shadow: none;
+    box-shadow: none;
+    outline: none;
+  }
+  input{
+      -webkit-box-shadow: none;
+    box-shadow: none;
+    outline: none;
+  }
+  
+.dialog-close
+{
+    margin-right: 10px;
+    margin-bottom: 0.5%;
+    font-size: 25px;
+    color: #000;
+    cursor: pointer;
+    border: none;
+}
+.search-div{
+    .input-group{
+        border: 1px solid #147AFC !important;
+        border-radius: 3px;
+    }
+    textarea:focus, input:focus{
+      -webkit-box-shadow: none;
+      box-shadow: none;
+      outline: none;
+      border: none;
+    }
+    input{
+        -webkit-box-shadow: none;
+      box-shadow: none;
+      outline: none;
+      border: none;
+    }
+    .input-group-text{
+        background-color: white;
+        color: #557B9D;
+        padding-right: 0%;
+        border: none;
+    }
+    .clear-search{
+        padding-right: 1%;
+        border: none;
+        .search-icon{
+            cursor: pointer;
+        }
+    }
+}
+.select-with-search{
+    .mat-select-panel{
+        overflow: hidden !important;
+      }
+      
+}
+
+.modal-spinner-div{
+    position: absolute;
+    width: -webkit-fill-available;
+    height: -webkit-fill-available;
+    z-index: 4;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: #00000042;
+}
+.dialog-content{
+    position: relative;
+}

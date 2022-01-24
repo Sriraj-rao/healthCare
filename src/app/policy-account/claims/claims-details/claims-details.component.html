@@ -1,0 +1,247 @@
+<div class="row middle-container">
+  <div class="table-div" *ngIf="!noRecords">
+    <div class="row filter-row" *ngIf="!isSingleClaim">
+      <div class="col-md-1 filter-row-col filter-icon-col">
+        <span class="filter-icon-row">
+          <fa-icon [icon]="faFilter" class="add-icon"></fa-icon>
+          <span class="filter-icon-text">Filters</span>
+        </span>
+      </div>
+      <div class="col-md-2 filter-row-col">
+        <mat-select [(value)]="selectedClaimant" class="form-control search-input-field"
+          (selectionChange)="applyFilter($event.value, 1)">
+          <mat-option *ngFor="let claimant of claimants" [value]="claimant">
+            {{ claimant }}
+          </mat-option>
+        </mat-select>
+      </div>
+      <div class="col-md-2 filter-row-col">
+        <input readonly (click)="picker.open()" [matDatepicker]="picker" class="form-control search-input-field"
+          placeholder="Claim Date" [formControl]="dateCtrl" (dateChange)="applyFilter($event.value, 2)" />
+        <mat-datepicker #picker></mat-datepicker>
+      </div>
+      <div class="col-md-2 filter-row-col">
+        <input type="text" class="form-control search-input-field" placeholder="Claim Number"
+          (keyup)="applyFilter($event.target.value, 3)" [formControl]="claimNoCtrl" />
+      </div>
+      <div class="col-md-2 filter-row-col">
+        <input type="text" class="form-control search-input-field" placeholder="Provider" [formControl]="providerCtrl"
+          (keyup)="applyFilter($event.target.value, 7)" />
+      </div>
+      <div class="col-md-2 filter-row-col">
+        <mat-select [(value)]="selectedPolicy" class="form-control search-input-field"
+          (selectionChange)="applyFilter($event.value, 5)">
+          <mat-option *ngFor="let policy of policies" [value]="policy">
+            {{ policy }}
+          </mat-option>
+        </mat-select>
+      </div>
+      <div class="col-md-1 reset-col" (click)="onReset()">
+        <span class="reset-text">Reset Filters</span>
+      </div>
+    </div>
+    <mat-divider></mat-divider>
+    <div class="row note">
+      <span *ngIf="!noRecords" class="span-text">Showing {{ totalResults }} Results for
+        <span class="note-bold">{{ currentPolicyNo }}</span> From
+        <span class="note-bold">{{ fromDate | date: "MM/dd/yyyy" }}</span></span>
+      <span *ngIf="noRecords" class="span-text">Showing 0 Results for
+        <span class="note-bold">{{ currentPolicyNo }}</span></span>
+      <div fxFlex fxFlexLayout fxFlexLayoutAlign="flex-end" class="view-claims"
+        *ngIf="isSingleClaim && !loadingAllClaims">
+        <span class="both-items" (click)="onViewAllClaims()">
+          <fa-icon [icon]="faEye" class="eye-icon"></fa-icon><a class="text">View All Claims</a>
+        </span>
+      </div>
+    </div>
+
+    <div class="table-container claims-table-container" *ngIf="!noRecords || detailsSharing.errorOccurred" >
+      <div *ngIf="!isTableHasData" class="text-center">
+        <h1 class="no-records-header">No Records Found</h1>
+      </div>
+
+      <mat-table [dataSource]="dataSource" matSort multiTemplateDataRows *ngIf="isTableHasData">
+        <ng-container matColumnDef="expand">
+          <mat-header-cell *matHeaderCellDef class="addIcon"> </mat-header-cell>
+          <mat-cell *matCellDef="let element">
+            <mat-icon *ngIf="!element.isExpanded" class="expand-icon" matTooltip="Show/Hide Line Items"
+              (click)="element.isExpanded = true; isRowClicked = true">add
+            </mat-icon>
+            <mat-icon *ngIf="element.isExpanded" class="expand-icon" matTooltip="Show/Hide Line Items"
+              (click)="element.isExpanded = false; isRowClicked = false">remove
+            </mat-icon>
+          </mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="claimNum">
+          <mat-header-cell *matHeaderCellDef mat-sort-header class="table-header-text">
+            Claim No
+          </mat-header-cell>
+          <mat-cell *matCellDef="let row" class="table-blue-text">
+            <span class="claim-hover" (click)="onClaimDetails(row)">{{ row.claimNum }}
+            </span></mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="claimDate">
+          <mat-header-cell *matHeaderCellDef mat-sort-header class="table-header-text">
+            Date Of Service
+          </mat-header-cell>
+          <mat-cell *matCellDef="let row" class="table-black-text">
+            {{row.claimDate | date: 'MM/dd/yyyy'}}{{getClaimThruDate(row.claimNum) !== null ?  ' - ' : ''}}{{getClaimThruDate(row.claimNum) | date: 'MM/dd/yyyy' }}
+          </mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="policyNo">
+          <mat-header-cell *matHeaderCellDef mat-sort-header class="table-header-text">
+            Policy No
+          </mat-header-cell>
+          <mat-cell *matCellDef="let row" class="table-black-text">
+            {{ row.policyNo }}
+          </mat-cell>
+        </ng-container>
+        <ng-container matColumnDef="name">
+          <mat-header-cell *matHeaderCellDef mat-sort-header class="table-header-text">
+            Claimant Name
+          </mat-header-cell>
+          <mat-cell *matCellDef="let row" class="table-black-text">
+            {{ row.name }}
+          </mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="diagnosis">
+          <mat-header-cell *matHeaderCellDef mat-sort-header class="table-header-text">
+            Diagnosis
+          </mat-header-cell>
+          <mat-cell *matCellDef="let row" class="table-black-text"><span class="diagnosis-text" placement="bottom"
+              ngbPopover="{{ row.diagnosis }} - {{ row.diagnosisDesc }}" popoverTitle="Diagnosis">{{ row.diagnosis }}
+            </span>
+          </mat-cell>
+        </ng-container>
+        <ng-container matColumnDef="benefitType">
+          <mat-header-cell *matHeaderCellDef mat-sort-header class="table-header-text">
+            Benefit Type
+          </mat-header-cell>
+          <mat-cell *matCellDef="let row" class="table-black-text">
+            {{ row.benefitType }}
+          </mat-cell>
+        </ng-container>
+        <ng-container matColumnDef="totalCharges">
+          <mat-header-cell *matHeaderCellDef mat-sort-header class="table-header-text">
+            Total Charges
+          </mat-header-cell>
+          <mat-cell *matCellDef="let row" class="table-black-text"><span class="charge-text">{{
+              row.totalCharges | currency | gainLoss
+            }}</span>
+          </mat-cell>
+        </ng-container>
+        <ng-container matColumnDef="totalDeductible">
+          <mat-header-cell *matHeaderCellDef mat-sort-header class="table-header-text">
+            Total Deductible
+          </mat-header-cell>
+          <mat-cell *matCellDef="let row" class="table-black-text">
+            <span class="charge-text">{{
+              row.totalDeductible | currency | gainLoss
+            }}</span>
+          </mat-cell>
+        </ng-container>
+        <ng-container matColumnDef="totalPaid">
+          <mat-header-cell *matHeaderCellDef mat-sort-header class="table-header-text">
+            Total Paid
+          </mat-header-cell>
+          <mat-cell *matCellDef="let row" class="table-black-text"><span class="charge-text">{{
+              row.totalPaid | currency | gainLoss
+            }}</span>
+          </mat-cell>
+        </ng-container>
+        <ng-container matColumnDef="processedDate">
+          <mat-header-cell *matHeaderCellDef mat-sort-header class="table-header-text">
+            Processed Date
+          </mat-header-cell>
+          <mat-cell *matCellDef="let row" class="table-black-text">
+            {{ row.processedDate | date: "MM/dd/yyyy" }}
+          </mat-cell>
+        </ng-container>
+        <ng-container matColumnDef="receivedDate">
+          <mat-header-cell *matHeaderCellDef mat-sort-header class="table-header-text">
+            Received Date
+          </mat-header-cell>
+          <mat-cell *matCellDef="let row" class="table-black-text">
+            {{ row.receivedDate | date: "MM/dd/yyyy" }}
+          </mat-cell>
+        </ng-container>
+        <ng-container matColumnDef="pendCode">
+          <mat-header-cell *matHeaderCellDef mat-sort-header class="table-header-text">
+            Pend Code
+          </mat-header-cell>
+          <mat-cell *matCellDef="let row" class="table-black-text">
+            {{ row.pendCode }}
+          </mat-cell>
+        </ng-container>
+        <ng-container matColumnDef="miscInfo">
+          <mat-header-cell *matHeaderCellDef mat-sort-header class="table-header-text">
+            Misc Info
+          </mat-header-cell>
+          <mat-cell *matCellDef="let row" class="table-black-text">
+            <fa-icon [icon]="faInfoCircle" *ngIf="row.miscInfo" class="eye-icon text-primary pointer misc-icon"
+              matTooltip="View claim miscellaneous information" (click)="onViewMiscInfo(row)"></fa-icon>
+          </mat-cell>
+        </ng-container>
+        <ng-container matColumnDef="investigationTypes">
+          <mat-header-cell *matHeaderCellDef mat-sort-header class="table-header-text">
+            Investigation Type
+          </mat-header-cell>
+          <mat-cell *matCellDef="let row" class="table-black-text"><span *ngIf="row.isInvestigationExisting">{{
+              row.investigationTypes
+            }}</span></mat-cell>
+        </ng-container>
+        <ng-container matColumnDef="status">
+          <mat-header-cell *matHeaderCellDef mat-sort-header class="table-header-text">
+            Status
+          </mat-header-cell>
+          <mat-cell *matCellDef="let row" class="table-black-text">
+            {{ row.status }}
+          </mat-cell>
+        </ng-container>
+        <ng-container matColumnDef="actions" *ngIf="this.detailsSharing.permissionsCheck?.isAddInvestigation || this.detailsSharing.permissionsCheck?.isViewInvestigation || this.detailsSharing.permissionsCheck?.isViewNotes">
+          <mat-header-cell *matHeaderCellDef class="table-header-text">
+            Actions
+          </mat-header-cell>
+          <mat-cell *matCellDef="let row">
+            <div>
+              <span matTooltip="View Investigations" *ngIf="row.isInvestigationExisting && (this.detailsSharing.permissionsCheck?.isViewInvestigation || this.detailsSharing.permissionsCheck?.isViewNotes)" class="action-button-text"
+                (click)="viewClaimsDetails(row)">
+                <fa-icon [icon]="faEye" class="eye-icon"></fa-icon>&nbsp;
+                <u>View</u>
+              </span>
+              <span matTooltip="Add New Investigation" *ngIf="!row.isInvestigationExisting && row.status === 'S' && (this.detailsSharing.permissionsCheck?.isAddInvestigation )"
+                class="action-button-text" (click)="OnAddInvestigation(row)">
+                <fa-icon [icon]="faPlusSquare" class="add-icon"></fa-icon>&nbsp;
+                <u>Add</u>
+              </span>
+            </div>
+          </mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="expandedDetail">
+          <mat-cell *matCellDef="let element" class="sub-table-cell">
+            <div class="sub-table-div" *ngIf="element.isExpanded">
+              <cwb-claims-sub-table [claimsExpandedData]="element.lineItems"></cwb-claims-sub-table>
+            </div>
+          </mat-cell>
+        </ng-container>
+
+        <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+        <mat-row *matRowDef="let row; columns: displayedColumns" matRipple class="element-row"></mat-row>
+        <div>
+          <mat-row [ngClass]="row.isExpanded ? 'expanded' : 'collapsed'"
+            *matRowDef="let row; columns: ['expandedDetail']; let i = index" class="exp-col">
+          </mat-row>
+        </div>
+      </mat-table>
+    </div>
+    <mat-paginator *ngIf="!noRecords" [pageSize]="10" [pageSizeOptions]="[5, 10, 25, 100]"></mat-paginator>
+  </div>
+  <div class="tables-container no-record-div" *ngIf="noRecords">
+    <h1 class="no-records-header">No Records To Display</h1>
+  </div>
+</div>

@@ -1,0 +1,61 @@
+<div class="main-modal-div">
+
+
+
+    <div class="modal-header ">
+
+        <h2 class="header-text">Reopen Claim</h2>
+        <div (click)="onCloseDialog()" class="close">&times;</div>
+    </div>
+
+    <mat-dialog-content class="dialog-content">
+        <form class="addForm" [formGroup]="addInvForm" (ngSubmit)="onSubmit()">
+            <div class="row row-topping">
+                <div class="col-sm-6 col-topping">
+                    <p class="inv-type-text"
+                        [ngClass]="{'red':addInvForm.get('pendCodeControl').invalid &&(isSubmitClicked)}">Pend Code:</p>
+                    <mat-select class="select" aria-label="Default select example" (click)="onSelectClicked()"
+                        [ngClass]="{'red-border':addInvForm.get('pendCodeControl').invalid &&(isSubmitClicked)}"
+                        placeholder="Select Pend Code" formControlName="pendCodeControl"
+                        (openedChange)="onPendCodeClosed()">
+                        <div class="search-div">
+                            <div class="input-group">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text">
+                                        <fa-icon [icon]="faSearch" class="search-icon">
+                                        </fa-icon>
+                                    </span>
+                                </div>
+                                <input #inputPendCode autofocus type="text" [formControl]="pendCodeSearchControl"
+                                    class="form-control search-input-field" (keydown)="helperMethods.onKeyPressinSearch($event)"
+                                    placeholder="Filter Pend Codes">
+
+                                <div class="clear-search">
+                                    <span class="input-group-text">
+                                        <fa-icon [icon]="faTimes" class="search-icon" (click)="onClearSearch()">
+                                        </fa-icon>
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                        <div>
+                            <mat-option *ngFor="let pendCode of pendCodes | filterOptions: pendCodeSearchControl.value"
+                                [value]="pendCode">
+
+                                {{pendCode.pendCode}} - {{pendCode.description}}
+                            </mat-option>
+                        </div>
+                    </mat-select>
+                </div>
+            </div>
+
+
+            <div class="modal-footer">
+                <button type="button" class="cancel-button" mat-button (click)="onClear()">Clear</button>
+                &nbsp; &nbsp;
+                <button mat-button type="submit" class="submit-button">Submit</button>
+            </div>
+        </form>
+
+    </mat-dialog-content>
+</div>

@@ -1,0 +1,91 @@
+<div class="top-header">
+  <div class="modal-header">
+    <h2 class="header-text padding-header">View Document Notes</h2>
+
+    <div mat-dialog-close class="close">&times;</div>
+  </div>
+
+  <mat-dialog-content class="dialog-content">
+    <div class="addForm" *ngFor="let notesDetail of notesDetails; let i = index">
+      <mat-card class="card-content card-details">
+        <div class="content-div row">
+          <div class="row content-container">
+            <div class="input-header">
+              <mat-form-field class="main-padding">
+                <input #title maxlength="150" [ngClass]="
+                    !isEditClicked[i] ? 'no-textbox-title-color' : 'title-color'
+                  " matInput value="title" [(ngModel)]="notesDetail.title" [disabled]="!this.isEditClicked[i]" />
+                <mat-hint class="title-hint" *ngIf="isEditClicked[i]">{{ title.value.length }} / 150</mat-hint>
+              
+              </mat-form-field>
+            </div>
+
+            <div class="p-l">
+              <textarea #description maxlength="1000" matInput value="description" [ngClass]="
+                  !isEditClicked[i] ? 'no-textbox-description' : 'description'
+                " class="description" [(ngModel)]="notesDetail.description"
+                [disabled]="!this.isEditClicked[i]"></textarea>
+              <mat-hint class="desc-hint" *ngIf="isEditClicked[i]">{{ description.value.length }} / 1000</mat-hint>
+          
+            </div>
+          </div>
+        </div>
+        <div *ngIf="this.isEditClicked[i]" class="row button-row">
+          <fa-icon [icon]="faCheckCircle" matTooltip="Update Notes" class="update-button"
+            (click)="update(notesDetail, i)"></fa-icon>
+          <fa-icon [icon]="faBan" matTooltip="Cancel" class="cancel-button"
+            (click)="this.isEditClicked[i] = !this.isEditClicked[i];onClose();"></fa-icon>
+        </div>
+        <div *ngIf="!isEditClicked[i]" class="row button-row">
+          <fa-icon [icon]="faEdit" matTooltip="Edit Notes" (click)="this.isEditClicked[i] = !this.isEditClicked[i]"
+            class="edit-button" *ngIf="this.detailsSharing.permissionsCheck?.isEditNotes"></fa-icon>
+          <fa-icon [icon]="faTrash" matTooltip="Delete Notes" (click)="onDeleteNotes(notesDetail, i)"
+            class="delete-button" *ngIf="this.detailsSharing.permissionsCheck?.isDeleteNotes"></fa-icon>
+        </div>
+      </mat-card>
+      <div class="row created-by-text">
+        <div class="name-div" fxFlex fxLayout fxLayoutAlign="start" class="created-by-div">
+          <span>Created By:
+            <span *ngIf="
+                notesDetail.updatedByUser != undefined &&
+                notesDetails.updatedByUser != null
+              ">
+              <b>{{ notesDetail.createdByUser }}</b></span>
+            <span *ngIf="
+                notesDetails.updatedByUser == undefined &&
+                notesDetails.updatedByUser == null
+              ">
+              <b>{{ notesDetail.createdByUser }}</b>
+            </span>
+          </span>
+          &nbsp;
+          <span class="padding-property" *ngIf="notesDetail.updatedByUser.length > 0">|</span>
+          &nbsp;
+          <span *ngIf="notesDetail.updatedByUser.length > 0">Last Updated By:
+            <span>
+              <b>{{ notesDetail.updatedByUser }}</b>
+            </span>
+          </span>
+        </div>
+        <div class="time-div created-date-div" fxFlex fxLayout fxLayoutAlign="end">
+          <span class="date" *ngIf="notesDetail.updatedByUser.length <= 0">{{
+            notesDetail.createdDate | date: "MM/dd/yyyy"
+          }}</span>
+          <span class="date" *ngIf="notesDetail.updatedByUser.length > 0">{{
+            notesDetail.updatedDate | date: "MM/dd/yyyy"
+          }}</span>
+          &nbsp;
+          <span class="padding-property">|</span>
+          &nbsp;
+          <span *ngIf="notesDetail.updatedByUser.length <= 0">{{
+            notesDetail.createdDate | date: "h:mm aa"
+          }}</span>
+          <span *ngIf="notesDetail.updatedByUser.length > 0">{{
+            notesDetail.updatedDate | date: "h:mm aa"
+          }}</span>
+          &nbsp;
+        </div>
+      </div>
+    </div>
+  </mat-dialog-content>
+</div>

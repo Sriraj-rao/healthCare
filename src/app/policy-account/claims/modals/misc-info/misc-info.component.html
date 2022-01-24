@@ -1,0 +1,40 @@
+<div class="main-modal-div">
+
+
+    <div class="modal-header">
+
+        <h2 class="header-text">Misc Info for Claim #{{miscData.claimNum}}</h2>
+        <div mat-dialog-close class="dialog-close">&times;</div>
+    </div>
+
+
+    <mat-dialog-content class="dialog-content">
+        <div class="main-div">
+            <div class="table-div">
+                <mat-table [dataSource]="dataSource" matSort>
+                    <ng-container matColumnDef="recordNo">
+                        <mat-header-cell *matHeaderCellDef mat-sort-header class="table-header-text">
+                            Record No.
+                        </mat-header-cell>
+                        <mat-cell *matCellDef="let row" class="table-black-text">
+                            {{ row.recordNo }}
+                        </mat-cell>
+                    </ng-container>
+                    <ng-container matColumnDef="description">
+                        <mat-header-cell *matHeaderCellDef mat-sort-header class="table-header-text">
+                            Description
+                        </mat-header-cell>
+                        <mat-cell *matCellDef="let row" class="table-black-text">
+                            {{ row.description }}
+                        </mat-cell>
+                    </ng-container>
+
+                    <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+                    <mat-row *matRowDef="let row; columns: displayedColumns" matRipple class="element-row"></mat-row>
+                </mat-table>
+            </div>
+            <mat-paginator [pageSize]="10" [pageSizeOptions]="[5, 10, 25, 100]"></mat-paginator>
+
+        </div>
+    </mat-dialog-content>
+</div>

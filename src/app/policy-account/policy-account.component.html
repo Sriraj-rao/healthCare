@@ -1,0 +1,169 @@
+<div class="main-container">
+    <div class="row details-row">
+        <mat-divider></mat-divider>
+        <div class="col-sm-12 details-div">
+            <div class="row claimant-details-row" *ngIf="policyHolder">
+                <ul class="navigation-items">
+                    <div class="col-lg-6 first-col">
+                        <div class="row">
+                            <div class="col-sm-4">
+                                <li *ngIf="policyHolder" class="mr-2">
+                                    <span class="id">{{currentPolicyNo}}</span>
+                                </li>
+                            </div>
+                            <div class="col-sm-4">
+                                <li class="long"
+                                    *ngIf="policyHolder !== null && policyHolder !== undefined && policyHolder.insuredName !== ''; else altName">
+                                    <span class="name">{{policyHolder.insuredName}}</span>
+                                </li>
+                            </div>
+                            <div class="col-sm-4">
+                                <li *ngIf="policyHolderAddress !== null" class="long">
+                                    <span class="address">{{policyHolderAddress()}}</span>
+                                </li>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-6 second-col">
+                        <div class="row">
+                            <div class="col-sm-4">
+                                <li *ngIf="policyHolder" class="long">
+                                    <span class="email" placement="bottom"
+                                        ngbPopover="{{policyHolder?.email}}">{{policyHolder?.email}}</span>
+                                </li>
+                            </div>
+                            <div class="col-sm-4">
+                                <li *ngIf="policyHolder" class="long">
+                                    <span class="number" placement="bottom">PH: {{policyHolder?.homePhone}}</span>
+                                </li>
+                            </div>
+                            <div class="col-sm-3">
+                                <li *ngIf="isCurrentAccountStatuses && accountStatusOptions!=null">
+                                    <div
+                                        *ngIf="currentAccountStatuses[accountStatusOptions.IsAssociationState] !== undefined && currentAccountStatuses[accountStatusOptions.IsAssociationState] !== null">
+                                        <span class="action"
+                                            [ngClass]="assocStateClassName">{{policyHolder?.state || ''}} :
+                                            {{associationStatus()}}
+                                        </span>
+                                    </div>
+                                </li>
+                            </div>
+                            <div class="col-sm-1">
+                                <li *ngIf="isCurrentAccountStatuses" class="very-long">
+                                    <div
+                                        [ngClass]="{'icons-col-margin': currentAccountStatuses[accountStatusOptions.IsAssociationState] !== undefined && currentAccountStatuses[accountStatusOptions.IsAssociationState] !== null}">
+                                        <fa-icon [icon]="faBalanceScale" class="account-litigation header-icons"
+                                            matTooltip="{{currentAccountStatuses[accountStatusOptions.LitigationIndicator].Text }}"
+                                            *ngIf="currentAccountStatuses[accountStatusOptions.LitigationIndicator] !== undefined && currentAccountStatuses[accountStatusOptions.LitigationIndicator] !== null">
+                                        </fa-icon>
+                                        <fa-icon [icon]="faExclamationTriangle" class="caution header-icons"
+                                            matTooltip="NGF-Non-Renewal"
+                                            *ngIf="currentAccountStatuses[accountStatusOptions.NonGfIndicator] !== undefined && currentAccountStatuses[accountStatusOptions.NonGfIndicator] !== null">
+                                        </fa-icon>
+                                        <fa-icon [icon]="faExclamationTriangle" class="caution header-icons"
+                                            matTooltip="Account On Hold"
+                                            *ngIf="currentAccountStatuses[accountStatusOptions.AccountOnHold] !== undefined && currentAccountStatuses[accountStatusOptions.AccountOnHold] !== null">
+                                        </fa-icon>
+                                        <fa-icon [icon]="faBan" class="rejected header-icons"
+                                            matTooltip="This Policy Contains Exclusion Riders"
+                                            *ngIf="currentAccountStatuses[accountStatusOptions.HasExclusionRiders] !== undefined && currentAccountStatuses[accountStatusOptions.HasExclusionRiders] !== null">
+                                        </fa-icon>
+                                        <fa-icon [icon]="faLeaf" class="green header-icons"
+                                            matTooltip="Requested 'Electronic Documents'"
+                                            *ngIf="currentAccountStatuses[accountStatusOptions.IsPaperless] !== undefined && currentAccountStatuses[accountStatusOptions.IsPaperless] !== null">
+                                        </fa-icon>
+                                        <fa-icon [icon]="faEnvelope" class="account-notes header-icons"
+                                            *ngIf="currentAccountStatuses[accountStatusOptions.AccountNotes] !== undefined && currentAccountStatuses[accountStatusOptions.AccountNotes]?.length > 0"
+                                            matTooltip="{{currentAccountStatuses[accountStatusOptions.AccountNotes] | statusText}}">
+                                        </fa-icon>
+                                        <fa-icon [icon]="faPauseCircle" class="account-suspended header-icons"
+                                            matTooltip="{{currentAccountStatuses[accountStatusOptions.SuspendedAccounts] | statusText}}"
+                                            *ngIf="currentAccountStatuses[accountStatusOptions.SuspendedAccounts] !== undefined && currentAccountStatuses[accountStatusOptions.SuspendedAccounts]?.length > 0">
+                                        </fa-icon>
+                                        <span class="status-pending-transactions"
+                                            *ngIf="currentAccountStatuses[accountStatusOptions.HasPendingTransactions] !== undefined && currentAccountStatuses[accountStatusOptions.HasPendingTransactions] !== null">
+                                            Pending transactions</span>
+                                    </div>
+                                </li>
+                            </div>
+                        </div>
+                    </div>
+                </ul>
+                <div class="col-lg-0 col-xl-0"></div>
+            </div>
+        </div>
+        <mat-divider></mat-divider>
+    </div>
+
+    <div class="tabs">
+        <mat-tab-group [selectedIndex]="selectedTab" (selectedIndexChange)="tabSelectionChanged($event)"
+            [disableRipple]="true">
+            <mat-tab label="Insured">
+                <cwb-insured (isNameClicked)="onNameClicked()"></cwb-insured>
+            </mat-tab>
+            <mat-tab label="Claims">
+                <cwb-claims></cwb-claims>
+            </mat-tab>
+            <mat-tab label="Investigations" *ngIf="this._detailsSharing.permissionsCheck?.isViewInvestigation ">
+                <cwb-investigations-tab [policyNo]="currentPolicyNo"></cwb-investigations-tab>
+            </mat-tab>
+            <!-- <mat-tab label="Benefits">
+                <iframe [src]="benefitsUrl" class="benefits-frame"></iframe>
+            </mat-tab> -->
+            <mat-tab disabled>
+                <ng-template mat-tab-label>
+
+                    <div class="ppo-network-container" *ngIf="ppoInformation !== null && ppoInformation?.length > 0">
+                        <div class="input-group input-group-sm">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text">PPO Network</span>
+                            </div>
+                            <div class="input-group-append">
+                                <button class="btn btn-outline-primary toggle-ppo-info-btn" [matMenuTriggerFor]="menu"
+                                    #t="matMenuTrigger" (click)="$event.stopPropagation()" type="button">
+                                    <fa-icon [icon]="faEye" class="sync-icon" *ngIf="!t.menuOpen"></fa-icon>
+                                    <fa-icon [icon]="faEyeSlash" class="sync-icon" *ngIf="t.menuOpen"></fa-icon>
+                                </button>
+                            </div>
+                            <mat-menu #menu="matMenu">
+                                <div class="p-3" class="ppo-network-content">
+                                    <div class="ppo-info" *ngFor="let ppo of ppoInformation; let i = index">
+                                        <div class="header">
+                                            <a class="network-name" href="{{ppo.ppoUrl}}" target="{{ppo.ppoName}}">
+                                                <fa-icon [icon]="faCertificate"
+                                                    class="sync-icon text-yellow pr-1 ppo-network-name"
+                                                    *ngIf="ppo?.ppoName.toLowerCase().includes('unitedhealthcare') === true">
+                                                </fa-icon>
+                                                {{i + 1}}. {{ppo.ppoName}}
+                                            </a>
+                                        </div>
+                                        <div class="col1 ppo-info-addr">{{ppo.address}}</div>
+                                        <div class="ppo-info-location">
+                                            <span>{{ppo.city}}, {{ppo.state}} {{ppo.zip | zipcode}}</span>
+                                        </div>
+                                        <div class="ppo-info-phone"><span class="i-label">Phone:
+                                            </span><span>{{ppo.phone}}</span></div>
+                                        <div>
+                                            <span class="i-label">Electronic Filing Number:
+                                            </span><span>{{ppo.electronicFilingNumber}}</span>
+                                        </div>
+                                        <div>
+                                            <span class="i-label">Plan Name: </span><span
+                                                class="plan-name">{{ppo.planName}}</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </mat-menu>
+                        </div>
+                    </div>
+                </ng-template>
+            </mat-tab>
+        </mat-tab-group>
+    </div>
+
+    <ng-template #altName>
+        <a class="navbar-brand account-primary-brand text-danger no-name-div">
+            NO NAME WAS PROVIDED
+        </a>
+    </ng-template>
+</div>

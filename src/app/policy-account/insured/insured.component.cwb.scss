@@ -1,0 +1,23 @@
+.main-container {
+  padding: 0% 2%;
+}
+
+.card {
+  display: flex;
+  width: 97.5%;
+  left: 2%;
+  background: #ffffff 0% 0% no-repeat padding-box;
+  box-shadow: 0px 3px 6px #00000029;
+  opacity: 1;
+}
+.spinner-div {
+  padding: 5% 40%;
+}
+:host ::ng-deep .mat-progress-spinner circle,
+.mat-spinner circle {
+  stroke: #093155 !important;
+}
+
+.no-record-div {
+  text-align: center;
+}

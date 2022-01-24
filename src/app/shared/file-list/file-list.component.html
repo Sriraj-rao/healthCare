@@ -1,0 +1,49 @@
+<mat-table matSort [dataSource]="dataSource" [ngClass]="{'table-with-req-number':showRequestNumber}">
+    <ng-container matColumnDef="checkbox">
+        <mat-header-cell *matHeaderCellDef>
+            <mat-checkbox (click)="onAllCheckboxChanged()"></mat-checkbox>
+        </mat-header-cell>
+        <mat-cell *matCellDef="let element;let i=index;" class="claim-no-text">
+            <mat-checkbox (click)="onCheckboxChanged(i)" [checked]="allCheckboxSelected">
+            </mat-checkbox>
+        </mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="fileName">
+        <mat-header-cell *matHeaderCellDef mat-sort-header> File Name </mat-header-cell>
+        <mat-cell *matCellDef="let element" class="other-text">
+            {{element.fileName}}
+        </mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="requestNumber">
+        <mat-header-cell *matHeaderCellDef mat-sort-header> Request Number </mat-header-cell>
+        <mat-cell *matCellDef="let element" class="other-text">
+            {{element.requestNumber}}
+        </mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="fileDate">
+        <mat-header-cell *matHeaderCellDef mat-sort-header> File Date </mat-header-cell>
+        <mat-cell *matCellDef="let element" class="date-text">
+            {{element.fileDate | date: 'MM/dd/yyyy'}}
+        </mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="view">
+        <mat-header-cell *matHeaderCellDef> Preview</mat-header-cell>
+        <mat-cell *matCellDef="let element" class="date-text">
+            <fa-icon [icon]="faEye" class="eye-icon" [matTooltip]="'Preview '+element.fileName" (click)="onPreview(element.fileId)"></fa-icon>
+        </mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="download">
+        <mat-header-cell *matHeaderCellDef> Download</mat-header-cell>
+        <mat-cell *matCellDef="let element" class="date-text">
+            <fa-icon [icon] = "faFileDownload" [matTooltip] = "'Download '+element.fileName" class="submit" (click)="onDownload(element)"></fa-icon>
+        </mat-cell>
+    </ng-container>
+
+    <mat-header-row *matHeaderRowDef="displayedColumns" class="header-row"></mat-header-row>
+    <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+</mat-table>

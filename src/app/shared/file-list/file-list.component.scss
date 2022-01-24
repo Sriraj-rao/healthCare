@@ -1,0 +1,65 @@
+.mat-table {
+    background: #ffffff 0% 0% no-repeat padding-box;
+    border: 1px solid #b7b7b7;
+    border-radius: 6px;
+    padding: 0;
+    opacity: 1;
+    .other-text {
+        // font: normal normal medium 15px/18px Roboto;
+        color: #747474;
+        font-size: 0.75rem;
+        font-weight: 500;
+    }
+    .date-text {
+        color: #ff9d00;
+        font-size: 0.75rem;
+        font-weight: 500;
+    }
+}
+
+.mat-row {
+    min-height: 1.7rem !important;
+}
+.mat-header-row {
+    background-color: #007bff;
+    min-height: 38px;
+    z-index: 1;
+    top: 0px;
+}
+.mat-column-checkbox {
+    flex: 0 0 7%;
+    padding-left: 010px;
+}
+.mat-column-fileName {
+    flex: 0 0 50%;
+}
+.table-with-req-number {
+    .mat-column-fileName {
+        flex: 0 0 30%;
+    }
+}
+.mat-column-fileDate {
+    flex: 0 0 15%;
+}
+.mat-column-requestNumber {
+    flex: 0 0 22%;
+}
+.mat-column-view {
+    flex: 0 0 13%;
+    justify-content: center;
+}
+.mat-column-download {
+    flex: 0 0 18%;
+    justify-content: center;
+}
+.submit {
+    color: #147afc;
+    font-size: 18px;
+    margin-right: 2%;
+    cursor: pointer;
+}
+.eye-icon {
+    color: dodgerblue;
+    cursor: pointer;
+    font-size: 20px;
+}

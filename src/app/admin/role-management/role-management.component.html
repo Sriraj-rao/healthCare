@@ -1,0 +1,107 @@
+<div class="container-fluid main-container">
+    <form class="addForm" [formGroup]="permissionsForm" #formDirective="ngForm" (ngSubmit)="onSubmit()">
+        <div class="row dropdown-row">
+            <div class="col-sm-4">
+                <mat-select placeholder="Select Roles" formControlName="rolesControl" class="roles-dropdown"
+                    (selectionChange)="onRoleChanged($event.value)"
+                    [ngClass]="{'red-border':permissionsForm.controls['rolesControl'].invalid && isSubmitClicked}">
+                    <mat-option *ngFor="let role of roles" [value]="role">
+                        {{ role.role }}
+                    </mat-option>
+                </mat-select>
+            </div>
+        </div>
+        <div *ngIf="showPermissions">
+            <!-- <div *ngFor="let permission of permissions;let i=index">
+                <span>
+                    <mat-checkbox #permissionCheckbox (click)="onCheckboxClicked(permission.id)"></mat-checkbox>
+                    <span class="permission-text">{{permission.permission}}</span>
+                </span>
+            </div> -->
+            <div class="row">
+                <div class="col-sm-4 section-col">
+                    <div class="header-border top-col">
+                        <h2 class="heading"><span class="header-text">Investigation</span></h2>
+                        <div class="perm-div">
+                            <div *ngFor="let permission of permissions;let i=index">
+                                <span *ngIf="permission.groupName==='Investigation'">
+                                    <mat-checkbox #permissionCheckbox [checked]="permission.isChecked"
+                                        (change)="onCheckboxClicked(permission.id)"></mat-checkbox>
+                                    <span class="permission-text">{{permission.permission}}</span>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="header-border">
+                        <h2 class="heading"><span class="header-text">Notes</span></h2>
+                        <div class="perm-div">
+                            <div *ngFor="let permission of permissions;let i=index">
+                                <span *ngIf="permission.groupName==='Notes'">
+                                    <mat-checkbox #permissionCheckbox [checked]="permission.isChecked"
+                                        (change)="onCheckboxClicked(permission.id)"></mat-checkbox>
+                                    <span class="permission-text">{{permission.permission}}</span>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-4 section-col">
+                    <div class="header-border top-col">
+                        <h2 class="heading"><span class="header-text">Requests</span></h2>
+                        <div class="perm-div">
+                            <div *ngFor="let permission of permissions;let i=index">
+                                <span *ngIf="permission.groupName==='Requests'">
+                                    <mat-checkbox #permissionCheckbox [checked]="permission.isChecked"
+                                        (change)="onCheckboxClicked(permission.id)"></mat-checkbox>
+                                    <span class="permission-text">{{permission.permission}}</span>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="header-border">
+                        <h2 class="heading"><span class="header-text">Claims</span></h2>
+                        <div class="perm-div">
+                            <div *ngFor="let permission of permissions;let i=index">
+                                <span *ngIf="permission.groupName==='Claims'">
+                                    <mat-checkbox #permissionCheckbox [checked]="permission.isChecked"
+                                        (change)="onCheckboxClicked(permission.id)"></mat-checkbox>
+                                    <span class="permission-text">{{permission.permission}}</span>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-4 section-col">
+                    <div class="header-border top-col">
+                        <h2 class="heading"><span class="header-text">MiscDocs</span></h2>
+                        <div class="perm-div">
+                            <div *ngFor="let permission of permissions;let i=index">
+                                <span *ngIf="permission.groupName==='MiscDocs'">
+                                    <mat-checkbox #permissionCheckbox [checked]="permission.isChecked"
+                                        (change)="onCheckboxClicked(permission.id)"></mat-checkbox>
+                                    <span class="permission-text">{{permission.permission}}</span>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="header-border">
+                        <h2 class="heading"><span class="header-text">Others</span></h2>
+                        <div class="perm-div">
+                            <div *ngFor="let permission of permissions;let i=index">
+                                <span *ngIf="permission.groupName==='Others'">
+                                    <mat-checkbox #permissionCheckbox [checked]="permission.isChecked"
+                                        (change)="onCheckboxClicked(permission.id)"></mat-checkbox>
+                                    <span class="permission-text">{{permission.permission}}</span>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row submit-row">
+            <button type="button" class="clear-button btn btn-warning" (click)="onClear()">Clear</button>
+            <button mat-button type="submit" class="submit-button">Submit</button>
+        </div>
+    </form>
+</div>

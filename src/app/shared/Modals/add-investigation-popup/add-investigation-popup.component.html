@@ -1,0 +1,203 @@
+<div class="main-modal-div">
+
+
+
+    <div class="modal-header ">
+
+        <h2 class="header-text">Add New Investigation</h2>
+        <div (click)="onCloseDialog()" class="close">&times;</div>
+    </div>
+
+    <mat-dialog-content class="dialog-content">
+
+        <div class="row claim-Details">
+            <div class="col-sm-5">
+                <div class="row">
+                    <span>
+                        Claim No.: <span class="text">{{claimsData.claimNumber}}</span>
+                    </span>
+                </div>
+                <div class="row">
+                    <span> <span>Policy Effective Date: </span> <span
+                            class="effective-date-text">{{claimsData.policyEffectiveDate | date: 'MM/dd/yyyy'}}</span>
+                    </span>
+                </div>
+            </div>
+            <div class="col-sm-7">
+                <div class="row">
+                    <span>
+                        Claimant: <span class="text">{{claimsData.claimantName}}</span>
+                    </span>
+                </div>
+                <div class="row">
+                    <span>
+                        <span>Investigation Date: </span>
+                        <span class="effective-date-text">{{effectiveDate | date: 'MM/dd/yyyy'}}</span>
+                    </span>
+                </div>
+            </div>
+        </div>
+
+        <form class="addForm" [formGroup]="addInvForm" #formDirective="ngForm" (ngSubmit)="onSubmit()">
+            <div class="row row-topping">
+                <div class="col-sm-6">
+                    <p class="inv-type-text"
+                        [ngClass]="{'red':addInvForm.get('invCategoryControl').invalid &&(isSubmitClicked)}">Condition:
+                        <span class="red">*</span>
+                    </p>
+                    <mat-select class="select select-with-search" (click)="onSelectClicked(1)"
+                        aria-label="Default select example" (selectionChange)="onCatSelected($event.value)" (openedChange)="onDropdownClosed(1)"
+                        [ngClass]="{'red-border':addInvForm.get('invCategoryControl').invalid &&( isSubmitClicked)}"
+                        panelClass="search-panel" placeholder="Select Condition" formControlName="invCategoryControl">
+                        <div class="search-div">
+                            <div class="input-group">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text">
+                                        <fa-icon [icon]="faSearch" class="search-icon"></fa-icon>
+                                    </span>
+                                </div>
+                                <input #inputCondition appAutoFocus type="text"
+                                    [formControl]="invConditionSearchControl" class="form-control search-input-field"
+                                    placeholder="Filter Conditions" (keydown)="helperMethods.onKeyPressinSearch($event)">
+
+                                <div class="clear-search">
+                                    <span class="input-group-text">
+                                        <fa-icon [icon]="faTimes" class="search-icon" (click)="onClearSearch(1)">
+                                        </fa-icon>
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                        <div>
+                            <mat-option
+                                *ngFor="let condition of investigationConditions | filterOptions: invConditionSearchControl.value"
+                                [value]="condition">
+
+                                {{condition.type}}
+                            </mat-option>
+                        </div>
+                    </mat-select>
+                </div>
+                <div class="col-sm-6" *ngIf="investigationType">
+                    <p class="inv-type-text"
+                        [ngClass]="{'red':addInvForm.get('statusControl').invalid &&( isSubmitClicked)}">Status:<span class="red">*</span></p>
+                    <mat-select class="select select-with-search" (click)="onSelectClicked(4)"
+                        aria-label="Default select example" (selectionChange)="statusSelection($event.value)"
+                        placeholder="Select status" (openedChange)="onDropdownClosed(2)"
+                        [ngClass]="{'red-border':addInvForm.get('statusControl').invalid &&(isSubmitClicked)}"
+                        formControlName="statusControl">
+                        <div class="search-div">
+                            <div class="input-group">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text">
+                                        <fa-icon [icon]="faSearch" class="search-icon"></fa-icon>
+                                    </span>
+                                </div>
+                                <input #status appAutoFocus type="text" [formControl]="statusSearchControl"
+                                    class="form-control search-input-field" placeholder="Filter Statuses"
+                                    (keydown)="helperMethods.onKeyPressinSearch($event)">
+
+                                <div class="clear-search">
+                                    <span class="input-group-text">
+                                        <fa-icon [icon]="faTimes" class="search-icon" (click)="onClearSearch(4)">
+                                        </fa-icon>
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                        <div>
+                            <mat-option *ngFor="let status of statusTypes | filterOptions: statusSearchControl.value"
+                                [value]="status">
+
+                                {{status.status}}
+                            </mat-option>
+                        </div>
+                    </mat-select>
+                </div>
+            </div>
+
+            <div class="row row-topping">
+                <div class="col-sm-6 col-topping" *ngIf="categorySelected">
+                    <p class="inv-type-text"
+                        [ngClass]="{'red':addInvForm.get('invSubCategoryControl').invalid &&(isSubmitClicked)}">ICD
+                        Category:<span class="red">*</span></p>
+                    <mat-select class="select" aria-label="Default select example"
+                        (selectionChange)="onSubCatSelected()" (click)="onSelectClicked(2)" (openedChange)="onDropdownClosed(3)"
+                        [ngClass]="{'red-border':addInvForm.get('invSubCategoryControl').invalid &&(isSubmitClicked)}"
+                        placeholder="Select Investigation Type" formControlName="invSubCategoryControl">
+                        <div class="search-div">
+                            <div class="input-group">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text">
+                                        <fa-icon [icon]="faSearch" class="search-icon">
+                                        </fa-icon>
+                                    </span>
+                                </div>
+                                <input #inputCategory autofocus type="text" [formControl]="invCategorySearchControl"
+                                    class="form-control search-input-field" placeholder="Filter Categories"
+                                    (keydown)="helperMethods.onKeyPressinSearch($event)">
+
+                                <div class="clear-search">
+                                    <span class="input-group-text">
+                                        <fa-icon [icon]="faTimes" class="search-icon" (click)="onClearSearch(2)"></fa-icon>
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                        <div>
+                            <mat-option
+                                *ngFor="let investigationCategory of investigationCategories  | filterOptions: invCategorySearchControl.value"
+                                [value]="investigationCategory">
+
+                                {{investigationCategory.description}}
+                            </mat-option>
+                        </div>
+                    </mat-select>
+                </div>
+                <div class="col-sm-6 col-topping" *ngIf="statusValue">
+                    <p class="inv-type-text"
+                        [ngClass]="{'red':addInvForm.get('pendCodeControl').invalid &&(isSubmitClicked)}">Pend Code:<span class="red">*</span></p>
+                    <mat-select class="select" aria-label="Default select example" (openedChange)="onDropdownClosed(4)"
+                        (selectionChange)="onPendSelected()" (click)="onSelectClicked(3)"
+                        [ngClass]="{'red-border':addInvForm.get('pendCodeControl').invalid &&(isSubmitClicked)}"
+                        placeholder="Select Pend Code" formControlName="pendCodeControl">
+                        <div class="search-div">
+                            <div class="input-group">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text">
+                                        <fa-icon [icon]="faSearch" class="search-icon">
+                                        </fa-icon>
+                                    </span>
+                                </div>
+                                <input #inputPendCode autofocus type="text" [formControl]="pendCodeSearchControl"
+                                    class="form-control search-input-field" (keydown)="helperMethods.onKeyPressinSearch($event)"
+                                    placeholder="Filter Pend Codes">
+
+                                <div class="clear-search">
+                                    <span class="input-group-text">
+                                        <fa-icon [icon]="faTimes" class="search-icon" (click)="onClearSearch(3)"></fa-icon>
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                        <div>
+                            <mat-option *ngFor="let pendCode of pendCodes | filterOptions: pendCodeSearchControl.value"
+                                [value]="pendCode">
+
+                                {{pendCode.pendCode}} - {{pendCode.description}}
+                            </mat-option>
+                        </div>
+                    </mat-select>
+                </div>
+            </div>
+
+
+            <div class="modal-footer">
+                <button type="button" class="cancel-button" mat-button (click)="onClear()">Clear</button>
+                &nbsp; &nbsp;
+                <button mat-button type="submit" class="submit-button">Submit</button>
+            </div>
+        </form>
+
+    </mat-dialog-content>
+</div>

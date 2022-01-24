@@ -1,0 +1,106 @@
+<table mat-table [dataSource]="dataSource">
+  <ng-container matColumnDef="line">
+    <th mat-header-cell *matHeaderCellDef>Line</th>
+    <td mat-cell *matCellDef="let element; let i = index">{{ i + 1 }}</td>
+  </ng-container>
+
+  <ng-container matColumnDef="diagnosis">
+    <th mat-header-cell *matHeaderCellDef>Diagnosis</th>
+    <td mat-cell *matCellDef="let element">
+      <span
+        class="diagnosis-text"
+        [ngClass]="{ 'pointer clickable': !!element?.diagnosis }"
+        placement="bottom"
+        ngbPopover="{{ element.diagnosisDesc }}"
+        [outsideClick]="true"
+        >{{ element.diagnosis }}</span
+      >
+    </td>
+  </ng-container>
+
+  <ng-container matColumnDef="provider">
+    <th mat-header-cell *matHeaderCellDef>Provider</th>
+    <td mat-cell *matCellDef="let element">{{ element.providerName }}</td>
+  </ng-container>
+
+  <ng-container matColumnDef="benefitType">
+    <th mat-header-cell *matHeaderCellDef>Benefit Type</th>
+    <td mat-cell *matCellDef="let element">{{ element.benType }}</td>
+  </ng-container>
+
+  <ng-container matColumnDef="procedureCode">
+    <th mat-header-cell *matHeaderCellDef>Procedure Code</th>
+    <td mat-cell *matCellDef="let element">
+      <span
+        [outsideClick]="true"
+        class="diagnosis-text"
+        ngbPopover="{{ element.procedureCode }} - {{ element.procedureDesc }}"
+        popoverTitle="Procedure Code"
+        [ngClass]="{ 'pointer clickable': !!element?.procedureCode }"
+        >{{ element.procedureCode }}</span
+      >
+    </td>
+  </ng-container>
+
+  <ng-container matColumnDef="amountCharged">
+    <th mat-header-cell *matHeaderCellDef>Amount Charged</th>
+    <td mat-cell *matCellDef="let element">
+      {{ element.amountCharged | currency | gainLoss }}
+    </td>
+  </ng-container>
+
+  <ng-container matColumnDef="ppdDiscount">
+    <th mat-header-cell *matHeaderCellDef>PPO Discount</th>
+    <td mat-cell *matCellDef="let element">
+      {{ element.ppoDiscount | currency | gainLoss }}
+    </td>
+  </ng-container>
+
+  <ng-container matColumnDef="deductibleApplied">
+    <th mat-header-cell *matHeaderCellDef>Deductible Applied</th>
+    <td mat-cell *matCellDef="let element">
+      {{ element.deductibleApplied | currency | gainLoss }}
+    </td>
+  </ng-container>
+
+  <ng-container matColumnDef="paidAmount">
+    <th mat-header-cell *matHeaderCellDef>Paid Amount</th>
+    <td mat-cell *matCellDef="let element">
+      {{ element.paidAmount | currency | gainLoss }}
+    </td>
+  </ng-container>
+
+  <ng-container matColumnDef="assignmentIndicator">
+    <th mat-header-cell *matHeaderCellDef>Assignment Indicator</th>
+    <td mat-cell *matCellDef="let element">{{ element.indicator }}</td>
+  </ng-container>
+
+  <ng-container matColumnDef="remarkCodes">
+    <th mat-header-cell *matHeaderCellDef>Remark Codes</th>
+    <td mat-cell *matCellDef="let element">
+      <span
+        [ngClass]="{
+          'pointer clickable': !!getRemarkCodesSummary([
+            element.remarkCode1,
+            element.remarkCode2
+          ])
+        }"
+        [ngbPopover]="getRemarksSummary(element)"
+        popoverTitle="Remark Codes"
+        containerClass="li-remark-summary"
+        [outsideClick]="true"
+        class="diagnosis-text"
+        >{{
+          getRemarkCodesSummary([element.remarkCode1, element.remarkCode2])
+        }}</span
+      >
+    </td>
+  </ng-container>
+
+  <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+  <tr
+    mat-row
+    *matRowDef="let row; columns: displayedColumns"
+    class="all-rows"
+  ></tr>
+</table>

@@ -1,0 +1,257 @@
+.main-container {
+  margin-bottom: 5px;
+}
+.row {
+  padding-left: 1% !important;
+  padding-right: 1% !important;
+}
+.insured-details-col {
+  padding-top: 0.3%;
+  .row {
+    padding-left: 0%;
+  }
+}
+
+.insured-details {
+  font: normal normal bold 26px/33px Roboto;
+  letter-spacing: 0px;
+  color: #006692;
+  opacity: 1;
+}
+
+.sync-icon {
+  padding-right: 6%;
+}
+.top-table-header {
+  width: 100%;
+  padding: 1% !important;
+  // height: auto;
+  margin-left: 0.025em;
+  background: #eff3fc 0% 0% no-repeat padding-box;
+  border: 1px solid #d0d0d0;
+  border-radius: 12px 12px 0px 0px;
+  opacity: 1;
+}
+.top-header-text {
+  text-align: left;
+  font: normal normal bold 12px/16px Roboto;
+  letter-spacing: 0px;
+  color: #006692;
+  text-transform: uppercase;
+  opacity: 1;
+}
+
+.insured-name {
+  text-align: left;
+  font: normal normal bold 16px/24px Roboto;
+  letter-spacing: 0px;
+  color: #0098d9;
+  white-space: nowrap;
+  opacity: 1;
+  cursor: pointer;
+  font-size: 0.8rem;
+}
+.table-column-values {
+  text-align: left;
+  font: normal normal medium 16px/21px Roboto;
+  letter-spacing: 0px;
+  color: #747474;
+  opacity: 1;
+  font-size: 0.8rem;
+}
+
+.table-container {
+  width: 100%;
+  // overflow: scroll;
+  // overflow-y: hidden;
+}
+//   ::-webkit-scrollbar {
+//     width: 10px;
+//   }
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: #666666;
+  border-radius: 8px;
+}
+
+th.mat-header-cell,
+td.mat-cell,
+td.mat-footer-cell {
+  //   padding: 16px 16px 16px 16px;
+  border-bottom-width: 1px;
+  border-bottom-style: solid;
+  // padding: 16px 0px 16px 16px  !important;
+  font-size: 0.8rem;
+}
+.table-header {
+  flex: 0 0 100px;
+  // width: 9em;
+  white-space: nowrap;
+  text-align: left;
+  font: normal normal bold 16px/24px Roboto;
+  letter-spacing: 0px;
+  color: #6296ef;
+  opacity: 1;
+  font-size: 0.8rem;
+}
+:host ::ng-deep th.mat-header-cell,
+td.mat-cell,
+td.mat-footer-cell {
+  padding: 8px 0px 8px 16px !important;
+}
+
+.not-valid {
+  color: red;
+}
+.leaf-icon {
+  color: green;
+}
+.cwb-alert-warning {
+  color: #212529 !important;
+  background-color: #ffc107;
+  border-color: #ecb307;
+  border-radius: 0.25rem;
+  padding: 2%;
+}
+.state-col {
+  flex: 0 0 12.6666666667%;
+  max-width: 16.6666666667%;
+}
+.control-col {
+  flex: 0 0 20.6666666667%;
+  max-width: 21.6666666667%;
+}
+.leaf-col {
+  flex: 0 0 3.333333%;
+}
+.expand-icon {
+  color: #898989;
+  cursor: pointer;
+}
+.sub-table-cell {
+  padding: 0% !important;
+}
+.mat-column-expand {
+  width: 2%;
+  flex: 0 0 5% !important;
+}
+.mat-column-insured {
+  width: 2%;
+  flex: 0 0 12% !important;
+}
+.mat-column-memberId {
+  width: 2%;
+  flex: 0 0 8% !important;
+}
+.mat-column-status {
+  width: 2%;
+  flex: 0 0 5% !important;
+  display: flex;
+  justify-content: center;
+}
+.mat-column-relationship {
+  width: 2%;
+  flex: 0 0 8% !important;
+  display: flex;
+  justify-content: center;
+}
+.mat-column-gender {
+  width: 2%;
+  flex: 0 0 5% !important;
+  display: flex;
+  justify-content: center;
+}
+.mat-column-dob {
+  width: 2%;
+  flex: 0 0 7% !important;
+  display: flex;
+  justify-content: center;
+}
+.mat-column-age {
+  width: 2%;
+  flex: 0 0 5% !important;
+  display: flex;
+  justify-content: center;
+}
+.mat-column-applicationDate {
+  width: 2%;
+  flex: 0 0 9% !important;
+  display: flex;
+  justify-content: center;
+}
+.mat-column-settleDate {
+  width: 2%;
+  flex: 0 0 7% !important;
+  display: flex;
+  justify-content: center;
+}
+.mat-column-effectiveDate {
+  width: 2%;
+  flex: 0 0 8% !important;
+  display: flex;
+  justify-content: center;
+}
+.mat-column-lapseDate {
+  width: 2%;
+  flex: 0 0 7% !important;
+  display: flex;
+  justify-content: center;
+}
+.mat-column-reIssueDate {
+  width: 2%;
+  flex: 0 0 8% !important;
+  display: flex;
+  justify-content: center;
+}
+.mat-column-termDate {
+  width: 2%;
+  flex: 0 0 8% !important;
+  display: flex;
+  justify-content: center;
+}
+
+.sub-table-div {
+  width: 100% !important;
+  padding: 0.5% 1% 0.5% 1%;
+  background: #deeeff;
+}
+.span-text {
+  width: auto;
+}
+
+.note {
+  // padding-bottom: 0.5%;
+  padding-left: 1.2%;
+  padding-top: 1%;
+  text-align: left;
+  text-align: left;
+  letter-spacing: 0px;
+  color: #797979;
+
+  .note-bold {
+    text-align: left;
+    letter-spacing: 0px;
+    color: #354052;
+    font-weight: 500;
+  }
+}
+.reload-button {
+  // padding-right: 1.5%;
+  // color: #fff;
+  // background-color: #6c757d;
+  // border-color: #6c757d;
+  background: #006692 0% 0% no-repeat padding-box;
+  border: 0.5px solid #024a6a;
+  border-radius: 4px;
+  opacity: 1;
+  height: 38px;
+  padding-bottom: 32px;
+  .button-text {
+    font-size: 14px !important;
+  }
+}

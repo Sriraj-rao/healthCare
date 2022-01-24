@@ -1,0 +1,14 @@
+<div class="container error-page-container">
+    <div class="row">
+      <div class="col text-center">
+        <fa-icon [icon]="faExclamationTriangle" class="not-authorized-lock material-icons"></fa-icon>
+      </div>
+    </div>
+    <h1 class="text-center">Oops!</h1>
+    <p class="text-center"> We can't seem to find the page you're looking for.</p>
+    <div class="row">
+      <div class="col text-center">
+        <a [routerLink]="['/home']" class="btn btn-primary mobile-stacked-btn">Start Over</a>
+      </div>
+    </div>
+  </div>

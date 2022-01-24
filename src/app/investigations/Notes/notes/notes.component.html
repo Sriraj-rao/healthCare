@@ -1,0 +1,265 @@
+<div [ngClass]="
+    isNotesExpandedModel 
+      ? 'col-lg-12 col-sm-12  notes-section-large notes-section-expanded '
+      : 'col-lg-3 col-sm-12 notes-section'
+  ">
+  <div class="row" [ngClass]="{ 'border-style': isNotesExpandedModel  }">
+    <div class="col-sm-12">
+      <div class="row notes-header" *ngIf="!isNotesExpandedModel">
+        <div class="col-sm-3 header-text-div">
+          <span class="header-text">Notes</span>
+        </div>
+        <div class="col-sm-4 search-div"></div>
+        <div class="col-sm-4"></div>
+        <div class="col-sm-1 expand-div">
+          <fa-icon [icon]="faExpandArrowsAlt" class="add-icon expand-icon" (click)="onNotesExpand()"
+            matTooltip="Expand Notes"
+            *ngIf="this.detailsSharing.permissionsCheck?.isViewNotes && this.detailsSharing.permissionsCheck?.isViewInvestigation">
+          </fa-icon>
+        </div>
+      </div>
+
+      <div class="row filter-row-notes" *ngIf="!isNotesExpandedModel">
+        <div class="col-md-2 filter-row-col-notes-collapsed filter-icon-col-notes">
+          <span class="filter-icon-row">
+            <fa-icon [icon]="faFilter" class="add-icon-notes" matTooltip="Filter"></fa-icon>
+            <span class="filter-icon-text"></span>
+          </span>
+        </div>
+        <div class="col-md-4 filter-row-col">
+          <mat-select [(value)]="selectedusers" class="form-control status-search">
+            <mat-option *ngFor="let user of users" [value]="user">
+              {{ user }}
+            </mat-option>
+          </mat-select>
+        </div>
+        <div class="col-md-4 filter-row-col">
+          <input (click)="picker.open()" readonly [matDatepicker]="picker"
+            class="form-control search-input-field date-filter" placeholder="Date Created"
+            (dateChange)="onDateChange($event.value)" [value]="selectedProofOfLoss" />
+          <mat-datepicker #picker></mat-datepicker>
+        </div>
+        
+        <div class="col-md-2 reset-col-notes" (click)="onResetFilters()">
+          <fa-icon [icon]="faRedoAlt" class="reset-icon" matTooltip="Reset"></fa-icon>
+        </div>
+      </div>
+      <div class="row notes-header" *ngIf="isNotesExpandedModel">
+        <div class="col-lg-1 col-md-2 col-sm-2 header-text-div">
+          <span class="header-text">Notes</span>
+        </div>
+
+        <div class="col-lg-2 col-md-2 col-sm-2 search-div"></div>
+        <div class="col-lg-2 col-md-2 col-sm-2"></div>
+        <div class="col-sm-7 expand-div" fxFlex fxLayout fxLayoutAlign="end">
+          <fa-icon [icon]="faCompressArrowsAlt" class="add-icon expand-icon" (click)="onNotesExpand()"
+            *ngIf="this.detailsSharing.permissionsCheck.isViewInvestigation" matTooltip="Collapse Notes"></fa-icon>
+        </div>
+      </div>
+      <div class="row filter-row-notes" *ngIf="isNotesExpandedModel">
+        <div class="col-md-2 filter-row-col filter-icon-col">
+          <span class="filter-icon-row">
+            <fa-icon [icon]="faFilter" class="add-icon"></fa-icon>
+            <span class="filter-icon-text">Filter</span>
+          </span>
+        </div>
+        <div class="col-md-2 filter-row-col">
+          <mat-select [(value)]="selectedusers" class="form-control status-search">
+            <mat-option *ngFor="let user of users" [value]="user">
+              {{ user }}
+            </mat-option>
+          </mat-select>
+        </div>
+        <div class="col-md-2 filter-row-col">
+          <input (click)="picker.open()" readonly [matDatepicker]="picker"
+            class="form-control search-input-field date-filter" placeholder="Date Created"
+            (dateChange)="onDateChange($event.value)" [value]="selectedProofOfLoss" />
+          <mat-datepicker #picker></mat-datepicker>
+        </div>
+        <div class="col-md-4 filter-row-col" *ngIf="isNotesExpanded">
+          <input class="form-control search-input-field date-filter" placeholder="Notes Title"
+            [formControl]="headerSearchControl" />
+          <mat-datepicker #picker></mat-datepicker>
+        </div>
+        <div class="col-md-2 reset-col" (click)="onResetFilters()">
+          <fa-icon [icon]="faRedoAlt" class="reset-icon-expanded"></fa-icon>
+
+          <span class="reset-text">Reset Filter</span>
+        </div>
+      </div>
+      <div class="all-notes row">
+        <ng-container *ngIf="
+            notesDetails
+              | userFilter: selectedusers
+              | dateCreated: selectedProofOfLoss 
+              |headerFilter:headerSearchControl.value as result
+          ">
+          <div class="content-div row" *ngFor="let notesDetail of result">
+            <div class="row content-container">
+              <div class="row header">{{ notesDetail.title }}</div>
+              <div class="row content">
+                <span *ngIf="isNotesExpandedModel">{{
+                  notesDetail.description
+                }}</span>
+                <span class="line-break" *ngIf="
+                    !isNotesExpandedModel &&
+                    notesDetail.description.length >= 150
+                  ">{{ notesDetail.description | slice: 0:150 }}...</span>
+
+                <span *ngIf="
+                    !isNotesExpandedModel &&
+                    notesDetail.description.length < 150
+                  ">{{ notesDetail.description }}</span>
+              </div>
+
+              <div class="row read-more">
+                <div fxFlex fxLayout fxLayoutAlign="center" class="read-more" *ngIf="
+                    !isNotesExpandedModel &&
+                    notesDetail.description.length >= 150
+                  " (click)="onReadMore(notesDetail)">
+                  Read more...
+                </div>
+                <div class="edit-icons-div" fxLayoutAlign="end" *ngIf="!isNotesExpandedModel">
+                  <fa-icon [icon]="faPen" class="add-icon content-icon edit-icon" (click)="onEditNotes(notesDetail)"
+                    matTooltip="Edit Notes" *ngIf="this.detailsSharing.permissionsCheck?.isEditNotes"></fa-icon>
+                  <fa-icon [icon]="faTrash" class="add-icon content-icon" (click)="onDeleteNotes(notesDetail)"
+                    matTooltip="Delete Notes" *ngIf="this.detailsSharing.permissionsCheck?.isDeleteNotes"></fa-icon>
+                </div>
+                <div class="edit-icons-div" fxFlex fxLayout fxLayoutAlign="end" *ngIf="isNotesExpandedModel">
+                  <fa-icon [icon]="faPen" class="add-icon content-icon edit-icon" (click)="onEditNotes(notesDetail)"
+                    matTooltip="Edit Notes" *ngIf="this.detailsSharing.permissionsCheck?.isEditNotes"></fa-icon>
+                  <fa-icon [icon]="faTrash" class="add-icon content-icon" (click)="onDeleteNotes(notesDetail)"
+                    matTooltip="Delete Notes" *ngIf="this.detailsSharing.permissionsCheck?.isDeleteNotes"></fa-icon>
+                </div>
+              </div>
+            </div>
+            <div *ngIf="isNotesExpandedModel" class="row created-by-text row-time-name-expand">
+              <div class="name-div name-div-style" fxFlex fxLayout fxLayoutAlign="start">
+                <span>Created By:
+                  <span *ngIf="notesDetail.updatedByUser.length > 0">
+                    <b>{{ notesDetail.createdByUser }}</b></span>
+                  <span *ngIf="notesDetail.updatedByUser.length <= 0">
+                    <b>{{ notesDetail.createdByUser }}</b>
+                  </span>
+                </span>
+                &nbsp;
+                <span class="padding-property" *ngIf="notesDetail.updatedByUser.length > 0">|</span>
+                &nbsp;
+                <span *ngIf="notesDetail.updatedByUser.length > 0">Updated By:
+                  <span>
+                    <b>{{ notesDetail.updatedByUser }}</b>
+                  </span>
+                </span>
+              </div>
+              <div class="time-div time-div-style" fxFlex fxLayout fxLayoutAlign="end">
+                <span class="date"
+                  *ngIf="notesDetail.updatedByUser.length <= 0">{{ notesDetail.createdDate | date: "MM/dd/yyyy" }}</span>
+                <span class="date"
+                  *ngIf="notesDetail.updatedByUser.length > 0">{{ notesDetail.updatedDate | date: "MM/dd/yyyy" }}</span>
+                &nbsp;
+                <span class="padding-property">|</span>
+                &nbsp;
+                <span *ngIf="notesDetail.updatedByUser.length <= 0">{{
+                  notesDetail.createdDate | date: "h:mm aa"
+                }}</span>
+                <span *ngIf="notesDetail.updatedByUser.length > 0">{{
+                  notesDetail.updatedDate | date: "h:mm aa"
+                }}</span>
+                &nbsp;
+              </div>
+            </div>
+            <div *ngIf="!isNotesExpandedModel" class="row created-by-text row-time-name">
+              <div class="name-div name-div-style" fxFlex fxLayout fxLayoutAlign="start">
+                <span>Modified by
+                  <span *ngIf="notesDetail.updatedByUser.length > 0">
+                    <b>{{ notesDetail.updatedByUser }}</b></span>
+                  <span *ngIf="notesDetail.updatedByUser.length <= 0">
+                    <b>{{ notesDetail.createdByUser }}</b>
+                  </span>
+                </span>
+                &nbsp;
+              </div>
+              <div class="time-div time-div-style" fxFlex fxLayout fxLayoutAlign="end">
+                <span class="date"
+                  *ngIf="notesDetail.updatedByUser.length <= 0">{{ notesDetail.createdDate | date: "MM/dd/yyyy" }}</span>
+                <span class="date"
+                  *ngIf="notesDetail.updatedByUser.length > 0">{{ notesDetail.updatedDate | date: "MM/dd/yyyy" }}</span>
+                &nbsp;
+                <span class="padding-property">|</span>
+                &nbsp;
+                <span *ngIf="notesDetail.updatedByUser.length <= 0">{{
+                  notesDetail.createdDate | date: "h:mm aa"
+                }}</span>
+                <span *ngIf="notesDetail.updatedByUser.length > 0">{{
+                  notesDetail.updatedDate | date: "h:mm aa"
+                }}</span>
+                &nbsp;
+              </div>
+            </div>
+          </div>
+
+          <div class="row text-center" *ngIf="result.length === 0 && notesDetails.length > 0">
+            <h1>No Notes Found</h1>
+          </div>
+        </ng-container>
+      </div>
+
+      <div *ngIf="isNotesExpandedModel && this.detailsSharing.permissionsCheck?.isAddNotes"
+        class="notes-adding-div row">
+        <form class="addForm" [formGroup]="addNotesForm" (ngSubmit)="addNewNotesExpanded()">
+          <div class="row title-row">
+            <div class="col-lg-2 col-md-3 col-sm-4">
+              <div class="row search-text" [ngClass]="{
+                  red:
+                    addNotesForm.get('titleControl').invalid && isSubmitClicked
+                }">
+                Title:<span class="red display">*</span>
+              </div>
+              <div class="row title-input-row">
+                <input class="form-control status-search" formControlName="titleControl" [ngClass]="{
+                    'red-border':
+                      addNotesForm.get('titleControl').invalid &&
+                      isSubmitClicked
+                  }" />
+              </div>
+            </div>
+          </div>
+          <div class="row comments-row">
+            <div class="col-sm-12">
+              <div class="row search-text" [ngClass]="{
+                  red:
+                    addNotesForm.get('descriptionControl').invalid &&
+                    isSubmitClicked
+                }">
+                Comments:<span class="red display">*</span>
+              </div>
+              <div class="row">
+                <textarea class="form-control status-search comments-area" placeholder="Enter Your Notes Here"
+                  cdkTextareaAutosize #autosize="cdkTextareaAutosize" cdkAutosizeMinRows="1" cdkAutosizeMaxRows="5"
+                  formControlName="descriptionControl" [ngClass]="{
+                    'red-border':
+                      addNotesForm.get('descriptionControl').invalid &&
+                      isSubmitClicked
+                  }"></textarea>
+              </div>
+            </div>
+          </div>
+          <div class="row button-row" fxFlex fxLayout fxLayoutAlign="end">
+            <button mat-raised-button class="add-notes-button" type="submit"
+              *ngIf="this.detailsSharing.permissionsCheck?.isAddNotes ">
+              <fa-icon [icon]="faFileMedical" class="add-icon medical-icon"></fa-icon>
+              Add New
+            </button>
+          </div>
+        </form>
+      </div>
+
+      <div class="row button-div"
+        *ngIf="!isNotesExpandedModel &&  this.detailsSharing.permissionsCheck?.isAddNotes ">
+        <button mat-raised-button class="add-notes-button" (click)="addNewNotes()">
+          <fa-icon [icon]="faFileMedical" class="add-icon medical-icon"></fa-icon><span class="m-l">Add Notes</span>
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

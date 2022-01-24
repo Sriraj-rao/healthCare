@@ -1,0 +1,87 @@
+.mat-table {
+  width: 100%;
+  border: 1px solid #d0d0d0;
+  margin-top: 2%;
+  padding: 0;
+  .claim-no-text {
+    color: #1479fc;
+    font-size: 14px;
+    font-weight: 500;
+  }
+  .other-text {
+    color: #747474;
+    font-size: 14px;
+    font-weight: 500;
+  }
+}
+.header-row {
+  background: #1479fc 0% 0% no-repeat padding-box;
+  border-radius: 1px;
+}
+
+.dash {
+  margin-left: 10%;
+}
+.medical-icon {
+  font-size: 20px;
+  color: #909090;
+  margin-left: 6px;
+  cursor: pointer;
+}
+
+.delete-icon {
+  font-size: 20px;
+  color: red;
+  margin-left: 5%;
+  cursor: pointer;
+}
+.eye-icon {
+  color: dodgerblue;
+  cursor: pointer;
+}
+
+.doc-img {
+  padding-right: 10%;
+  padding-bottom: 1%;
+
+  padding-top: 0%;
+
+  height: 21px;
+  cursor: pointer;
+}
+.mat-header-cell {
+  color: #ffffff;
+  font-size: 0.75rem;
+  font-weight: 500;
+}
+.icon-col {
+  padding-top: 2px;
+  padding-bottom: 2px;
+}
+.mat-row:nth-child(odd) {
+  background: #e1e4e8 0% 0% no-repeat padding-box;
+  border-bottom-width: 0px;
+}
+
+.mat-row:nth-child(even) {
+  background: #ffffff 0% 0% no-repeat padding-box;
+  border-bottom-width: 0px;
+}
+.no-doc-req {
+  h1 {
+    font-size: 16px;
+    font-weight: 500;
+    text-align: center;
+  }
+}
+
+.file-icon {
+  color: #147afc;
+  margin-left: 1%;
+  margin-right: 3%;
+  font-size: 1rem;
+}
+
+.icon-verified {
+  color: #0fd80f !important;
+}

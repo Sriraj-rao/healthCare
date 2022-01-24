@@ -1,0 +1,426 @@
+<!-- <div class="main-container" [ngClass]="{'main-container-sidenav':this.detailsSharing.isSidnavExpanded}"> -->
+<div class="main-container">
+  <div class="row no-doc-req" *ngIf="dataByReqType?.length <= 0">
+    <h1>No Document Requests</h1>
+  </div>
+
+  <div class="table-container row" *ngIf="dataByReqType?.length > 0">
+    <div
+      class="table-header-div"
+      #tableHeader
+      [ngClass]="{ 'fixed-table-header': isScrolled }"
+    >
+      <div
+        #iconRow
+        class="row header-row icons-padding"
+        *ngIf="dataByReqType?.length > 0 && !isDenial"
+      >
+        <fa-icon
+          [icon]="faFileAlt"
+          class="icon-verified-header"
+          *ngIf="!isDenial"
+        ></fa-icon>
+        <span class="header-text">Doc Verified</span>
+        <fa-icon [icon]="faUpload" class="upload-icon-top" *ngIf="!isDenial&&this.detailsSharing.permissionsCheck?.isUploadDocument"></fa-icon>
+        <!-- <img class="document-verified" src="../../../assets/images/surface1@2x.png"> -->
+        <fa-icon [icon]="faDownload" class="add-icon down-button" *ngIf="isDenial"></fa-icon>
+        <span class="header-text" *ngIf="isDenial">Download Documents</span>
+        <span class="header-text" *ngIf="!isDenial&&this.detailsSharing.permissionsCheck?.isUploadDocument">Upload Doc</span>
+        <fa-icon [icon]="faFileExport" class="add-icon import-icon" *ngIf="!isDenial&&this.detailsSharing.permissionsCheck?.isViewSentDocument"></fa-icon>
+        <!-- <img class="document-verified sent-doc" src="../../../assets/images/Component 15 – 1.png"> -->
+        <span class="header-text" *ngIf="!isDenial&&this.detailsSharing.permissionsCheck?.isViewSentDocument">Sent Doc</span>
+        <fa-icon [icon]="faFileImport" class="add-icon download-icon-top" *ngIf="!isDenial&&this.detailsSharing.permissionsCheck?.isViewReceivedDocument"></fa-icon>
+        <span class="header-text" *ngIf="!isDenial&&this.detailsSharing.permissionsCheck?.isViewReceivedDocument">Received Doc</span>
+
+        <fa-icon [icon]="faBell" class="add-icon bell-icon-top" *ngIf="!isDenial&&this.detailsSharing.permissionsCheck?.isReminderRequest"></fa-icon>
+        <span class="header-text" *ngIf="!isDenial&&this.detailsSharing.permissionsCheck?.isReminderRequest">Reminder Request</span>
+
+        <fa-icon [icon]="faBell" class="add-icon reminder-bell-icon-top" *ngIf="!isDenial&&this.detailsSharing.permissionsCheck?.isReminderRequest"></fa-icon>
+        <span class="header-text" *ngIf="!isDenial&&this.detailsSharing.permissionsCheck?.isReminderRequest">Follow Up Required</span>
+
+        <!-- <img class="document-verified sent-doc" src="../../../assets/images/Component 15 – 3.png"> -->
+      </div>
+      <div class="row color-row" *ngIf="!isDenial">
+        <span class="dash green-icon"> --- </span>
+        <span class="text color-blinker-text">Completed Request</span>
+
+        <span class="dash red-icon"> --- </span>
+        <span class=" text color-blinker-text">Terminated Request</span>
+
+        <span class="dash grey-icon"> --- </span>
+        <span class="text color-blinker-text">Ongoing Request</span>
+      </div>
+      <mat-table [dataSource]="dataSource" class="header-table">
+        <!-- <ng-container matColumnDef="requestType">
+          <mat-header-cell *matHeaderCellDef class="header-text">
+            Request Type
+          </mat-header-cell>
+        </ng-container> -->
+        <ng-container matColumnDef="requestID">
+          <mat-header-cell *matHeaderCellDef class="header-text">
+            <span *ngIf = "!isDenial">Request ID</span>
+            <span *ngIf = "isDenial">Document ID</span>
+
+            
+          </mat-header-cell>
+        </ng-container>
+        <ng-container matColumnDef="requests">
+          <mat-header-cell *matHeaderCellDef class="header-text">
+            Requests
+          </mat-header-cell>
+        </ng-container>
+        <ng-container matColumnDef="requestDate">
+          <mat-header-cell *matHeaderCellDef class="header-text center-data" [ngClass]="{'denial-date':this.isDenial}">
+            <span *ngIf="!isDenial">  Request Date</span>
+            <span *ngIf="isDenial"> Date</span>
+          </mat-header-cell>
+        </ng-container>
+        <ng-container matColumnDef="receivedDate" >
+          <mat-header-cell *matHeaderCellDef class="header-text center-data" 
+          [ngClass]="{
+            'recdDate-without-notes-doc-header': !this.detailsSharing.permissionsCheck?.isUploadDocument && !this.detailsSharing.permissionsCheck?.isViewSentDocument && !this.detailsSharing.permissionsCheck?.isViewReceivedDocument && !this.detailsSharing.permissionsCheck?.isViewNotes && !this.detailsSharing.permissionsCheck?.isAddNotes,
+            'recdDate-without-notes-header': [(this.detailsSharing.permissionsCheck?.isUploadDocument || this.detailsSharing.permissionsCheck?.isViewSentDocument || this.detailsSharing.permissionsCheck?.isViewReceivedDocument) && (!this.detailsSharing.permissionsCheck?.isViewNotes && !this.detailsSharing.permissionsCheck?.isAddNotes)],
+            'denial-date':this.isDenial
+          }"
+          >
+            <span *ngIf="!isDenial">  Received Date</span>
+          </mat-header-cell>
+        </ng-container>
+        <ng-container matColumnDef="createdBy">
+          <mat-header-cell *matHeaderCellDef class="header-text center-data" [ngClass]="{'denial-createdby':this.isDenial}"
+            >Created By
+          </mat-header-cell>
+        </ng-container>
+        <ng-container matColumnDef="document" *ngIf="this.detailsSharing.permissionsCheck?.isUploadDocument || this.detailsSharing.permissionsCheck?.isViewSentDocument || this.detailsSharing.permissionsCheck?.isViewReceivedDocument">
+          <mat-header-cell *matHeaderCellDef class="header-text" 
+          [ngClass]="{'denial-document':this.isDenial,
+          'document-without-notes-doc-header':!this.detailsSharing.permissionsCheck?.isViewNotes && !this.detailsSharing.permissionsCheck?.isAddNotes
+        
+        }"
+          
+          >Document
+          </mat-header-cell>
+        </ng-container>
+        <ng-container matColumnDef="providerName">
+          <mat-header-cell *matHeaderCellDef class="header-text center-data">
+            Entity Name
+          </mat-header-cell>
+        </ng-container>
+        <ng-container matColumnDef="notes" >
+          <mat-header-cell *matHeaderCellDef class="header-text center-data"
+          [ngClass]="{
+            'delivery-with-notes-doc-header': !this.detailsSharing.permissionsCheck?.isUploadDocument && !this.detailsSharing.permissionsCheck?.isViewSentDocument && !this.detailsSharing.permissionsCheck?.isViewReceivedDocument && !this.detailsSharing.permissionsCheck?.isViewNotes && !this.detailsSharing.permissionsCheck?.isAddNotes,
+            'delivery-without-notes-header': [(this.detailsSharing.permissionsCheck?.isUploadDocument || this.detailsSharing.permissionsCheck?.isViewSentDocument || this.detailsSharing.permissionsCheck?.isViewReceivedDocument) && (!this.detailsSharing.permissionsCheck?.isViewNotes && !this.detailsSharing.permissionsCheck?.isAddNotes)]
+          }"
+            >Delivery Method
+          </mat-header-cell>
+        </ng-container>
+        <ng-container matColumnDef="addNotes" *ngIf="this.detailsSharing.permissionsCheck?.isViewNotes || this.detailsSharing.permissionsCheck?.isAddNotes">
+          <mat-header-cell *matHeaderCellDef class="header-text" [ngClass]="{'denial-notes':this.isDenial}">Notes
+          </mat-header-cell>
+        </ng-container>
+        <ng-container matColumnDef="bell" *ngIf="!isDenial&&this.detailsSharing.permissionsCheck?.isCloseRequest || this.detailsSharing.permissionsCheck?.isReminderRequest">
+          <mat-header-cell *matHeaderCellDef class="header-text"></mat-header-cell>
+        </ng-container>
+        <mat-header-row *matHeaderRowDef="displayedColumns" class="header-row main-header-row">
+        </mat-header-row>
+      </mat-table>
+    </div>
+
+    <div #reqTables class="all-table-container">
+      <div
+        class="req-tables-container"
+        *ngFor="let data of dataByReqType; let i = index"
+      >
+        &nbsp; &nbsp;
+        <mat-expansion-panel
+          hideToggle
+          #panelH
+          [expanded]="i === 0"
+          (opened)="data.panelOpenState = true"
+          (closed)="data.panelOpenState = false"
+        >
+          <mat-expansion-panel-header class="collapse-row">
+            <mat-icon
+              *ngIf="!data.panelOpenState"
+              class="expand-icon"
+              (click)="data.panelOpenState = true"
+            >
+              add
+            </mat-icon>
+            <mat-icon
+              *ngIf="data.panelOpenState"
+              class="expand-icon"
+              (click)="data.panelOpenState = false"
+            >
+              remove
+            </mat-icon>
+            <span class="request-types"> {{ data[0].requestType }}</span>
+          </mat-expansion-panel-header>
+
+          <mat-table [dataSource]="data" class="police-report-table">
+            <!-- <ng-container matColumnDef="requestType">
+              <mat-header-cell *matHeaderCellDef></mat-header-cell>
+              <mat-cell *matCellDef="let element"  [ngClass]="element.isActive ? 'request-type' : 'request-type-isActive'">
+                <fa-icon
+                  [icon]="faFileAlt"
+                  class="add-icon file-icon"
+                  *ngIf="!element.isVerified"
+                >
+                </fa-icon>
+                <fa-icon
+                  [icon]="faFileAlt"
+                  class="add-icon file-icon icon-verified"
+                  *ngIf="element.isVerified"
+                  matTooltip="Document Verified"
+                >
+                </fa-icon>
+                {{ element.requestType }}
+              </mat-cell>
+            </ng-container> -->
+            <ng-container matColumnDef="requestID">
+              <mat-header-cell *matHeaderCellDef></mat-header-cell>
+              <mat-cell
+                *matCellDef="let element"
+                class="request-id"
+                [ngClass]="{
+                  'req-valid': !element.isActive && element.receivedDate,
+                  'req-invalid': !element.isActive && !element.receivedDate
+                }"
+              >
+                <fa-icon
+                  [icon]="faFileAlt"
+                  class="add-icon file-icon"
+                  *ngIf="!element.isVerified"
+                >
+                </fa-icon>
+                <fa-icon
+                  [icon]="faFileAlt"
+                  class="add-icon file-icon icon-verified"
+                  *ngIf="element.isVerified"
+                  matTooltip="Document Verified"
+                >
+                </fa-icon>
+                {{ element.requestNumber }}
+                <!-- <fa-icon [icon]="faFileUpload" class="add-icon upload-icon"></fa-icon> -->
+              </mat-cell>
+            </ng-container>
+            <ng-container matColumnDef="requests">
+              <mat-header-cell *matHeaderCellDef></mat-header-cell>
+              <mat-cell
+                *matCellDef="let element"
+                class="request-id"
+                [ngClass]="{
+                  'req-valid': !element.isActive && element.receivedDate,
+                  'req-invalid': !element.isActive && !element.receivedDate
+                }"
+              >
+                {{ element.number }}
+              </mat-cell>
+            </ng-container>
+            <ng-container matColumnDef="requestDate">
+              <mat-header-cell *matHeaderCellDef></mat-header-cell>
+              <mat-cell
+                *matCellDef="let element"
+                class="request-id"
+                [ngClass]="{
+                  'req-valid': !element.isActive && element.receivedDate,
+                  'req-invalid': !element.isActive && !element.receivedDate,
+                  'denial-req':this.isDenial
+                }"
+              >
+                <div class="center-data">
+                  {{ element.requestDate | date: "MM/dd/yyyy" }}
+                </div>
+              </mat-cell>
+            </ng-container>
+            <ng-container matColumnDef="providerName">
+              <mat-header-cell *matHeaderCellDef></mat-header-cell>
+              <mat-cell
+                *matCellDef="let element"
+                class="request-id"
+                [ngClass]="{
+                  'req-valid': !element.isActive && element.receivedDate,
+                  'req-invalid': !element.isActive && !element.receivedDate
+                }"
+              >
+                {{ element.entityName }}
+                <span *ngIf="!element.entityName" class="dash">--</span>
+
+              </mat-cell>
+            </ng-container>
+            <ng-container matColumnDef="createdBy">
+              <mat-header-cell *matHeaderCellDef></mat-header-cell>
+              <mat-cell
+                *matCellDef="let element"
+                class="request-id denial-date-padding"
+              
+              >
+                {{element.createdUser}}
+              </mat-cell>
+            </ng-container>
+            <ng-container matColumnDef="receivedDate" >
+              <mat-header-cell *matHeaderCellDef ></mat-header-cell>
+              <mat-cell
+                *matCellDef="let element"
+                class="request-id"
+                [ngClass]="{
+                  'recdDate-without-doc-notes-header-col':!this.detailsSharing.permissionsCheck?.isUploadDocument && !this.detailsSharing.permissionsCheck?.isViewSentDocument && !this.detailsSharing.permissionsCheck?.isViewReceivedDocument && !this.detailsSharing.permissionsCheck?.isViewNotes && !this.detailsSharing.permissionsCheck?.isAddNotes,
+                  'recdDate-without-notes-header-col':[(this.detailsSharing.permissionsCheck?.isUploadDocument || this.detailsSharing.permissionsCheck?.isViewSentDocument || this.detailsSharing.permissionsCheck?.isViewReceivedDocument) && (!this.detailsSharing.permissionsCheck?.isViewNotes && !this.detailsSharing.permissionsCheck?.isAddNotes)],
+                  'denial-date-padding':this.isDenial
+                }"
+              >
+                <div class="dash-div" *ngIf="!element.receivedDate">
+                  <span class="request-id dash-font rec-dash-padding">--</span>
+                </div>
+                <div class="center-data">
+                  <span *ngIf="element.receivedDate">{{
+                    element.receivedDate | date: "MM/dd/yyyy"
+                  }}</span>
+                </div>
+                <!-- <span *ngIf="!element.receivedDate" class="dash">--</span> -->
+              </mat-cell>
+            </ng-container>
+            <ng-container matColumnDef="document" *ngIf="this.isDenial || this.detailsSharing.permissionsCheck?.isUploadDocument || this.detailsSharing.permissionsCheck?.isViewSentDocument || this.detailsSharing.permissionsCheck?.isViewReceivedDocument">
+              <mat-header-cell *matHeaderCellDef></mat-header-cell>
+              <mat-cell *matCellDef="let element" class="icons-container"   [ngClass]="{'denial-doc-padding':this.isDenial}" 
+              [ngClass]="{'denial-doc-padding':this.isDenial,
+              'document-without-notes-header-col':!this.detailsSharing.permissionsCheck?.isViewNotes && !this.detailsSharing.permissionsCheck?.isAddNotes
+            
+            }"
+              >
+                <div  
+                  class="all-icons-doc"
+                  [ngClass]="{ 'denial-icons-div': isDenial }"
+                >
+                  <fa-icon
+                    [icon]="faUpload"
+                    class="upload-icon"
+                    [ngClass]="{
+                      'doc-img-expanded': isInvestigationExpanded,
+                      'doc-img': !isInvestigationExpanded,
+                      'upload-icon-disabled': isReceivedFileContainsId(element) || !element.isActive
+                    }" [matTooltip]="
+                      isReceivedFileContainsId(element) && this.detailsSharing.permissionsCheck?.isUploadDocument || !element.isActive
+                        ? 'Document Already Uploaded'
+                        : 'Upload Document'
+                    " (click)="uploadDocument(element)" *ngIf="!isDenial&&this.detailsSharing.permissionsCheck?.isUploadDocument"></fa-icon>
+
+                  <!-- <img [ngClass]="isInvestigationExpanded ? 'doc-img-expanded': 'doc-img'"
+                                    matTooltip="Upload Document" (click)="uploadDocument(element.requestId,element.requestType)"
+                                    src="../../../assets/images/surface1@2x.png"> -->
+                  <fa-icon [icon]="faFileExport" class="import-icon icon-display"
+                    *ngIf="isRequestedFileContainsId(element) && !isDenial&&this.detailsSharing.permissionsCheck?.isViewSentDocument"
+                    matTooltip="Sent Document" (click)="downloadFile(element.requestedDocFileIds)"></fa-icon>
+                  <!-- <img class="add-icon import-icon" *ngIf="element.requestedDocUrl" matTooltip="Sent Document"
+                                    src="../../../assets/images/Component 15 – 1.png"> -->
+
+                  <span class="request-id dash-font" *ngIf="!isRequestedFileContainsId(element) && !isDenial&&this.detailsSharing.permissionsCheck?.isViewSentDocument">--</span>
+
+                  <fa-icon [icon]="faFileImport" class="download-icon"
+                    *ngIf="!isDenial&&isReceivedFileContainsId(element) && this.detailsSharing.permissionsCheck?.isViewReceivedDocument"
+                    matTooltip="Received Document" (click)="downloadFile(element.receivedDocFileIds)"></fa-icon>
+
+                  <span class="request-id dash-font last-dash" *ngIf="!isDenial&&!isReceivedFileContainsId(element) && this.detailsSharing.permissionsCheck?.isViewReceivedDocument">--</span>
+                  <fa-icon [icon]="faDownload" matTooltip="Download files" class="down-button" *ngIf="isDenial"></fa-icon>
+                  <fa-icon  *ngIf="isDenial" [icon]="faEye" class="eye-icon" matTooltip="Preview" (click)="onPreview(element.requestedDocFileIds[0].fileId)"></fa-icon>
+
+                </div>
+              </mat-cell>
+            </ng-container>
+            <ng-container matColumnDef="notes" >
+              <mat-header-cell *matHeaderCellDef  ></mat-header-cell>
+              <mat-cell
+                *matCellDef="let element"
+                class="request-id"
+                [ngClass]="{
+                  'delivery-without-notes-header-col': !this.detailsSharing.permissionsCheck?.isUploadDocument && !this.detailsSharing.permissionsCheck?.isViewSentDocument && !this.detailsSharing.permissionsCheck?.isViewReceivedDocument && !this.detailsSharing.permissionsCheck?.isViewNotes && !this.detailsSharing.permissionsCheck?.isAddNotes,
+                  'delivery-without-notes': [(this.detailsSharing.permissionsCheck?.isUploadDocument || this.detailsSharing.permissionsCheck?.isViewSentDocument || this.detailsSharing.permissionsCheck?.isViewReceivedDocument) && (!this.detailsSharing.permissionsCheck?.isViewNotes && !this.detailsSharing.permissionsCheck?.isAddNotes)]
+                }"
+               
+              >
+                <div class="dash-div" *ngIf="!element.deliveryMethod">
+                  <span class="request-id dash-font delivery-dash-padding"
+                    >--</span
+                  >
+                </div>
+                <div class="center-data">
+                  <span class="note-text" *ngIf="element.deliveryMethod">{{
+                    element.deliveryMethod
+                  }}</span>
+                </div>
+              </mat-cell>
+            </ng-container>
+            <ng-container matColumnDef="addNotes" *ngIf="this.detailsSharing.permissionsCheck?.isViewNotes || this.detailsSharing.permissionsCheck?.isAddNotes">
+              <mat-header-cell *matHeaderCellDef></mat-header-cell>
+              <mat-cell
+                *matCellDef="let element"
+                class="text-center"
+                class="icons-container"
+                [ngClass]="{'denial-notes-padding':this.isDenial}"
+              >
+                <div class="all-icons-doc all-icons-notes">
+                  <!-- [ngClass]="{'doc-img-expanded':isInvestigationExpanded, 'doc-img': !isInvestigationExpanded,'upload-icon-disabled':isReceivedFileContainsId(element) }" -->
+                  <div
+                    class="dash-div-viewdoc"
+                    *ngIf="!element.isNotesAvailable"
+                  >
+                    <span class="request-id dash-font view-doc-dash-padding"
+                      >--</span
+                    >
+                  </div>
+                  <fa-icon *ngIf="element.isNotesAvailable && this.detailsSharing.permissionsCheck?.isViewNotes"
+                    [icon]="faBinoculars" class="notes-icon view-notes" matTooltip="View Notes"
+                    (click)="viewNotes(element)">
+                  </fa-icon>
+                  <fa-icon *ngIf="element.isActive && this.detailsSharing.permissionsCheck?.isAddNotes"
+                    [icon]="faNotesMedical" class="notes-icon add-notes" matTooltip="Add Notes"
+                    (click)="addNewNotes(element)"></fa-icon>
+                </div>
+              </mat-cell>
+            </ng-container>
+            <ng-container matColumnDef="bell" *ngIf="!isDenial&&this.detailsSharing.permissionsCheck?.isCloseRequest || this.detailsSharing.permissionsCheck?.isReminderRequest">
+              <mat-header-cell *matHeaderCellDef></mat-header-cell>
+              <mat-cell *matCellDef="let element" class="icons-container">
+                <fa-icon [icon]="faBell" matTooltip="Send Reminder" [matTooltip]="
+                  element.isReminderRequired && isOpen && (element.isActive)
+                    ? 'Follow up required'
+                    : 'Send Reminder'
+                " *ngIf="(element.isReminderRequired ||element.isActive) && isOpen && this.detailsSharing.permissionsCheck?.isReminderRequest"
+                  class="bell-icon"
+                  [ngClass]="element.isReminderRequired && isOpen && (element.isActive)  && this.detailsSharing.permissionsCheck?.isReminderRequest ? 'bell-icon-reminder' : 'bell-icon'"
+                  (click)="sendReminder(element)"></fa-icon>
+                <fa-icon [icon]="faFileExcel" matTooltip="Close Request"
+                  *ngIf="(element.isActive) && this.detailsSharing.permissionsCheck?.isCloseRequest" class="close-icon"
+                  (click)="closeRequest(element)"></fa-icon>
+              </mat-cell>
+            </ng-container>
+            <ng-container matColumnDef="actions" *ngIf = "isDenial">
+              <mat-header-cell *matHeaderCellDef></mat-header-cell>
+              <mat-cell *matCellDef="let element" class="icons-container">
+                <div class="all-icons-doc all-icons-actions">
+                  <fa-icon [icon]="faDownload" matTooltip="Download files" class="down-button" ></fa-icon>
+
+
+                  <!-- [ngClass]="{'doc-img-expanded':isInvestigationExpanded, 'doc-img': !isInvestigationExpanded,'upload-icon-disabled':isReceivedFileContainsId(element) }" -->
+                  <div class="dash-div-viewdoc" *ngIf="!element.isNotesAvailable">
+                    <span class="request-id dash-font view-doc-dash-padding">--</span>
+                  </div>
+                  <fa-icon *ngIf="element.isNotesAvailable && this.detailsSharing.permissionsCheck?.isViewNotes"
+                    [icon]="faBinoculars" class="notes-icon view-notes" matTooltip="View Notes"
+                    (click)="viewNotes(element)">
+                  </fa-icon>
+                  <fa-icon *ngIf="element.isActive && this.detailsSharing.permissionsCheck?.isAddNotes"
+                    [icon]="faNotesMedical" class="notes-icon add-notes" matTooltip="Add Notes"
+                    (click)="addNewNotes(element)"></fa-icon>
+                </div>
+              </mat-cell>
+            </ng-container>
+
+            <mat-row *matRowDef="let row; columns: displayedColumns"></mat-row>
+          </mat-table>
+        </mat-expansion-panel>
+      </div>
+    </div>
+  </div>
+</div>

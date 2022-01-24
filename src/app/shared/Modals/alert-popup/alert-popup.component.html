@@ -1,0 +1,28 @@
+<div class="main-div">
+  <div class="modal-header">
+    <h2 class="header-text">Confirmation</h2>
+    <div (click)="onClose()" class="close">&times;</div>
+  </div>
+
+  <mat-dialog-content>
+    <div class="dialog-padding">
+      <span class="alert-text">{{ alertData.alertText }}</span>
+    </div>
+    <div style="padding-left: 3%" *ngIf="alertData.popup === 'editReminder'">
+      <span class="click">Click </span
+      ><span class="edit-reminder" (click)="editRemainder()"
+        >Edit Reminder,</span
+      >
+      <span class="edit-doc-req"> to edit the document request.</span>
+    </div>
+    <div class="modal-footer modal-footer-div">
+      <button type="button" class="cancel" mat-button (click)="onClose()">
+        Cancel
+      </button>
+      &nbsp; &nbsp;
+      <button mat-button type="button" class="submit" (click)="onSubmit()">
+        Yes
+      </button>
+    </div>
+  </mat-dialog-content>
+</div>

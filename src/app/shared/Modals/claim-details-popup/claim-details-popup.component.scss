@@ -1,0 +1,166 @@
+.main-div
+{
+    width: 800px;
+    height: auto;
+    overflow: hidden;
+}
+.modal-header
+{
+    background: #f0f2f5;
+    border-radius: 4px 4px 0px 0px;
+    opacity: 1;; 
+    padding: .75rem 1rem;
+    padding-left: 0;
+    color: #007bff !important ;
+}
+.modal-content {
+    margin-top: 100px;
+    margin-bottom: 100px;
+}
+
+.header-text
+{
+    // padding-left: 2.5%;
+    // margin: 0;
+    color: #000;
+    // font-size: 18px;
+    font-size: 1.05rem;
+    margin-bottom: 0;
+    line-height: 1.5;
+
+}
+.close
+{
+    margin-right: 10px;
+    margin-bottom: 0.5%;
+    font-size: 25px;
+    color: #000;
+}
+.dialog-content
+{
+  padding-top: 0; 
+  padding-bottom: 0;
+  max-height: 120vh;
+    
+}
+
+.align-right {
+    text-align: right;
+}
+
+.inv-type-text
+{
+    margin-bottom: 2px; 
+    margin-top: 5px; 
+    text-align: left;
+    /* font: normal normal normal 14px/21px Roboto; */
+    letter-spacing: 0px;
+    color: #000000;
+    opacity: 1;
+}
+
+.empty
+{
+    width: 40%;
+    height: 30px; 
+    border: 1px solid #929EB8;
+    border-radius: 2px;
+    opacity: 1;
+}
+
+.modal-footer
+{
+    // border: 0;
+    // margin-top: 50px;
+}
+
+
+.modal-body {
+    position: relative;
+    flex: 1 1 auto;
+    padding: 1rem;
+}
+
+@media (min-width: 576px)
+{
+    .col-sm {
+        flex: 1 0 0%;
+        line-height: 1.75em;
+        display: inline-block;
+        margin-bottom: .5rem;
+        font-size: .9rem;
+     
+      
+    }
+}
+
+label
+{
+   
+    font-weight: 600;
+    // width: 35%;
+}
+
+.label-1
+{
+    width: 9em;
+}
+
+.label-2
+{
+    width: 12em;
+}
+
+.generic-code{
+    padding-left: 1%;
+    // width: 9em;
+}
+
+.cancel-button
+{
+     color: #024A6A;
+     background-color: white; 
+     border-radius: 4px;
+     border: 1px solid #024A6A; 
+     width: 80px; 
+     height: 34px ;
+}
+
+.submit-button
+{
+     color: white;
+     background-color: #147AFC ; 
+     border-radius: 4px;
+     border: 1px solid #024A6A; 
+     width: 80px; 
+     height: 34px;
+}
+
+.select {
+    width: 91%;
+    height: 30px;
+    border: 1px solid #929EB8;
+    border-radius: 2px;
+    opacity: 1;
+    padding: 2%;
+}
+:host ::ng-deep .mat-select-placeholder {
+    color: rgb(0 0 0 / 60%) !important;
+}
+.drop-down-class
+{
+    display: contents;
+}
+
+.claim-Details
+{
+    padding-left: 2%;
+    // font-weight: 500; 
+    .col-sm-6{
+        width: auto;
+    }
+    .text{
+        color: #354052;
+        font-weight: 500;
+    }
+}

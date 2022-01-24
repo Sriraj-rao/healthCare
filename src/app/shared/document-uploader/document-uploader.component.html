@@ -1,0 +1,50 @@
+<div class="upload-div">
+    <div [ngClass]="fileuploaded ? 'upload-container-invalid' : 'upload-container'"
+        (fileDropped)="onFileDropped($event)">
+        <input type="file" #fileDropRef id="fileDropRef" (change)="fileBrowseHandler($event.target.files)" accept="application/pdf,application/msword,
+  application/vnd.openxmlformats-officedocument.wordprocessingml.document,image/*" multiple />
+        <div class="upload-main">
+            <fa-icon [icon]="faUpload" class="faupload"></fa-icon>
+        </div>
+        <div>
+            <span class="drag-drop">Drag and drop files here</span>
+        </div>
+        <div class="or">Or</div>
+        <div class="select-upload">
+            <button mat-button (click)="fileDropRef.click()" type="button" class="sel-upload">Select & Upload</button>
+        </div>
+
+    </div>
+    <div class="files-list row">
+        <div class="single-file row" *ngFor="let file of files; let i = index">
+            <div class="col-sm-12 file-col-container">
+                <div class="row">
+                    <div class="info colum col-sm-11">
+                        <div class="file-icon-col">
+                            <fa-icon [icon]="faFileAlt" class="icons-file"></fa-icon>
+
+                        </div>
+                        <div>
+                            <h4 class="name">
+                                {{ file?.name }}
+                            </h4>
+                            <p class="size">
+                                {{ formatBytes(file?.size,0) }}
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="delete col-sm-1 colum" *ngIf="file?.progress===100" (click)="deleteFile(i)">
+                        <fa-icon [icon]="faTrashAlt" class="icons" matTooltip="Delete File"></fa-icon>
+                    </div>
+                </div>
+                <div class="row prog-row" *ngIf="file?.progress<100">
+                    <div class="progress-cont">
+                        <div class="progress" [style.width]="file?.progress + '%'">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

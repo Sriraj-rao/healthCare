@@ -1,0 +1,142 @@
+
+.modal-header
+{
+    background: #f0f2f5;
+    border-radius: 4px 4px 0px 0px;
+    opacity: 1;; 
+    padding: 0 0 0 0;   
+    color: #007bff !important ;
+}
+.main-modal-div{
+    width: auto;
+    min-width: 50vw;
+    max-width: 65vw;
+}
+
+.main-modal
+{
+    width: 40vw;
+    height: auto;
+    overflow: auto;
+    overflow-x: hidden;
+    max-height: 80vh;
+}
+
+.dialog-content
+{
+    max-height: 80vh;
+}
+
+.header-text
+{
+    padding-left: 2.5%;
+    margin: 0;
+    color: #000;
+    font-size: 18px;
+  
+
+}
+
+.close
+{
+    margin-right: 10px;
+    margin-bottom: 0.5%;
+    font-size: 25px;
+    color: #000;
+}
+
+.table-container{
+    overflow-x: hidden;
+    height: auto;
+    overflow: scroll;
+    overflow-y: auto;
+    /* overflow-y: auto; */
+    max-height: 70vh;
+}
+.mat-column-investigationSubCategory{
+    flex: 0 0 40%;
+}
+.mat-column-number{
+    flex: 0 0 160px;
+}
+
+.mat-table{
+    background: #FFFFFF 0% 0% no-repeat padding-box;
+    border: 1px solid rgba(0, 0, 0, 0.12);
+    border-radius: 6px;
+    opacity: 1;
+    padding:0;
+    .claim-no-text{
+        // font: normal normal bold 15px/18px Roboto;
+        color: #147AFC;
+        cursor: pointer;
+        text-decoration: underline;
+        font-size: 14px;
+        font-weight: 500;
+    }
+    .other-text{
+        // font: normal normal medium 15px/18px Roboto;
+        color: #747474;
+        font-size: 14px;
+        font-weight: 500;
+    }
+
+    .status-text
+    {
+        color: #50AD1D;
+        font-size: 14px;
+        font-weight: 500;
+    }
+}
+.header-row{
+    background-color: #147AFC;
+}
+.mat-header-cell{
+    // font: normal normal bold 14px/17px Roboto;
+    color: #FFFFFF;
+    font-size: 14px;
+    font-weight: 500;
+}
+
+.mat-header-row {
+    height: 33px !important;
+    min-height: 37px !important;
+    position: sticky;
+    z-index: 1;
+    width: 100%;
+    top: 0px;
+    padding-bottom: 3px;
+}
+
+// .claim-Details-header
+// {
+//     padding-bottom: 28%;
+// }
+
+.mat-row, .mat-footer-row {
+    min-height: 33px !important;
+}
+
+.mod-footer
+{
+    border: 0;
+    color: #147AFC;
+    cursor: pointer;
+    text-decoration: underline;
+    display: flex;
+    justify-content: flex-end;
+}
+
+
+
+.claim-Details-text
+{
+  .text-value{
+    color: #354052;
+    font-weight: 500;
+  }
+}
+.main-container{
+    padding: 10px;
+}
+

@@ -1,0 +1,137 @@
+.card
+{   display: flex;
+    width: 93.5%;
+    margin-top: 9em;
+    left: 4%;
+    background: #FFFFFF 0% 0% no-repeat padding-box;
+    box-shadow: 0px 3px 6px #00000029;
+    opacity: 1;
+    // width: 510px;
+    height: auto;
+    overflow: hidden;
+}
+
+.mat-card {
+    transition: box-shadow 280ms cubic-bezier(0.4, 0, 0.2, 1);
+    display: block;
+    position: relative;
+    padding: 0px !important;
+    border-radius: 4px;
+}
+
+
+
+.textarea{
+    width: 82.5%;
+    background: 0% 0% no-repeat padding-box padding-box rgb(255, 255, 255);
+    border: 1px solid rgb(146, 158, 184);
+    border-radius: 2px;
+    opacity: 1;
+    margin-left: 1em;
+    margin-bottom: 1%;
+    overflow: hidden;
+    height: 30px;
+}
+
+.text-row
+{
+    padding-top: 1%;
+    padding-bottom: 1%;
+}
+
+.text-name
+{
+    white-space: nowrap;
+    padding-top: 1%;
+}
+.carrier-name
+{
+    white-space: nowrap;
+    padding-top: 0.5%;
+}
+
+.date-name
+{
+    white-space: nowrap;
+    padding-top: 1%;
+    padding-right: 1%;
+}
+
+.prior-covg-name
+{
+    white-space: nowrap;
+    padding-top: 3%;
+}
+
+.col-display{
+    display: flex;
+    padding-left: 2%;
+}
+
+.form-header-text
+{
+    padding-left: 1.25%;
+}
+
+.check-box
+{
+    margin: 5px 12px; text-align: left;
+    // font: normal normal normal 13px/19px Roboto;
+    font-size: 13px;
+    letter-spacing: 0px;
+    color: #006692;
+    opacity: 1;
+}
+
+.modal-footer
+{
+    border: 0;
+    // margin-top: 10px;
+}
+.cancel-button
+{
+     color: #024A6A;
+     background-color: white; 
+     border-radius: 4px;
+     border: 1px solid #024A6A; 
+     width: 80px; 
+     height: 34px ;
+}
+
+.submit-button
+{
+     color: white;
+     background-color: #147AFC ; 
+     border-radius: 4px;
+     border: 1px solid #024A6A; 
+     width: 80px; 
+     height: 34px;
+}
+
+.form-control {
+    display: block;
+    width: 50%;
+    height: 80%;
+    padding: 0.375rem 0.75rem;
+    font-size: 0.8rem;
+    font-weight: 400;
+    line-height: 1.5;
+    color: #212529;
+    background-color: #fff;
+    background-clip: padding-box;
+    border: 1px solid #ced4da;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    border-radius: 0.25rem;
+    transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+}
+
+.close
+{
+    margin-right: 10px;
+    margin-bottom: 0.5%;
+    font-size: 25px;
+    color: #000;
+    cursor: pointer;
+}

@@ -1,0 +1,73 @@
+<div class="main-container row">
+  <div class="row no-doc-req" *ngIf="miscDocuments?.length <= 0">
+    <h1>No Miscellaneous Documents</h1>
+  </div>
+  <div *ngIf="miscDocuments?.length > 0">
+    <mat-table [dataSource]="dataSource" matSort>
+      <ng-container matColumnDef="documentNumber">
+        <mat-header-cell *matHeaderCellDef mat-sort-header>
+          Document ID
+        </mat-header-cell>
+        <mat-cell *matCellDef="let element" class="claim-no-text">
+          <fa-icon [icon]="faFileAlt" class="add-icon file-icon" *ngIf="!element.isVerified">
+          </fa-icon>
+          <fa-icon [icon]="faFileAlt" class="add-icon file-icon icon-verified" *ngIf="element.isVerified"
+            matTooltip="Document Verified">
+          </fa-icon>
+          {{ element.documentNumber }}
+        </mat-cell>
+      </ng-container>
+
+      <ng-container matColumnDef="name">
+        <mat-header-cell *matHeaderCellDef mat-sort-header>Document Name
+        </mat-header-cell>
+        <mat-cell *matCellDef="let element" class="other-text">
+          {{ element.name }}
+        </mat-cell>
+      </ng-container>
+
+      <ng-container matColumnDef="receivedDate">
+        <mat-header-cell *matHeaderCellDef mat-sort-header>
+          Recieved Date
+        </mat-header-cell>
+        <mat-cell *matCellDef="let element" class="other-text">
+          {{ element.receivedDate | date: "MM/dd/yyyy" }}
+        </mat-cell>
+      </ng-container>
+
+      <ng-container matColumnDef="deliveryMethod">
+        <mat-header-cell *matHeaderCellDef mat-sort-header>
+          Delivery Method
+        </mat-header-cell>
+        <mat-cell *matCellDef="let element" class="other-text">
+          {{ element.deliveryMethod }}
+        </mat-cell>
+      </ng-container>
+
+      <ng-container matColumnDef="actions" *ngIf="this.detailsSharing.permissionsCheck?.isDownloadMiscDocument || this.detailsSharing.permissionsCheck?.isAttachMiscDocument || this.detailsSharing.permissionsCheck?.isDeleteMiscDocument">
+        <mat-header-cell *matHeaderCellDef> Actions </mat-header-cell>
+        <mat-cell *matCellDef="let element" class="other-text icon-col">
+          <fa-icon
+            [icon]="faFileDownload"
+            matTooltip="Download Attached Documents"
+            class="add-icon medical-icon eye-icon"
+          *ngIf = "this.detailsSharing.permissionsCheck?.isDownloadMiscDocument"
+
+            (click)="onDownload(element)"
+          ></fa-icon>
+
+          <fa-icon [icon]="faFileMedical" matTooltip="Attach Documents" class="add-icon medical-icon"
+          *ngIf = "this.detailsSharing.permissionsCheck?.isAttachMiscDocument"
+
+            (click)="onAttachMiscDoc(element)"></fa-icon>
+          <fa-icon [icon]="faTrashAlt" matTooltip="Delete Document" class="add-icon delete-icon"
+          *ngIf = "this.detailsSharing.permissionsCheck?.isDeleteMiscDocument"
+            (click)="onDeleteMiscDoc(element)"></fa-icon>
+        </mat-cell>
+      </ng-container>
+
+      <mat-header-row *matHeaderRowDef="displayedColumns" class="header-row"></mat-header-row>
+      <mat-row *matRowDef="let row; columns: displayedColumns"></mat-row>
+    </mat-table>
+  </div>
+</div>

@@ -1,0 +1,157 @@
+.main-div
+{
+    width: 510px;
+    height: auto;
+    overflow: hidden;
+}
+
+.col-topping
+{
+
+padding-top: 1.75%
+
+}
+// .row-topping
+// {
+// padding: 2%;
+
+// }
+.select {
+    width: 91%;
+    height: 30px;
+    border: 1px solid #929EB8;
+    border-radius: 2px;
+    opacity: 1;
+    padding: 2%;
+}
+:host ::ng-deep .mat-select-placeholder {
+    color: rgb(0 0 0 / 60%) !important;
+}
+  .red-border{
+      border: 1px solid red !important;
+  }
+  .red{
+      color: red !important;
+  }
+
+.dialog-content
+{
+  padding-top: 0; 
+  padding-bottom: 0; 
+  padding-left: 6%;
+    
+}
+.inv-type-text
+{
+    margin-bottom: 2px; 
+    margin-top: 5px; 
+    text-align: left;
+    /* font: normal normal normal 14px/21px Roboto; */
+    letter-spacing: 0px;
+    color: #000000;
+    opacity: 1;
+}
+
+.empty
+{
+    width: 40%;
+    height: 30px; 
+    border: 1px solid #929EB8;
+    border-radius: 2px;
+    opacity: 1;
+}
+
+.modal-footer
+{
+    border: 0;
+    margin-top: 50px;
+}
+.cancel-button
+{
+     color: #024A6A;
+     background-color: white; 
+     border-radius: 4px;
+     border: 1px solid #024A6A; 
+     width: 80px; 
+     height: 34px ;
+}
+
+.submit-button
+{
+     color: white;
+     background-color: #147AFC ; 
+     border-radius: 4px;
+     border: 1px solid #024A6A; 
+     width: 80px; 
+     height: 34px;
+}
+
+
+.drop-down-class
+{
+    display: contents;
+}
+
+.drop-down-class-one
+{
+    padding-left: 2%;
+}
+
+.claim-Details
+{
+    padding-left: 2%;
+    // font-weight: 500; 
+    .col-sm-6{
+        width: auto;
+    }
+    .text{
+        color: #354052;
+        font-weight: 500;
+    }
+}
+
+.status-open{
+    // font: normal normal bold 15px/18px Roboto;
+    color: #50AD1D;
+    font-weight: 500;
+}
+.status-closed{
+    // font: normal normal bold 15px/18px Roboto;
+    color: #CC671A;
+    font-weight: 500;
+}
+
+@media (min-width: 576px)
+{
+
+    .col-sm-3 {
+        flex: 0 0 auto;
+        width: 32%;
+    }
+}
+
+:host ::ng-deep .mat-select-value{
+    color:black !important;
+}
+
+
+.text-area
+{
+
+    width: 98%;  
+    background: #FFFFFF 0% 0% no-repeat padding-box;
+    border: 1px solid #929EB8;
+    border-radius: 2px;
+    height: 23px !important;
+    opacity: 1;overflow: hidden;
+    min-height: 28px !important;
+
+}
+.col-topping
+{
+padding-top: 0;
+padding-left: 3%;
+    padding-right: 1%;
+
+}
+

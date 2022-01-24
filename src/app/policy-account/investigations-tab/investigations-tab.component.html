@@ -1,0 +1,141 @@
+<div class="main-container">
+    <div class="row note">
+        <span *ngIf="!noInvestigations" class="span-text">Showing {{ totalResults }} Results for
+            <span class="note-bold">{{ policyNo }}</span> From
+            <span class="note-bold">{{ fromDate | date: "MM/dd/yyyy" }}</span></span>
+        <span *ngIf="noInvestigations" class="span-text">Showing 0 Results for
+            <span class="note-bold">{{ policyNo }}</span></span>
+    </div>
+    <div class="table-container claims-table-container" *ngIf="!noInvestigations || detailsSharing.errorOccurred">
+        <div *ngIf="!isTableHasData" class="text-center">
+            <h1 class="no-records-header">No Records Found</h1>
+        </div>
+
+        <mat-table [dataSource]="dataSource" matSort multiTemplateDataRows *ngIf="isTableHasData">
+
+            <ng-container matColumnDef="number">
+                <mat-header-cell *matHeaderCellDef mat-sort-header class="table-header-text">
+                    Investigation No
+                </mat-header-cell>
+                <mat-cell *matCellDef="let row" class="table-blue-text">
+                    {{ row.number }}</mat-cell>
+            </ng-container>
+
+            <ng-container matColumnDef="investigationSubCategory">
+                <mat-header-cell *matHeaderCellDef mat-sort-header class="table-header-text">
+                    Condition
+                </mat-header-cell>
+                <mat-cell *matCellDef="let row" class="table-black-text">
+                    {{ row.investigationSubCategory  }}
+                </mat-cell>
+            </ng-container>
+            <ng-container matColumnDef="investigationCategory">
+                <mat-header-cell *matHeaderCellDef mat-sort-header class="table-header-text">
+                    ICD Category
+                </mat-header-cell>
+                <mat-cell *matCellDef="let row" class="table-black-text">
+                    {{ row.investigationCategory }}
+                </mat-cell>
+            </ng-container>
+
+            <ng-container matColumnDef="investigationStatus">
+                <mat-header-cell *matHeaderCellDef mat-sort-header class="table-header-text">
+                    Status
+                </mat-header-cell>
+                <mat-cell *matCellDef="let row" class="table-black-text">
+                    {{ row.investigationStatus }}
+                </mat-cell>
+            </ng-container>
+
+            <ng-container matColumnDef="lastActivity">
+                <mat-header-cell *matHeaderCellDef mat-sort-header class="table-header-text">
+                    Last Activity
+                </mat-header-cell>
+                <mat-cell *matCellDef="let row" class="table-black-text">
+                    {{ row.lastActivity | date: "MM/dd/yyyy" }}
+                </mat-cell>
+            </ng-container>
+
+            <ng-container matColumnDef="pendCode">
+                <mat-header-cell *matHeaderCellDef mat-sort-header class="table-header-text">
+                    Pend Code
+                </mat-header-cell>
+                <mat-cell *matCellDef="let row" class="table-black-text">
+                    {{ row.pendCode }}
+                </mat-cell>
+            </ng-container>
+
+            <ng-container matColumnDef="proofOfLoss">
+                <mat-header-cell *matHeaderCellDef mat-sort-header class="table-header-text">
+                    Proof Of Loss
+                </mat-header-cell>
+                <mat-cell *matCellDef="let row" class="table-black-text">
+                    {{ row.proofOfLoss | date: "MM/dd/yyyy" }}
+                </mat-cell>
+            </ng-container>
+
+            <ng-container matColumnDef="age">
+                <mat-header-cell *matHeaderCellDef mat-sort-header class="table-header-text">
+                    Age
+                </mat-header-cell>
+                <mat-cell *matCellDef="let row" class="table-black-text">
+                    {{ row.age }}
+                </mat-cell>
+            </ng-container>
+
+            <ng-container matColumnDef="totalCharges">
+                <mat-header-cell *matHeaderCellDef mat-sort-header class="table-header-text">
+                    Total Charges
+                </mat-header-cell>
+                <mat-cell *matCellDef="let row" class="table-black-text"><span class="charge-text">{{
+                row.totalCharges | currency | gainLoss
+              }}</span>
+                </mat-cell>
+            </ng-container>
+
+            <ng-container matColumnDef="totalAmountAfterDiscount">
+                <mat-header-cell *matHeaderCellDef mat-sort-header class="table-header-text">
+                    Pending After Discount
+                </mat-header-cell>
+                <mat-cell *matCellDef="let row" class="table-black-text">
+                    <span class="charge-text">{{
+                row.totalAmountAfterDiscount | currency | gainLoss
+              }}</span>
+                </mat-cell>
+            </ng-container>
+
+            <ng-container matColumnDef="effectiveDate">
+                <mat-header-cell *matHeaderCellDef mat-sort-header class="table-header-text">
+                    Effective Date
+                </mat-header-cell>
+                <mat-cell *matCellDef="let row" class="table-black-text">
+                    {{ row.effectiveDate | date: "MM/dd/yyyy" }}
+                </mat-cell>
+            </ng-container>
+
+
+
+            <ng-container matColumnDef="view">
+                <mat-header-cell *matHeaderCellDef mat-sort-header class="table-header-text">
+                    View
+                </mat-header-cell>
+                <mat-cell *matCellDef="let row">
+                    <div>
+                        <span matTooltip="View Investigation" class="action-button-text" (click)="onViewClicked(row)">
+                            <fa-icon [icon]="faEye" class="eye-icon"></fa-icon>&nbsp;
+                            <u>View</u>
+                        </span>
+                    </div>
+                </mat-cell>
+            </ng-container>
+
+
+            <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+            <mat-row *matRowDef="let row; columns: displayedColumns" matRipple class="element-row"></mat-row>
+        </mat-table>
+    </div>
+    <mat-paginator *ngIf="!noInvestigations" [pageSize]="10" [pageSizeOptions]="[5, 10, 25, 100]"></mat-paginator>
+    <div class="tables-container no-record-div" *ngIf="noInvestigations">
+        <h1 class="no-records-header">No Records To Display</h1>
+    </div>
+</div>

@@ -1,0 +1,300 @@
+<div class="main-modal-div">
+  <div class="modal-header">
+    <h2 class="header-text">Claims Decision</h2>
+    <button mat-dialog-close class="dialog-close">&times;</button>
+  </div>
+
+  <mat-dialog-content class="dialog-content">
+    <form class="addForm" [formGroup]="closeInvForm" #formDirective="ngForm" (ngSubmit)="onSubmit()">
+      <div class="main-container row">
+        <mat-table matSort [dataSource]="dataSource">
+          <ng-container matColumnDef="checkbox">
+            <mat-header-cell *matHeaderCellDef>
+              <mat-checkbox type="checkbox" (click)="onAllCheckboxChanged()"></mat-checkbox>
+            </mat-header-cell>
+            <mat-cell *matCellDef="let element; let i = index" class="claim-no-text">
+              <mat-checkbox type="checkbox" (click)="onCheckboxChanged(element.index)" [checked]="allCheckboxSelected">
+              </mat-checkbox>
+            </mat-cell>
+          </ng-container>
+
+          <ng-container matColumnDef="claimNum">
+            <mat-header-cell *matHeaderCellDef mat-sort-header>
+              Claim No
+            </mat-header-cell>
+            <mat-cell *matCellDef="let element" class="claim-no-text">
+              {{ element.claimNum }}
+            </mat-cell>
+          </ng-container>
+
+          <ng-container matColumnDef="diagnosis">
+            <mat-header-cell *matHeaderCellDef mat-sort-header>Diagnosis
+            </mat-header-cell>
+            <mat-cell *matCellDef="let row" class="other-text">
+              <span placement="bottom">{{ row.diagnosis }} - {{ row.diagnosisDesc }}
+              </span>
+            </mat-cell>
+          </ng-container>
+
+          <ng-container matColumnDef="claimDate">
+            <mat-header-cell *matHeaderCellDef mat-sort-header>
+              Date Of Service
+            </mat-header-cell>
+            <mat-cell *matCellDef="let element" class="other-text">
+              {{ element.claimDate | date: "MM/dd/yyyy" }}
+            </mat-cell>
+          </ng-container>
+
+          <ng-container matColumnDef="pendCode">
+            <mat-header-cell *matHeaderCellDef>
+              <div class="form-group form-header">
+                <label for="pendCodeHeader">Pend Code </label>
+                <mat-select class="select header-dropdown pend-header" id="pendCodeHeader"
+                  aria-label="Default select example" placeholder="Select Pend Code" [disabled]="disableHeaderSelect"
+                  (click)="onSelectClicked()" formControlName="pendCodeHeader"
+                  (openedChange)="onPendCodeHeaderClosed()">
+                  <div class="search-div">
+                    <div class="input-group">
+                      <div class="input-group-prepend">
+                        <span class="input-group-text">
+                          <fa-icon [icon]="faSearch" class="search-icon">
+                          </fa-icon>
+                        </span>
+                      </div>
+                      <input #inputPendCode autofocus type="text" class="form-control search-input-field"
+                        [formControl]="pendCodeHeaderControl" (keydown)="helperMethods.onKeyPressinSearch($event)"
+                        placeholder="Filter Pend Codes" />
+
+                      <div class="clear-search">
+                        <span class="input-group-text">
+                          <fa-icon [icon]="faTimes" class="search-icon" (click)="onClearHeaderSearch()"></fa-icon>
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+                  <div>
+                    <mat-option *ngFor="
+                        let pendCode of pendCodes
+                          | filterOptions: pendCodeHeaderControl.value
+                      " [value]="pendCode" (click)="onHeaderChanged(pendCode, 1)">
+                      {{ pendCode.pendCode }} - {{ pendCode.description }}
+                    </mat-option>
+                  </div>
+                </mat-select>
+              </div>
+            </mat-header-cell>
+            <mat-cell *matCellDef="let element; let i = index" class="other-text" formArrayName="pendCodeControl">
+              <mat-select class="select" aria-label="Default select example"
+                (click)="onChildPendCodeClicked(element.index)" placeholder="Select Pend Code"
+                (openedChange)="onPendCodeChildClosed(element.index)"
+                [matTooltip]="helperMethods.getPendCodeTooltip(getAsFormArray('pendCodeControl').controls[element.index]?.value)"
+                formControlName="{{ i }}"
+                [ngClass]="{'red-border':getAsFormArray('pendCodeControl').controls[element.index]?.invalid && isSubmitClicked}">
+                <div class="search-div">
+                  <div class="input-group">
+                    <div class="input-group-prepend">
+                      <span class="input-group-text">
+                        <fa-icon [icon]="faSearch" class="search-icon">
+                        </fa-icon>
+                      </span>
+                    </div>
+                    <input #inputChildPendCode autofocus type="text"
+                      [formControl]="pendCodeSearchControl.controls[element.index]"
+                      class="form-control search-input-field" (keydown)="helperMethods.onKeyPressinSearch($event)"
+                      placeholder="Filter Pend Codes" />
+
+                    <div class="clear-search">
+                      <span class="input-group-text">
+                        <fa-icon [icon]="faTimes" class="search-icon" (click)="onClearDropdownSearch(element.index)">
+                        </fa-icon>
+                      </span>
+                    </div>
+                  </div>
+                </div>
+                <div>
+                  <mat-option *ngFor="
+                      let pendCode of pendCodes
+                        | filterOptions
+                          : pendCodeSearchControl.controls[element.index]?.value
+                    " [value]="pendCode">
+                    {{ pendCode.pendCode }} - {{ pendCode.description }}
+                  </mat-option>
+                </div>
+              </mat-select>
+            </mat-cell>
+          </ng-container>
+
+          <ng-container matColumnDef="finalDiscussion">
+            <mat-header-cell *matHeaderCellDef>
+              <div class="form-group form-header">
+                <label for="finalDecHeader">Final Decision </label>
+                <mat-select class="empty" id="finalDecHeader" placeholder="Select Decision"
+                  [disabled]="disableHeaderSelect" (click)="onHeaderSelectClicked()" [ngClass]="{
+                    'red-border':
+                      finalDecisionError &&
+                      claimsDetails[element.index]?.isCheckboxClicked
+                  }" formControlName="finalDecisionHeader" aria-label="Default select example"
+                  class="final-decision-dropdown header-dropdown">
+                  <mat-option *ngFor="let investigationDecision of investigationDecisions"
+                    (click)="onHeaderChanged(investigationDecision, 2)" [value]="investigationDecision">
+                    {{ investigationDecision.status }}
+                  </mat-option>
+                </mat-select>
+              </div>
+            </mat-header-cell>
+            <mat-cell *matCellDef="let element; let i = index" class="other-text" formArrayName="finalDecisionControl">
+              <mat-select class="empty" placeholder="Select Decision" formControlName="{{ i }}" [ngClass]="{
+                  'red-border':
+                    getAsFormArray('finalDecisionControl').controls[
+                      element.index
+                    ]?.invalid && isSubmitClicked
+                }" aria-label="Default select example" class="final-decision-dropdown">
+                <mat-option *ngFor="let investigationDecision of investigationDecisions"
+                  [value]="investigationDecision">
+                  {{ investigationDecision.status }}
+                </mat-option>
+              </mat-select>
+            </mat-cell>
+          </ng-container>
+
+          <ng-container matColumnDef="status">
+            <mat-header-cell *matHeaderCellDef>
+              <div class="form-group form-header">
+                <label for="finalDecHeader">Status </label>
+                <mat-select class="empty" id="finalDecHeader" placeholder="Select Status"
+                  [disabled]="disableHeaderSelect" (click)="onHeaderSelectClicked()" [ngClass]="{
+                    'red-border':
+                      finalDecisionError &&
+                      claimsDetails[element.index]?.isCheckboxClicked
+                  }" formControlName="finalDecisionHeader" aria-label="Default select example"
+                  class="final-decision-dropdown header-dropdown">
+                  <mat-option *ngFor="let investigationDecision of investigationDecisions"
+                    (click)="onHeaderChanged(investigationDecision, 2)" [value]="investigationDecision">
+                    {{ investigationDecision.status }}
+                  </mat-option>
+                </mat-select>
+              </div>
+            </mat-header-cell>
+            <mat-cell *matCellDef="let element; let i = index" class="other-text" formArrayName="finalDecisionControl">
+              <mat-select class="empty" placeholder="Select Status" formControlName="{{ i }}" [ngClass]="{
+                  'red-border':
+                    getAsFormArray('finalDecisionControl').controls[
+                      element.index
+                    ]?.invalid && isSubmitClicked
+                }" aria-label="Default select example" class="final-decision-dropdown">
+                <mat-option *ngFor="let investigationDecision of investigationDecisions"
+                  [value]="investigationDecision">
+                  {{ investigationDecision.status }}
+                </mat-option>
+              </mat-select>
+            </mat-cell>
+          </ng-container>
+
+          <ng-container matColumnDef="proofOfLoss">
+            <mat-header-cell *matHeaderCellDef [ngClass]="{ red: proofOfLossError }">
+              <div class="form-group form-header">
+                <label for="dateHeader">Proof Of Loss </label>
+                <div class="input-group date-piker header-dropdown pol-header" [disabled]="disableHeaderSelect" (click)="
+                    disableHeaderSelect
+                      ? onHeaderSelectClicked()
+                      : picker.open()
+                  " id="dateHeader">
+                  <input readonly class="form-control" [matDatepicker]="picker" [max]="maxDate"
+                    (dateChange)="onHeaderChanged($event.value, 3)" formControlName="proofOfLossHeader" />
+                  <div class="input-group-prepend">
+                    <span class="input-group-text" id="basic-addon1">
+                      <fa-icon [icon]="faCalendarAlt" class="search-icon"></fa-icon>
+                    </span>
+                  </div>
+                </div>
+              </div>
+              <mat-datepicker #picker></mat-datepicker>
+            </mat-header-cell>
+            <mat-cell *matCellDef="let element; let i = index" class="other-text" formArrayName="proofOfLossControl">
+              <div class="input-group date-piker" (click)="!element.isDisabled ? picker.open() : ''" [ngClass]="{
+                'red-border':
+                  getAsFormArray('proofOfLossControl').controls[
+                    element.index
+                  ]?.invalid && isSubmitClicked
+              }"  (dateChange)="onProofOfLossSelected()">
+                <input readonly class="form-control" [matDatepicker]="picker" [max]="maxDate"
+                  formControlName="{{ i }}" />
+                <div class="input-group-prepend">
+                  <span class="input-group-text" id="basic-addon1">
+                    <fa-icon [icon]="faCalendarAlt" class="search-icon"></fa-icon>
+                  </span>
+                </div>
+              </div>
+              <mat-datepicker #picker></mat-datepicker>
+            </mat-cell>
+          </ng-container>
+
+          <ng-container matColumnDef="payAs">
+            <mat-header-cell *matHeaderCellDef>
+              <div class="form-group form-header">
+                <label for="payAsHeader">Process As </label>
+                <mat-select placeholder="Select Process As" id="payAsHeader" [disabled]="disableHeaderSelect"
+                  (click)="onHeaderSelectClicked()" formControlName="payAsHeader"
+                  class="pay-as-dropdown header-dropdown pay-as-header">
+                  <mat-option *ngFor="let pay of payAs" [value]="pay" (click)="onHeaderChanged(pay, 4)">
+                    {{ pay.type }}
+                  </mat-option>
+                </mat-select>
+              </div>
+            </mat-header-cell>
+            <mat-cell *matCellDef="let element; let i = index" class="other-text" formArrayName="payAsControl">
+              <mat-select placeholder="Select Process As" class="pay-as-dropdown" formControlName="{{ i }}" [ngClass]="{
+                  'red-border':
+                    getAsFormArray('payAsControl').controls[element.index]?.invalid && isSubmitClicked
+                }">
+                <mat-option *ngFor="let pay of payAs" [value]="pay">
+                  {{ pay.type }}
+                </mat-option>
+              </mat-select>
+            </mat-cell>
+          </ng-container>
+
+          <mat-header-row *matHeaderRowDef="displayedColumns" class="header-row"></mat-header-row>
+          <mat-row *matRowDef="let row; columns: displayedColumns"></mat-row>
+        </mat-table>
+      </div>
+
+      <div class="comments-main-div" *ngIf="this.detailsSharing.permissionsCheck?.isAddNotes">
+        <p class="comments-p" [ngClass]="{
+            red:
+              this.closeInvForm.controls['commentsControl'].invalid &&
+              isSubmitClicked
+          }">
+          Comments:<span class="red">*</span>
+        </p>
+
+        <textarea #description maxlength="1000" class="comments-area" placeholder="Enter Your Comments Here"
+          cdkTextareaAutosize formControlName="commentsControl" [ngClass]="{
+            'red-border':
+              this.closeInvForm.controls['commentsControl'].invalid &&
+              isSubmitClicked
+          }" #autosize="cdkTextareaAutosize" cdkAutosizeMinRows="1" cdkAutosizeMaxRows="5"></textarea>
+        <div class="row">
+          <div class="col-sm-9">
+            <mat-error class="desc-error" *ngIf="
+                this.closeInvForm.controls['commentsControl'].invalid &&
+                this.closeInvForm.controls['commentsControl'].dirty &&
+                isSubmitClicked
+              ">The above field should contain atleast one character
+            </mat-error>
+          </div>
+          <div class="col-sm-3">
+            <mat-hint class="comments-hint">{{ description.value.length }} / 1000</mat-hint>
+          </div>
+        </div>
+      </div>
+      <div class="button-main-div popup-footer">
+        <button type="button" class="cancel-button" mat-button mat-dialog-close>
+          Cancel
+        </button>
+        &nbsp; &nbsp;
+        <button mat-button type="submit" class="submit-button">Submit</button>
+      </div>
+    </form>
+  </mat-dialog-content>
+</div>

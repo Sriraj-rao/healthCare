@@ -1,0 +1,131 @@
+.select {
+  width: 100%;
+  height: 30px;
+  border: 1px solid #929eb8;
+  border-radius: 2px;
+  opacity: 1;
+  padding: 2%;
+
+  .text-div {
+    overflow: auto;
+    height: 200px;
+  }
+}
+:host ::ng-deep .search-panel {
+  overflow: hidden !important;
+}
+:host ::ng-deep .mat-select-placeholder {
+  color: rgb(0 0 0 / 60%) !important;
+}
+
+.dialog-content {
+  padding: 0px 24px 0px 24px;
+}
+.inv-type-text {
+  margin-bottom: 2px;
+  margin-top: 5px;
+  text-align: left;
+  letter-spacing: 0px;
+  color: #000000;
+  opacity: 1;
+}
+
+.empty {
+  width: 40%;
+  height: 30px;
+  border: 1px solid #929eb8;
+  border-radius: 2px;
+  opacity: 1;
+}
+
+.modal-footer {
+  border: 0;
+  margin-top: 10px;
+  padding-right: 25px;
+}
+.cancel-button {
+  color: #024a6a;
+  background-color: white;
+  border-radius: 4px;
+  border: 1px solid #024a6a;
+  width: 80px;
+  height: 34px;
+}
+
+.submit-button {
+  color: white;
+  background-color: #147afc;
+  border-radius: 4px;
+  border: 1px solid #024a6a;
+  width: 80px;
+  height: 34px;
+}
+.radio-row {
+  display: flex;
+  justify-content: flex-end;
+  padding: 0;
+  margin-top: 5px;
+  .radio-span {
+    display: flex;
+    justify-content: flex-end;
+    padding: 0;
+  }
+}
+
+.drop-down-class {
+  display: contents;
+}
+
+.drop-down-class-one {
+  padding-left: 2%;
+}
+
+.claim-Details {
+  padding-left: 2%;
+  .col-sm-6 {
+    width: auto;
+  }
+  .text {
+    color: #354052;
+    font-weight: 500;
+  }
+}
+
+.effective-date-text {
+  margin-left: 4%;
+  color: #ff9d00;
+}
+
+.effective-date-col {
+  display: contents;
+  text-align: right;
+}
+
+@media (min-width: 576px) {
+  .col-sm-3 {
+    flex: 0 0 auto;
+    width: 32%;
+  }
+}
+
+.text-area {
+  width: 98%;
+  background: #ffffff 0% 0% no-repeat padding-box;
+  border: 1px solid #929eb8;
+  border-radius: 2px;
+  height: 23px !important;
+  opacity: 1;
+  overflow: hidden;
+}
+
+.row-topping {
+  padding: 10px 10px 0px 10px;
+}
+.status-open {
+  color: #50ad1d;
+  font-weight: 500;
+}
+.status-closed {
+  color: #cc671a;
+  font-weight: 500;
+}

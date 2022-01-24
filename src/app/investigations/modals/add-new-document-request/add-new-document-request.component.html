@@ -1,0 +1,265 @@
+<div class="main-modal-div" [ngClass]="{ 'main-div-expanded': isPreviewDocument }">
+  <div class="modal-header">
+    <h2 class="header-text" *ngIf="!newDocRequestData.isEdit && !newDocRequestData.isDenial">
+      New Document Request
+    </h2>
+    <h2 class="header-text" *ngIf="newDocRequestData.isEdit">
+      Edit Document Request
+    </h2>
+    <h2 class="header-text" *ngIf="newDocRequestData.isDenial">
+      New Additional Document
+    </h2>
+    <div class="dialog-close" mat-dialog-close>&times;</div>
+  </div>
+
+  <mat-dialog-content class="dialog-content" [ngClass]="{ 'dialog-expanded': isPreviewDocument }">
+    <div class="form-div" [ngClass]="{ 'form-expanded': isPreviewDocument }">
+      <form class="addForm" [formGroup]="uploadDocForm" #formDirective="ngForm" (ngSubmit)="onSubmit()">
+        <div class="display">
+          <div class="div-padding doc-type-div" *ngIf="newDocRequestData.isEdit && docType">
+            <div class="row"><span>Document Type:</span></div>
+            <div class="row">
+              <span class="doc-text">{{ docType.type }}</span>
+            </div>
+          </div>
+          <div class="div-padding" *ngIf="!newDocRequestData.isEdit">
+            <p class="doc-type" [ngClass]="{
+                red:
+                  uploadDocForm.get('docTypeControl').invalid && isSubmitClicked
+              }">
+              Document Type: <span class="red">*</span>
+            </p>
+            <mat-select class="empty" formControlName="docTypeControl" placeholder="Select Document"
+              aria-label="Default select example" class="select-company" [ngClass]="{
+                'red-border':
+                  uploadDocForm.get('docTypeControl').invalid && isSubmitClicked
+              }">
+              <mat-option *ngFor="let docType of docTypes" [value]="docType" (click)="onDocTypeSelected()">
+                {{ docType.type }}
+              </mat-option>
+            </mat-select>
+          </div>
+          <div class="reminder-div">
+            <div class="both-icons">
+              <div class="first-div">
+                <div class="row">
+                  <span *ngIf="companySelected">Company :
+                    <span class="company-selected-name">{{
+                      companySelected.name
+                    }}</span></span>
+                </div>
+                <div class="row" *ngIf="newDocRequestData.isEdit">
+                  <span class="remainder-text">Reminder : {{ reminderNumber }}</span>
+                </div>
+              </div>
+              <div>
+                <fa-icon [icon]="faFilePdf" [ngClass]="checkFormValidForPreview() ? 'pdf-valid' : 'pdf-invalid'"
+                  (click)="onDocView()" matTooltip="Preview"></fa-icon>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div *ngIf="properties && isDocTypeSelected" formArrayName="propertiesControl">
+          <div *ngFor="let property of propertiesNamesWithFields; let i = index" class="display-grid">
+            <div *ngIf="property.child.length>0" formArrayName="{{ i }}">
+              <div class="row">
+                <div class="auto-cols">
+                  <mat-checkbox type="checkbox" (change)="onParentCheckboxChanged($event,i,property.child)" *ngIf="property.propertyType === 'CheckBox' && property.isVisibleOnUI" formControlName="{{ 0 }}">
+                  </mat-checkbox>
+                </div>
+                <div *ngFor="let nestedProperty of property.propertyNameAsArray; let j = index"
+                  class="display-grid auto-cols">
+                  <span *ngIf="!(nestedProperty.value.includes('<%')&&nestedProperty.value.includes('%>'))" [ngClass]="{
+                      red:
+                      nestedPropertiesFormArray(i).controls[0].invalid && isSubmitClicked
+                    }">{{nestedProperty.value}}</span>
+                  <span *ngIf="(nestedProperty.value.includes('<%')&&nestedProperty.value.includes('%>')&&
+                    nestedProperty.value.substring(2,nestedProperty.value.length-2)==='CheckBox')">
+                    <mat-checkbox type="checkbox" formControlName="{{ nestedProperty.controlIndex }}" [disabled]="!nestedPropertiesFormArray(i).controls[0]?.value"></mat-checkbox>
+                  </span>
+                  <span *ngIf="(nestedProperty.value.includes('<%')&&nestedProperty.value.includes('%>')&&
+                    nestedProperty.value.substring(2,nestedProperty.value.length-2)==='DateTime')">
+                    <div class="input-group date-piker" (click)="picker.open()">
+                      <input readonly class="form-control" [matDatepicker]="picker" [max]="maxDate"
+                        formControlName="{{ nestedProperty.controlIndex }}" [disabled]="!nestedPropertiesFormArray(i).controls[0]?.value"/>
+                      <div class="input-group-prepend">
+                        <span class="input-group-text" id="basic-addon1">
+                          <fa-icon [icon]="faCalendarAlt" class="search-icon"></fa-icon>
+                        </span>
+                      </div>
+                    </div>
+                    <mat-datepicker #picker></mat-datepicker>
+                  </span>
+                  <span *ngIf="(nestedProperty.value.includes('<%')&&nestedProperty.value.includes('%>')&&
+                    nestedProperty.value.substring(2,nestedProperty.value.length-2)==='TextBox')" class="nested-field">
+                    <input matInput [maxlength]="property.child[nestedProperty.childIndex].length"
+                      class="provider-input" formControlName="{{ nestedProperty.controlIndex }}"
+                      (input)="onControlsChanged()" [readonly]="nestedPropertiesFormArray(i).controls[0].value===false || nestedPropertiesFormArray(i).controls[0].value===''"  [ngClass]="{
+                        'red-border':
+                        nestedPropertiesFormArray(i).controls[nestedProperty.controlIndex].invalid && isSubmitClicked
+                      }" />
+                  </span>
+                  <span *ngIf="(nestedProperty.value.includes('<%')&&nestedProperty.value.includes('%>')&&
+                    nestedProperty.value.substring(2,nestedProperty.value.length-2)==='TextArea')"
+                    class="nested-field">
+                    <textarea class="provider-textarea" cdkTextareaAutosize #description [readonly]="!nestedPropertiesFormArray(i).controls[0]?.value"
+                      [maxlength]="property.child[nestedProperty.childIndex].length" #autosize="cdkTextareaAutosize"
+                      cdkAutosizeMinRows="1" cdkAutosizeMaxRows="5" (input)="onControlsChanged()"
+                      formControlName="{{ nestedProperty.controlIndex }}" [ngClass]="{
+                        'red-border':
+                        nestedPropertiesFormArray(i).controls[nestedProperty.controlIndex].invalid && isSubmitClicked
+                      }"></textarea>
+                  </span>
+
+                </div>
+                <div class="input-group date-piker" (click)="picker.open()"
+                  *ngIf="property.propertyType === 'DateTime'&& property.isVisibleOnUI">
+                  <input readonly class="form-control" [matDatepicker]="picker" [max]="maxDate"
+                    formControlName="{{ 0 }}" />
+                  <div class="input-group-prepend">
+                    <span class="input-group-text" id="basic-addon1">
+                      <fa-icon [icon]="faCalendarAlt" class="search-icon"></fa-icon>
+                    </span>
+                  </div>
+                </div>
+                <mat-datepicker #picker></mat-datepicker>
+              </div>
+            </div>
+            <div *ngIf="property.child.length===0 && property.isVisibleOnUI" class="provider-name" [ngClass]="{
+                red:
+                  propertiesFormArray().controls[i].invalid && isSubmitClicked
+              }">
+              <mat-checkbox type="checkbox" class="checkbox-right" *ngIf="property.propertyType === 'CheckBox'&& property.isVisibleOnUI"
+                formControlName="{{ i }}">
+              </mat-checkbox>
+              <span *ngIf="property.isVisibleOnUI">{{ property.propertyName }}</span> <span *ngIf="property.propertyType != 'CheckBox'&& property.isVisibleOnUI">: </span><span class="red"
+                *ngIf="property.isRequired">*</span>
+              <div class="input-group date-piker" (click)="picker.open()" *ngIf="property.propertyType === 'DateTime'&& property.isVisibleOnUI">
+                <input readonly class="form-control" [matDatepicker]="picker" [max]="maxDate"
+                  formControlName="{{ i }}" />
+                <div class="input-group-prepend">
+                  <span class="input-group-text" id="basic-addon1">
+                    <fa-icon [icon]="faCalendarAlt" class="search-icon"></fa-icon>
+                  </span>
+                </div>
+              </div>
+              <mat-datepicker #picker></mat-datepicker>
+            </div>
+            <input matInput [maxlength]="property.length" class="provider-input"
+              *ngIf="property.propertyType === 'TextBox'&& property.isVisibleOnUI" formControlName="{{ i }}" (input)="onControlsChanged()"
+              [ngClass]="{
+                'red-border':
+                  propertiesFormArray().controls[i].invalid && isSubmitClicked
+              }" />
+            <div class="row">
+              <div class="col-sm-9">
+                <mat-error class="TextBox-padding" *ngIf="
+                    propertiesFormArray().controls[i].invalid &&
+                    propertiesFormArray().controls[i].dirty &&
+                    isSubmitClicked &&
+                    property.propertyType === 'TextBox' && property.isVisibleOnUI
+                  ">
+                  The above field should contain atleast one character
+                </mat-error>
+              </div>
+              <div class="col-sm-3">
+                <mat-hint *ngIf="property.propertyType === 'TextBox'&& property.isVisibleOnUI" class="hint text-hint-pl">
+                  {{propertiesFormArray().controls[i].value?.length || 0}}/{{property.length}}</mat-hint>
+                  
+              </div>
+            </div>
+
+            <textarea class="provider-textarea" cdkTextareaAutosize #description [maxlength]="property.length"
+              *ngIf="property.propertyType === 'TextArea' && property.isVisibleOnUI" #autosize="cdkTextareaAutosize" cdkAutosizeMinRows="1"
+              cdkAutosizeMaxRows="5" (input)="onControlsChanged()" formControlName="{{ i }}" [ngClass]="{
+                'red-border':
+                  propertiesFormArray().controls[i].invalid && isSubmitClicked
+              }"></textarea>
+            <div class="row">
+              <div class="col-sm-9">
+                <mat-error class="text-area-padding" *ngIf="
+                    propertiesFormArray().controls[i].invalid &&
+                    propertiesFormArray().controls[i].dirty &&
+                    isSubmitClicked &&
+                    property.propertyType === 'TextArea' && property.isVisibleOnUI
+                  ">
+                  The above field should contain atleast one character
+                </mat-error>
+              </div>
+              <div class="col-sm-3">
+                <mat-hint *ngIf="property.propertyType === 'TextArea' && property.isVisibleOnUI" class="hint text-area-hint">
+                  {{propertiesFormArray().controls[i].value?.length || 0}}/{{property.length}}</mat-hint>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="row files-list-div" *ngIf="newDocRequestData.isEdit && docFiles.length > 0">
+          <cwb-file-list [showRequestNumber]="true" [fileLists]="docFiles"
+            (fileIdEmitter)="onPreviewTableDocument($event)" (checkboxClickedEmiter)="onCheckboxClicked($event)"
+            (allCheckboxClickedEmiter)="onAllCheckbocClicked($event)">
+          </cwb-file-list>
+        </div>
+        <div class="row file-upload-row" *ngIf="!newDocRequestData.isEdit && isDocTypeSelected && !newDocRequestData.isDenial">
+          <cwb-document-uploader [isMultipleAllowed]="true" (filesEmitter)="onFileEmitted($event)"
+            (filesDeleted)="onFileDeleted($event)"></cwb-document-uploader>
+        </div>
+        <div class="div-padding-doc div-bottom" *ngIf="isDocTypeSelected">
+          <p class="provider-text" [ngClass]="{
+              red:
+                this.uploadDocForm.controls['commentsControl'].invalid &&
+                isSubmitClicked
+            }">
+            Notes<span class="red">*</span>
+          </p>
+          <textarea matInput #description maxlength="1000" cdkTextareaAutosize #autosize="cdkTextareaAutosize"
+            cdkAutosizeMinRows="1" formControlName="commentsControl" [ngClass]="{
+              'red-border':
+                this.uploadDocForm.controls['commentsControl'].invalid &&
+                isSubmitClicked
+            }" cdkAutosizeMaxRows="15" placeholder="Enter Your Notes" class="provider-textarea"></textarea>
+          <div class="row">
+            <div class="col-sm-9">
+              <mat-error class="notes-error" *ngIf="
+                  this.uploadDocForm.controls['commentsControl'].invalid &&
+                  this.uploadDocForm.controls['commentsControl'].dirty &&
+                  isSubmitClicked
+                ">The above field should contain atleast one character
+              </mat-error>
+            </div>
+            <div class="col-sm-3 hint-div">
+              <mat-hint class="comments-hint">{{ description.value.length }} / 1000</mat-hint>
+            </div>
+          </div>
+        </div>
+        <div class="footer row popup-footer">
+          <div class="down-button col-sm-6">
+            <fa-icon *ngIf="newDocRequestData.isEdit && docFiles.length > 0" [icon]="faDownload"
+              matTooltip="Download the selected file/files" [ngClass]="checkboxIsClicked ? 'download' : 'non-download'"
+              (click)="onDownloadFiles()">
+            </fa-icon>
+          </div>
+          <div class="sub-button col-sm-6">
+            <button type="button" class="cancel" mat-button (click)="onClear()">
+              Clear
+            </button>
+            &nbsp; &nbsp;
+
+            <button mat-button type="submit" class="submit">Submit</button>
+          </div>
+        </div>
+      </form>
+    </div>
+    <div *ngIf="isPreviewDocument" class="preview-doc-div">
+      <div class="row fixed-preview">
+        <div class="dialog-close viewer-close">
+          <button class="btn btn-danger" (click)="onPreviewClose()">
+            Close Preview
+          </button>
+        </div>
+      </div>
+      <cwb-file-viewer [postData]="postData" [tableFileId]="tableFileId"
+        (templateFileIdEmitter)="onTemplateIdEmitted($event)" [alreadyExistingTemplateId]="alreadyExistingTemplateId">
+      </cwb-file-viewer>
+    </div>
+  </mat-dialog-content>
+</div>

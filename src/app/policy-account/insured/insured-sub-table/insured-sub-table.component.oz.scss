@@ -1,0 +1,42 @@
+.mat-table{
+    width: 100%;
+    background: #DEEEFF !important;
+}
+.mat-header-cell,.mat-cell{
+    color: #000;
+    font-size: .8rem;
+    background-color: transparent;
+}
+.mat-header-cell{
+    font-weight: 500;
+    // border: none;
+}
+.mat-cell{
+       
+    font-size: .8rem;
+    border-bottom: none;
+
+}
+
+td.mat-cell{
+    // border-bottom-style: none;
+    // border-top: 1px solid #a8a8a875;
+    // padding-left: 20px;
+}
+:host ::ng-deep tr.mat-header-row {
+    height: .7rem !important;
+    border: none !important;
+    border-bottom: 1px solid #eceaea;
+
+}
+:host ::ng-deep tr.mat-row, mat-footer-row {
+    height: .7rem !important;
+    border-style: none !important;
+    border-bottom: none !important;
+    
+
+}
+:host ::ng-deep .mat-cell,.mat-header-cell{
+    padding: .35rem .75rem;
+}
+

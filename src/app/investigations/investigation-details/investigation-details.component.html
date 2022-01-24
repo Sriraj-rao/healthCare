@@ -1,0 +1,121 @@
+<div class="main-container">
+  <div class="row">
+    <div class="col-sm-12">
+      <mat-expansion-panel hideToggle #panelH [expanded]="true" (opened)="docPanelOpenState = true"
+        (closed)="docPanelOpenState = false"
+        *ngIf="this.detailsSharing.permissionsCheck?.isViewDocumentRequests || this.detailsSharing.permissionsCheck.isNewRequest">
+        <mat-expansion-panel-header>
+          <div class="row details-row">
+            <div class="col-sm-1 expand-div">
+              <fa-icon [icon]="faChevronRight" class="add-icon chevron" *ngIf="!docPanelOpenState">
+              </fa-icon>
+              <fa-icon [icon]="faChevronDown" class="add-icon chevron" *ngIf="docPanelOpenState">
+              </fa-icon>
+            </div>
+            <div class="col-sm-5 header-div">
+              Document Requests ({{ docRequestsCount }})
+            </div>
+            <div class="col-sm-8 button-div" fxFlex fxLayout fxLayoutAlign="end">
+              <fa-icon *ngIf="isOpen && this.detailsSharing.permissionsCheck?.isNewRequest"
+                class="plus-icon add-doc-req-icon" matTooltip="New Request" [icon]="faFolderPlus"
+                (click)="panelH.toggle(); addNewDocumentRequest()"></fa-icon>
+            </div>
+          </div>
+        </mat-expansion-panel-header>
+        <cwb-document-requests [investigationId]="investigationId" [isOpen]="isOpen"
+          [investigationNumber]="investigationNumber" [investigationType]="investigationType" [policyNo]="policyNo"
+          [claimNo]="claimNo" [isInvestigationExpanded]="isInvestigationExpanded" [isDenial]="false"
+          [parentInvestigationDetail]="parentInvestigationDetail" [investigationGroupId]="investigationGroupId"
+          (docRequestsCountEmitter)="onGetDocRequestsCount($event)">
+        </cwb-document-requests>
+      </mat-expansion-panel>
+    </div>
+
+    <div class="col-sm-12">
+      <mat-expansion-panel hideToggle #panelD [expanded]="false" (opened)="addDocPanelOpenState = true"
+        (closed)="addDocPanelOpenState = false"
+        *ngIf="this.detailsSharing.permissionsCheck?.isViewDocumentRequests || this.detailsSharing.permissionsCheck.isNewRequest">
+        
+        <mat-expansion-panel-header>
+          <div class="row details-row">
+            <div class="col-sm-1 expand-div">
+              <fa-icon [icon]="faChevronRight" class="add-icon chevron" *ngIf="!addDocPanelOpenState">
+              </fa-icon>
+              <fa-icon [icon]="faChevronDown" class="add-icon chevron" *ngIf="addDocPanelOpenState">
+              </fa-icon>
+            </div>
+            <div class="col-sm-5 header-div">
+              Additional Documents ({{ addDocRequestsCount }})
+            </div>
+            <div class="col-sm-8 button-div" fxFlex fxLayout fxLayoutAlign="end">
+              <fa-icon *ngIf="isOpen" class="plus-icon add-doc-req-icon" matTooltip="New Additional Document"
+                [icon]="faFolderPlus" (click)="panelD.toggle(); addNewDocumentRequest(2)"></fa-icon>
+            </div>
+          </div>
+        </mat-expansion-panel-header>
+        <cwb-document-requests [investigationId]="investigationId" [isOpen]="isOpen"
+          [investigationNumber]="investigationNumber" [investigationType]="investigationType" [policyNo]="policyNo"
+          [claimNo]="claimNo" [isInvestigationExpanded]="isInvestigationExpanded" [isDenial]="true"
+          [investigationGroupId]="investigationGroupId" (addDocRequestsCountEmitter)="onGetAddDocRequestsCount($event)">
+        </cwb-document-requests>
+      </mat-expansion-panel>
+    </div>
+
+    <div class="col-sm-12">
+      <mat-expansion-panel hideToggle #panelH2 (opened)="miscDocOpenState = true" (closed)="miscDocOpenState = false"
+        *ngIf="this.detailsSharing.permissionsCheck?.isViewMiscDocuments || this.detailsSharing.permissionsCheck.isNewMiscDocuments">
+        <mat-expansion-panel-header>
+          <div class="row details-row">
+            <div class="col-sm-1 expand-div">
+              <fa-icon [icon]="faChevronRight" class="add-icon chevron" *ngIf="!miscDocOpenState">
+              </fa-icon>
+              <fa-icon [icon]="faChevronDown" class="add-icon chevron" *ngIf="miscDocOpenState"></fa-icon>
+            </div>
+            <div class="col-sm-5 header-div">
+              Miscellaneous Documents ({{ miscDocCount }})
+            </div>
+            <div class="col-sm-8 button-div" fxFlex fxLayout fxLayoutAlign="end">
+              <fa-icon *ngIf="isOpen && this.detailsSharing.permissionsCheck?.isNewMiscDocuments"
+                class="plus-icon attach-claim-icon misc-doc-icon" matTooltip="Upload Document" [icon]="faPlusSquare"
+                (click)="panelH2.toggle(); uploadMiscellaneousDocument()"></fa-icon>
+            </div>
+          </div>
+        </mat-expansion-panel-header>
+        <cwb-miscellaneous-documents [investigationId]="investigationId" [investigationNumber]="investigationNumber"
+          (miscDocCountEmitter)="onGetMiscDocCount($event)"
+          *ngIf="this.detailsSharing.permissionsCheck?.isViewMiscDocuments">
+        </cwb-miscellaneous-documents>
+      </mat-expansion-panel>
+    </div>
+
+    <div class="col-sm-12">
+      <mat-expansion-panel hideToggle #panelH3 (opened)="claimsPanelOpenState = true"
+        (closed)="claimsPanelOpenState = false"
+        *ngIf="this.detailsSharing.permissionsCheck?.isViewClaims || this.detailsSharing.permissionsCheck.isAttachClaims">
+        <mat-expansion-panel-header>
+          <div class="row details-row">
+            <div class="col-sm-1 expand-div">
+              <fa-icon [icon]="faChevronRight" class="add-icon chevron" *ngIf="!claimsPanelOpenState">
+              </fa-icon>
+              <fa-icon [icon]="faChevronDown" class="add-icon chevron" *ngIf="claimsPanelOpenState">
+              </fa-icon>
+            </div>
+            <div class="col-sm-5 header-div">
+              Claims Attached ({{ claimsAttachedCount }})
+            </div>
+            <div class="col-sm-8 button-div" fxFlex fxLayout fxLayoutAlign="end">
+              <fa-icon *ngIf="isOpen && this.detailsSharing.permissionsCheck?.isAttachClaims"
+                class="plus-icon attach-claim-icon" matTooltip="Attach Claims" [icon]="faPlusCircle"
+                (click)="panelH3.toggle(); onAttachClaims()"></fa-icon>
+            </div>
+          </div>
+        </mat-expansion-panel-header>
+        <cwb-claims-attached [investigationId]="investigationId" [isOpen]="isOpen" [mainClaimNo]="claimNo"
+          *ngIf="this.detailsSharing.permissionsCheck?.isViewClaims" [isInvestigationExpanded]="isInvestigationExpanded"
+          [investigationNumber]="investigationNumber" (attachedClaims)="onGetAttachedClaims($event)"
+          (claimCountEmitter)="onGetClaimCount($event)">
+        </cwb-claims-attached>
+      </mat-expansion-panel>
+    </div>
+  </div>
+</div>

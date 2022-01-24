@@ -1,0 +1,35 @@
+<div class="container-fluid main-container">
+    <form class="addForm" [formGroup]="docForm" #formDirective="ngForm">
+        <div class="row dropdown-row">
+
+            <div class="col-sm-4">
+                <mat-select placeholder="Select Company" formControlName="companyControl" class="roles-dropdown"
+                    (selectionChange)="onCompanyChanged($event.value)"
+                    [ngClass]="{'red-border':docForm.controls['companyControl'].invalid && isSubmitClicked}">
+                    <mat-option *ngFor="let company of companies" [value]="company">
+                        {{ company.name }}
+                    </mat-option>
+                </mat-select>
+            </div>
+            <div class="col-sm-4" *ngIf="isCompanyChanged">
+                <mat-select placeholder="Select Document Type" formControlName="docControl" class="roles-dropdown"
+                    (selectionChange)="onDocTypeChanged($event.value)"
+                    [ngClass]="{'red-border':docForm.controls['docControl'].invalid && isSubmitClicked}">
+                    <mat-option *ngFor="let docType of docTypes" [value]="docType">
+                        {{ docType.type }}
+                    </mat-option>
+                </mat-select>
+            </div>
+
+            <div class="col-sm-4" *ngIf="isDocTypeChanged">
+                <button mat-button type="submit" class="submit-button add-button" (click)="onAddDocTemplate()">Add
+                    Document
+                    Template</button>
+            </div>
+        </div>
+
+        <div class="row submit-row">
+            <button type="button" class="clear-button btn btn-warning" (click)="onClear()">Clear</button>
+        </div>
+    </form>
+</div>

@@ -1,0 +1,188 @@
+<div class="main-container row">
+  <mat-table [dataSource]="dataSource" matSort multiTemplateDataRows
+    [ngClass]="isInvestigationExpanded ? 'expanded-table' : 'collapsed-table'">
+    <ng-container matColumnDef="expand">
+      <mat-header-cell *matHeaderCellDef class="addIcon">
+        <mat-icon *ngIf="!allClaimsClicked" class="expand-icon-header" (click)="onAllRowsClicked(true)"
+          matTooltip="Expand All Claims">add
+        </mat-icon>
+        <mat-icon *ngIf="allClaimsClicked" class="expand-icon-header" (click)="onAllRowsClicked(false)"
+          matTooltip="Collapse All Claims">remove
+        </mat-icon>
+      </mat-header-cell>
+      <mat-cell *matCellDef="let element">
+        <mat-icon *ngIf="!element.isExpanded" class="expand-icon"
+          (click)="element.isExpanded = true; isRowClicked = true">add
+        </mat-icon>
+        <mat-icon *ngIf="element.isExpanded" class="expand-icon"
+          (click)="element.isExpanded = false; isRowClicked = false">remove
+        </mat-icon>
+      </mat-cell>
+    </ng-container>
+    <ng-container matColumnDef="expandedDetail">
+      <mat-cell *matCellDef="let element" class="sub-table-cell">
+        <div class="sub-table-div" *ngIf="element.isExpanded">
+          <cwb-claims-attached-sub-table [isOpen]="isOpen" [lineItems]="element.lineItems"
+            [diagnosis]="element.diagnosis" [paidAs]="element.paidAs" [diagnosisDesc]="element.diagnosisDesc"
+            [decisionDate]="element.decisionDate" [showCloseDate]="!element.decision.includes('Open')">
+          </cwb-claims-attached-sub-table>
+        </div>
+      </mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="claimNum">
+      <mat-header-cell *matHeaderCellDef mat-sort-header>
+        Claim No.
+      </mat-header-cell>
+      <mat-cell *matCellDef="let element" class="claim-no-text">
+        {{ element.claimNum }}
+      </mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="claimDate">
+      <mat-header-cell *matHeaderCellDef mat-sort-header>
+        Date of Service
+      </mat-header-cell>
+      <mat-cell *matCellDef="let element" class="other-text">
+        {{ element.claimDate | date: "MM/dd/yyyy" }}
+      </mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="policyNo">
+      <mat-header-cell *matHeaderCellDef mat-sort-header>
+        Policy
+      </mat-header-cell>
+      <mat-cell *matCellDef="let element" class="other-text">
+        {{ element.policyNo }}
+      </mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="name">
+      <mat-header-cell *matHeaderCellDef mat-sort-header>
+        Claimant
+      </mat-header-cell>
+      <mat-cell *matCellDef="let element" class="other-text">
+        {{ element.name }}
+      </mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="totalCharges">
+      <mat-header-cell *matHeaderCellDef mat-sort-header>
+        Total Charges
+      </mat-header-cell>
+      <mat-cell *matCellDef="let element" class="other-text">
+        <span class="charge-text">{{
+          element.totalCharges | currency | gainLoss
+          }}</span>
+      </mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="pendingAmount">
+      <mat-header-cell *matHeaderCellDef mat-sort-header>
+        Pending Amount
+      </mat-header-cell>
+      <mat-cell *matCellDef="let element" class="other-text">
+        <span class="charge-text">
+          {{ element.pendingAmount | currency | gainLoss }}</span>
+      </mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="pendCode">
+      <mat-header-cell *matHeaderCellDef mat-sort-header>
+        Pend Code
+      </mat-header-cell>
+      <mat-cell *matCellDef="let element" class="other-text">
+        <span *ngIf="element.pendCode != 0">{{ element.pendCode }}</span>
+        <span *ngIf="element.pendCode === 0" class="dash">--</span>
+      </mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="status">
+      <mat-header-cell *matHeaderCellDef mat-sort-header>
+        Status
+      </mat-header-cell>
+      <mat-cell *matCellDef="let element" class="other-text">
+        {{ element.status }}
+      </mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="decision">
+      <mat-header-cell *matHeaderCellDef mat-sort-header>
+        Decision
+      </mat-header-cell>
+      <mat-cell *matCellDef="let element" class="other-text">
+        {{ element.decision }}
+      </mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="reopen" *ngIf="this.detailsSharing.permissionsCheck?.isReOpenClaim || this.detailsSharing.permissionsCheck?.isUpdatePendCodeClaim">
+      <mat-header-cell *matHeaderCellDef> </mat-header-cell>
+      <mat-cell *matCellDef="let element" class="other-text">
+        <fa-icon [icon]="faEnvelopeOpen" (click)="onReopenInvestigation(element)"
+          class="inv-type-icon edit-icon reopen-icon" matTooltip="Reopen Claim" *ngIf="
+            !element.decision.includes('Close') &&
+            !element.decision.includes('Open') &&
+          this.detailsSharing.permissionsCheck?.isReOpenClaim &&
+          !element.isActive &&
+            isOpen &&
+            element.status === 'S'
+          ">
+        </fa-icon>
+        <fa-icon [icon]="faPen" (click)="onEditPendCode(element)"
+          class="inv-type-icon edit-icon reopen-icon edit-pend-icon" matTooltip="Edit Pend Code" *ngIf="
+          element.isActive &&
+            isOpen &&
+            this.detailsSharing.permissionsCheck?.isUpdatePendCodeClaim &&
+            element.status === 'S'
+          ">
+        </fa-icon>
+      </mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="diagnosis">
+      <mat-header-cell *matHeaderCellDef class="diagnosis" mat-sort-header>
+        Diagnosis
+      </mat-header-cell>
+      <mat-cell *matCellDef="let element" class="other-text">
+        <span placement="right">{{ element.diagnosis }} - {{ element.diagnosisDesc }}
+        </span>
+      </mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="providerName">
+      <mat-header-cell *matHeaderCellDef mat-sort-header>
+        Provider
+      </mat-header-cell>
+      <mat-cell *matCellDef="let element" class="other-text">
+        {{ element.providerName }}
+      </mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="decisionDate">
+      <mat-header-cell *matHeaderCellDef mat-sort-header>
+        Closed Date
+      </mat-header-cell>
+      <mat-cell *matCellDef="let element" class="other-text">
+        <span *ngIf="!element.decision.includes('Open')">{{
+          element.decisionDate | date: "MM/dd/yyyy"
+          }}</span>
+      </mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="paidAs">
+      <mat-header-cell *matHeaderCellDef mat-sort-header>
+        Process As
+      </mat-header-cell>
+      <mat-cell *matCellDef="let element" class="other-text">
+        <span *ngIf="!element.decision.includes('Open')">{{
+          element.paidAs
+          }}</span>
+      </mat-cell>
+    </ng-container>
+
+    <mat-header-row *matHeaderRowDef="displayedColumns"
+      [ngClass]="isInvestigationExpanded ? 'expanded-row' : 'collapsed-row'"></mat-header-row>
+    <mat-row *matRowDef="let row; columns: displayedColumns" matRipple class="header-row"
+      [ngClass]="isInvestigationExpanded ? 'expanded-row' : 'collapsed-row'"></mat-row>
+  </mat-table>
+</div>

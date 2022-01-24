@@ -1,0 +1,40 @@
+.main-container{
+    padding: .5rem 1.25rem 1.25rem;
+}
+
+
+.data-container
+{   
+    background: #FFFFFF 0% 0% no-repeat padding-box;
+    border: none;
+    opacity: 1;
+    padding-top: 0%;
+ 
+}
+.spinner-div{
+    padding: 5% 50%;
+}
+:host ::ng-deep .mat-progress-spinner circle, .mat-spinner circle {
+    stroke: #147AFC !important;
+}
+.tables-container{
+    overflow: hidden;
+
+}
+::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+  }
+  
+  /* Handle */
+  ::-webkit-scrollbar-thumb {
+    background: #666666; 
+    border-radius: 8px;
+  }
+.no-record-div{
+    text-align: center;
+}
+.no-records-header{
+    font-size: 18px;
+}
+

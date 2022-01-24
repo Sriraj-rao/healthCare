@@ -1,0 +1,51 @@
+<div class="main-modal-div">
+
+
+    <div class="modal-header ">
+
+        <h2 class="header-text">View Investigations</h2>
+        <div mat-dialog-close class="close">&times;</div>
+    </div>
+    <mat-dialog-content class="dialog-content">
+       <div class="main-container">
+        <div class="row claim-Details-header">
+            <div class="col-sm-12 ">
+
+                <span class="claim-Details-text">Claimant: <span class="text-value">
+                        {{claimsData.claimantName}}</span></span>
+            </div>
+        </div>
+        <div class="main-container table-container row">
+            <mat-table matSort [dataSource]="dataSource">
+
+                <ng-container matColumnDef="number">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header> Investigation ID </mat-header-cell>
+                    <mat-cell *matCellDef="let element" class="claim-no-text" (click)="onInvIdClicked(element.number)">
+                        {{element.number}} </mat-cell>
+                </ng-container>
+
+                <ng-container matColumnDef="investigationSubCategory">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header>Investigation Type </mat-header-cell>
+                    <mat-cell *matCellDef="let element" class="other-text"><span>{{element.investigationSubCategory}}</span>
+                    </mat-cell>
+                </ng-container>
+
+                <ng-container matColumnDef="investigationStatus">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header> Status </mat-header-cell>
+                    <mat-cell *matCellDef="let element" class="status-text"
+                        [ngClass]="{'red':element.investigationStatus.includes('Close')}">
+                        <span>{{element.investigationStatus === 'Reopen' ? 'Open' : element.investigationStatus}}</span>
+                         </mat-cell>
+                </ng-container>
+
+
+                <mat-header-row *matHeaderRowDef="displayedColumns" class="header-row"></mat-header-row>
+                <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+            </mat-table>
+        </div>
+        <div class="mod-footer">
+
+            <span class="claim-no-text" (click)="onViewAll()">View All Investigations</span>
+        </div>
+       </div>
+    </mat-dialog-content>

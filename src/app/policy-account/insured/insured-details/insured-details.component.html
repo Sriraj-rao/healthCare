@@ -1,0 +1,308 @@
+<div class="row note">
+  <div class="text-div col-sm-8">
+    <span *ngIf="!noRecords" class="span-text"
+      >Showing {{ totalResults }} Results for
+      <span class="note-bold">{{ currentPolicyNo }}</span> From
+      <span class="note-bold">{{ fromDate | date: "MM/dd/yyyy" }}</span></span
+    >
+    <span *ngIf="noRecords" class="span-text"
+      >Showing 0 Results for
+      <span class="note-bold">{{ currentPolicyNo }}</span></span
+    >
+  </div>
+  <div class="button-div col-sm-4">
+    <button
+      mat-raised-button
+      color="primary"
+      class="reload-button"
+      (click)="onReloadInsured()"
+    >
+      <span class="button-text">
+        <fa-icon [icon]="faSync" class="sync-icon"></fa-icon>Reload Insured
+      </span>
+    </button>
+  </div>
+</div>
+<div *ngFor="let coverageSummary of coverageSummaries" class="main-container">
+  <div class="row top-table-header">
+    <div class="col-sm-3">
+      <span class="top-header-text"
+        >{{ coverageSummary.policyNo }}
+        <span *ngIf="coverageSummary.policyNo !== coverageSummary.hcpPolicyNo"
+          >({{ coverageSummary.hcpPolicyNo }})</span
+        >
+        - {{ coverageSummary.planName }}</span
+      >
+    </div>
+    <div
+      class="col-sm-2"
+      [ngClass]="{ invisible: !!!coverageSummary.planGroup }"
+    >
+      <span class="top-header-text"
+        >Group #: {{ coverageSummary.planGroup }}</span
+      >
+    </div>
+    <div class="col-sm-2 state-col">
+      <span class="top-header-text"
+        >Issue State: {{ coverageSummary.issueState.toUpperCase() }}</span
+      >
+    </div>
+    <div class="col-sm-2">
+      <span
+        class="top-header-text"
+        [ngClass]="{ 'not-valid': overduePTD(coverageSummary) }"
+        >Paid-to-Date:
+        {{ coverageSummary.paidToDate | date: "MM/dd/yyyy" }}</span
+      >
+    </div>
+    <div
+      class="col-sm-1 leaf-col"
+      [ngClass]="{ invisible: !isPaperless(coverageSummary) }"
+    >
+      <fa-icon
+        [icon]="faLeaf"
+        class="leaf-icon"
+        matTooltip="Requested 'Electronic Documents'"
+      >
+      </fa-icon>
+    </div>
+    <div class="col-sm-2 control-col">
+      <span
+        class="top-header-text"
+        [ngClass]="{ 'cwb-alert-warning': coverageSummary.highlightControlNo }"
+        >Control Number: {{ coverageSummary.controlNo }}
+      </span>
+    </div>
+  </div>
+  <div class="table-container">
+    <mat-table
+      #detailsTable
+      [dataSource]="coverageSummary.insuredCoverages"
+      class="table-container"
+      multiTemplateDataRows
+    >
+      <ng-container matColumnDef="expand">
+        <mat-header-cell *matHeaderCellDef class="addIcon"> </mat-header-cell>
+        <mat-cell *matCellDef="let element">
+          <div *ngIf="element.benefitRiders.length > 0">
+            <mat-icon
+              *ngIf="!element.isExpanded"
+              class="expand-icon"
+              matTooltip="Show/Hide Riders"
+              (click)="
+                element.isExpanded = !element.isExpanded; isRowClicked = true
+              "
+              [ngClass]="{ 'not-valid': element.benefitStatus !== 'In Force' }"
+              >add
+            </mat-icon>
+            <mat-icon
+              *ngIf="element.isExpanded"
+              class="expand-icon"
+              matTooltip="Show/Hide Riders"
+              (click)="
+                element.isExpanded = !element.isExpanded; isRowClicked = false
+              "
+              [ngClass]="{ 'not-valid': element.benefitStatus !== 'In Force' }"
+              >remove
+            </mat-icon>
+          </div>
+        </mat-cell>
+      </ng-container>
+
+      <ng-container matColumnDef="expandedDetail">
+        <mat-cell *matCellDef="let element" class="sub-table-cell">
+          <div class="sub-table-div">
+            <cwb-insured-sub-table
+              [riders]="element.benefitRiders"
+            ></cwb-insured-sub-table>
+          </div>
+        </mat-cell>
+      </ng-container>
+
+      <ng-container matColumnDef="insured">
+        <mat-header-cell *matHeaderCellDef class="table-header"
+          >Insured</mat-header-cell
+        >
+        <mat-cell *matCellDef="let element">
+          <span
+            class="insured-name"
+            [ngClass]="{ 'not-valid': element.benefitStatus !== 'In Force' }"
+            (click)="onNameClicked()"
+            >{{ element.displayName }}</span
+          >
+        </mat-cell>
+      </ng-container>
+
+      <ng-container matColumnDef="memberId">
+        <mat-header-cell *matHeaderCellDef class="table-header"
+          >Member ID</mat-header-cell
+        >
+        <mat-cell *matCellDef="let element">
+          <span
+            class="table-column-values"
+            [ngClass]="{ 'not-valid': element.benefitStatus !== 'In Force' }"
+            >{{ element.clientNo }}</span
+          >
+        </mat-cell>
+      </ng-container>
+
+      <ng-container matColumnDef="status">
+        <mat-header-cell *matHeaderCellDef class="table-header"
+          >Status</mat-header-cell
+        >
+        <mat-cell *matCellDef="let element">
+          <span
+            class="table-column-values"
+            [ngClass]="{ 'not-valid': element.benefitStatus !== 'In Force' }"
+            >{{ element.status }}</span
+          >
+        </mat-cell>
+      </ng-container>
+
+      <ng-container matColumnDef="relationship">
+        <mat-header-cell *matHeaderCellDef class="table-header"
+          >Relationship</mat-header-cell
+        >
+        <mat-cell *matCellDef="let element">
+          <span
+            class="table-column-values"
+            [ngClass]="{ 'not-valid': element.benefitStatus !== 'In Force' }"
+            >{{ element.relationship }}</span
+          >
+        </mat-cell>
+      </ng-container>
+
+      <ng-container matColumnDef="gender">
+        <mat-header-cell *matHeaderCellDef class="table-header"
+          >Gender</mat-header-cell
+        >
+        <mat-cell *matCellDef="let element">
+          <span
+            class="table-column-values"
+            [ngClass]="{ 'not-valid': element.benefitStatus !== 'In Force' }"
+            >{{ element.gender }}</span
+          >
+        </mat-cell>
+      </ng-container>
+
+      <ng-container matColumnDef="dob">
+        <mat-header-cell *matHeaderCellDef class="table-header"
+          >DOB</mat-header-cell
+        >
+        <mat-cell *matCellDef="let element">
+          <span
+            class="table-column-values-date align-center"
+            [ngClass]="{ 'not-valid': element.benefitStatus !== 'In Force' }"
+            >{{ element.dob | date: "MM/dd/yyyy" }}</span
+          >
+        </mat-cell>
+      </ng-container>
+
+      <ng-container matColumnDef="age">
+        <mat-header-cell *matHeaderCellDef class="table-header"
+          >Age</mat-header-cell
+        >
+        <mat-cell *matCellDef="let element">
+          <span
+            class="table-column-values"
+            [ngClass]="{ 'not-valid': element.benefitStatus !== 'In Force' }"
+            >{{ element.age }}</span
+          >
+        </mat-cell>
+      </ng-container>
+
+      <ng-container matColumnDef="applicationDate">
+        <mat-header-cell *matHeaderCellDef class="table-header"
+          >Application Date</mat-header-cell
+        >
+        <mat-cell *matCellDef="let element" class="align-center">
+          <span
+            class="table-column-values-date align-center"
+            [ngClass]="{ 'not-valid': element.benefitStatus !== 'In Force' }"
+            >{{ element.applicationDate | date: "MM/dd/yyyy" }}</span
+          >
+        </mat-cell>
+      </ng-container>
+
+      <ng-container matColumnDef="settleDate">
+        <mat-header-cell *matHeaderCellDef class="table-header"
+          >Settle Date</mat-header-cell
+        >
+        <mat-cell *matCellDef="let element" class="align-center">
+          <span
+            class="table-column-values-date align-center"
+            [ngClass]="{ 'not-valid': element.benefitStatus !== 'In Force' }"
+            >{{ element.settleDate | date: "MM/dd/yyyy" }}</span
+          >
+        </mat-cell>
+      </ng-container>
+
+      <ng-container matColumnDef="effectiveDate">
+        <mat-header-cell *matHeaderCellDef class="table-header"
+          >Effective Date</mat-header-cell
+        >
+        <mat-cell *matCellDef="let element" class="align-center">
+          <span
+            class="table-column-values-date align-center"
+            [ngClass]="{ 'not-valid': element.benefitStatus !== 'In Force' }"
+            >{{ element.effectiveDate | date: "MM/dd/yyyy" }}</span
+          >
+        </mat-cell>
+      </ng-container>
+
+      <ng-container matColumnDef="lapseDate">
+        <mat-header-cell *matHeaderCellDef class="table-header"
+          >Lapse Date</mat-header-cell
+        >
+        <mat-cell *matCellDef="let element">
+          <span
+            class="table-column-values-date align-center"
+            [ngClass]="{ 'not-valid': element.benefitStatus !== 'In Force' }"
+            >{{ element.lapseDate | date: "MM/dd/yyyy" }}</span
+          >
+        </mat-cell>
+      </ng-container>
+
+      <ng-container matColumnDef="reIssueDate">
+        <mat-header-cell *matHeaderCellDef class="table-header"
+          >Re-Issue Date</mat-header-cell
+        >
+        <mat-cell *matCellDef="let element" class="align-center">
+          <span
+            class="table-column-values-date align-center"
+            [ngClass]="{ 'not-valid': element.benefitStatus !== 'In Force' }"
+            >{{ element.reissueDate | date: "MM/dd/yyyy" }}</span
+          >
+        </mat-cell>
+      </ng-container>
+
+      <ng-container matColumnDef="termDate">
+        <mat-header-cell *matHeaderCellDef class="table-header"
+          >Term Date</mat-header-cell
+        >
+        <mat-cell *matCellDef="let element" class="align-center">
+          <span
+            class="table-column-values-date"
+            [ngClass]="{ 'not-valid': element.benefitStatus !== 'In Force' }"
+            >{{ element.terminationDate | date: "MM/dd/yyyy" }}</span
+          >
+        </mat-cell>
+      </ng-container>
+
+      <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+      <mat-row
+        *matRowDef="let row; columns: displayedColumns"
+        matRipple
+        class="element-row"
+      ></mat-row>
+      <div>
+        <mat-row
+          [@rowExpand]="row.isExpanded ? 'expanded' : 'collapsed'"
+          *matRowDef="let row; columns: ['expandedDetail']; let i = index"
+          class="exp-coll"
+        >
+        </mat-row>
+      </div>
+    </mat-table>
+  </div>
+</div>

@@ -1,0 +1,88 @@
+.main-container {
+    overflow-x: hidden;
+}
+.dialog-main {
+    max-height: 82vh;
+}
+.main-div-expanded{
+    width: auto;
+    height: 90vh;
+    max-height: 90vh;
+    overflow: hidden;
+}
+.preview-doc-div{
+    width: 40vw;
+}
+.fixed-preview
+{
+  position: sticky;
+    bottom: 0px;
+    top: 0px;
+    z-index: 1;
+}
+.dialog-expanded{
+    display: flex;
+}
+.container-div{
+    width: 40vw;
+    padding:10px;
+}
+.viewer-close{
+    display: flex;
+    justify-content: flex-end;
+}
+.download-header-text {
+    color: #747474;
+    font-size: 16px;
+    font-weight: 500;
+}
+.file-row {
+    border: 2px dashed #929eb8;
+    border-radius: 2px;
+    margin-top: 2%;
+    padding-top: 3px;
+    padding-bottom: 3px;
+    margin-left: 0%;
+    margin-right: 0%;
+    cursor: pointer;
+    .file-icon-div {
+        width: 17px;
+        padding-left: 5px;
+    }
+    .file-icon {
+        font-size: 20px;
+        color: #0d6efd;
+    }
+    .file-text {
+        font-size: 14px;
+        font-weight: 500;
+        color: #353f4a;
+        width: 440px;
+    }
+    .date-text {
+        color: #ff9d00;
+        font-weight: bold;
+        font-size: 14px;
+        width: 90px;
+    }
+}
+
+.submit {
+   
+    color: #147afc;
+    font-size: 22px;
+    margin-right: 2%;
+    cursor: pointer;
+}
+.non-submit {
+   
+    color: darkgray;
+    font-size: 22px;
+    margin-right: 2%;
+    cursor: pointer;
+}
+.button-div {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 10px;
+}

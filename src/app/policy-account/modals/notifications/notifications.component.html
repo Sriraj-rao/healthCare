@@ -1,0 +1,23 @@
+<div class="main-modal-div">
+
+
+    <div class="modal-header">
+
+        <h2 class="header-text">{{notificationToDisplay.title}}</h2>
+        <div mat-dialog-close class="dialog-close">&times;</div>
+    </div>
+
+
+    <mat-dialog-content class="dialog-content">
+        <div class="main-div">
+            <div class="row">
+                <p>
+                    {{notificationToDisplay.body}}
+                </p>
+            </div>
+            <div class="button-div-footer popup-footer">
+                <button mat-button type="button" class="save-button" (click)="onAcknowledge()">I acknowledge</button>
+            </div>
+        </div>
+    </mat-dialog-content>
+</div>

@@ -1,0 +1,22 @@
+.mat-header-row{
+    background-color: #007bff;
+    min-height: 38px;
+}
+
+.mat-row, .mat-footer-row {
+     min-height: 0.7rem;
+}
+.diagnosis-text{
+    cursor: pointer
+}
+.diagnosis-text:hover{
+    color: #6296EF !important;
+}
+.mat-header-cell{
+    color: #FFFFFF;
+    font-size: 0.75rem;
+    font-weight: 500;
+}
+.mat-cell{
+    font-size: 0.75rem;
+}

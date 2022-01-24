@@ -1,0 +1,30 @@
+<div class="main-modal-div" [ngClass]="{ 'main-div-expanded': isPreviewDocument }">
+  <div class="modal-header">
+    <h2 class="header-text">Download Documents</h2>
+    <button mat-dialog-close class="dialog-close">&times;</button>
+  </div>
+
+
+  <mat-dialog-content class="dialog-main" [ngClass]="{'dialog-expanded': isPreviewDocument}">
+    <div class="container-div">
+      <cwb-file-list [fileLists]="downloadDocumentData.docFileIds" (fileIdEmitter)="onPreviewDocument($event)"
+        (checkboxClickedEmiter)="onCheckboxClicked($event)" (allCheckboxClickedEmiter)="onAllCheckbocClicked($event)">
+      </cwb-file-list>
+      <div class="row">
+        <div class="button-div">
+          <fa-icon [icon]="faDownload" matTooltip="Download the selected file/files" class="submit"
+            [ngClass]="checkboxIsClicked ? 'submit' : 'non-submit'" (click)="onSubmit()"
+            [attr.disabled]="checkboxIsClicked"></fa-icon>
+        </div>
+      </div>
+    </div>
+    <div *ngIf="isPreviewDocument" class="preview-doc-div">
+      <div class="row fixed-preview">
+        <div class="dialog-close viewer-close"><button class="btn btn-danger" (click)="onPreviewClose()">Close
+            Preview</button></div>
+      </div>
+      <cwb-file-viewer [postData]="postData" (templateFileIdEmitter)="onTemplateIdEmitted($event)"
+        [tableFileId]="tableFileId"></cwb-file-viewer>
+    </div>
+  </mat-dialog-content>
+</div>

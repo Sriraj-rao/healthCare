@@ -1,0 +1,264 @@
+<div class="main-modal-div">
+
+
+  <div class="modal-header">
+
+      <h2 class="header-text">Investigation: Attach Claims</h2>
+      <div mat-dialog-close class="dialog-close">&times;</div>
+  </div>
+
+
+  <mat-dialog-content class="dialog-content">
+      <div class="main-div">
+          <div class="row claim-Details">
+              <div class="col-sm-3">
+                  <span class="full-text">Investigation Number: <span class="text">
+                          {{investigationNumber}}</span></span>
+              </div>
+              <div class="col-sm-3">
+                  <span class="full-text">Investigation Type: <span class="text"> {{investigationType}}</span></span>
+              </div>
+          </div>
+          <div class="row search-row">
+              <div class="col-lg-4 col-sm-4 name-col">
+                  <div class="input-group">
+                      <div class="input-group-prepend">
+                          <span class="input-group-text" id="basic-addon1">
+                              <fa-icon [icon]="faSearch" class="search-icon"></fa-icon>
+                          </span>
+                      </div>
+                      <input (keydown)="keyDownFunction($event)" #searchText type="text"
+                          class="form-control search-input-field" id="search-text" aria-label="State"
+                          [matAutocomplete]="auto" [formControl]="nameSearchControl" 
+                          placeholder="Policy/Control # OR Last Name, First Name">
+
+
+                      <mat-autocomplete autoActiveFirstOption #auto="matAutocomplete" class="autocomplete"
+                          [panelWidth]="600" classList="autocomplete">
+                          <div *ngIf="!isLoading">
+                              <mat-option *ngFor="let state of searchResults" (click)="onOptionClicked()"
+                                  (onSelectionChange)="onSearchResultClick(state)"
+                                  [value]="(state.lastName+ ','+' '+state.firstName).trim()+' - '+ state.address+'; '+state.city+', '+state.state+' '+state.zip">
+                                  <span class="badge"
+                                      [ngClass]="{'badge-success': state.relationship === 'Primary', 'badge-warning': state.relationship === 'Spouse', 'badge-dark':state.relationship === 'Dependent'}">{{checkRelationship(state.relationship)}}</span>
+                                  <span class="search-text">
+                                      {{(state.lastName+ ','+' '+state.firstName).trim()+' - '+ state.address+'; '+state.city+', '+state.state+' '+state.zip}}</span>
+                              </mat-option>
+                          </div>
+                      </mat-autocomplete>
+                      <div class="spinner-div">
+                          <mat-spinner *ngIf="isLoading && nameSearchControl.value?.length>=1" class="loading-spinner"
+                              [diameter]="20"></mat-spinner>
+                      </div>
+                      <div class="clear-search" *ngIf="nameSearchControl.value?.length > 0 && !isLoading">
+                          <span class="input-group-text" id="basic-addon1">
+                              <fa-icon [icon]="faTimes" class="search-icon" (click)="onClearSearch()"></fa-icon>
+                          </span>
+                      </div>
+                  </div>
+              </div>
+              <div class="col-lg-1 col-sm-1 or-col  text-center">
+                  <span>OR</span>
+              </div>
+              <div class="col-lg-2 col-sm-2 member-col">
+                  <div class="input-group">
+                      <div class="input-group-prepend">
+                          <span class="input-group-text" id="basic-addon1">
+                              <fa-icon [icon]="faSearch" class="search-icon"></fa-icon>
+                          </span>
+                      </div>
+                      <input type="text" class="form-control search-input-field" id="member-text" aria-label="State"
+                          [formControl]="memberIdControl" placeholder="Member ID" (keyup.enter)="onSearch()">
+                  </div>
+              </div>
+              <div class="col-lg-1 col-sm-1 or-col  text-center">
+                  <span>OR</span>
+              </div>
+              <div class="col-lg-2 col-sm-2 claims-col">
+                  <div class="input-group">
+                      <div class="input-group-prepend">
+                          <span class="input-group-text" id="basic-addon1">
+                              <fa-icon [icon]="faSearch" class="search-icon"></fa-icon>
+                          </span>
+                      </div>
+                      <input type="text" class="form-control search-input-field" id="claim-text" aria-label="State"
+                          [formControl]="claimNoControl" placeholder="Claim No." (keyup.enter)="onSearch()">
+                  </div>
+              </div>
+              <div class="col-lg-2 search-button-class">
+                  <div class="row button-row">
+                      <div class="col-lg-12 col-sm-12">
+                          <button mat-raised-button color="primary" class="search-button"
+                              (click)="onSearch()">Search</button>
+                      </div>
+                  </div>
+              </div>
+          </div>
+
+
+
+          <div class="table-container">
+              <div class="main-container row" *ngIf="claimDetails.length > 0">
+                  <div class="table-overflow">
+                      <mat-table [dataSource]="dataSource" matSort (matSortChange)="sortData($event)">
+                          <ng-container matColumnDef="checkbox">
+                              <mat-header-cell *matHeaderCellDef>
+                                  <mat-checkbox type="checkbox" [formControl]="allCheckboxControl" (click)="onAllCheckboxChanged()"></mat-checkbox>
+                              </mat-header-cell>
+                              <mat-cell *matCellDef="let element;let i=index;" class="claim-no-text">
+                                  <mat-checkbox type="checkbox" (click)="onCheckboxChanged(element.index)"
+                                      [checked]="allCheckboxSelected"></mat-checkbox>
+                              </mat-cell>
+                          </ng-container>
+
+                          <ng-container matColumnDef="claimNum">
+                              <mat-header-cell *matHeaderCellDef mat-sort-header> Claim No </mat-header-cell>
+                              <mat-cell *matCellDef="let element" class="claim-no-text">
+                                  {{element.claimNum}}
+                              </mat-cell>
+                          </ng-container>
+
+                          <ng-container matColumnDef="diagnosis">
+                              <mat-header-cell *matHeaderCellDef mat-sort-header>Diagnosis </mat-header-cell>
+                              <mat-cell *matCellDef="let row" class="other-text"><span class="diagnosis-text"
+                                      placement="bottom" ngbPopover="{{row.diagnosis}} - {{row.diagnosisDesc}}"
+                                      popoverTitle="Diagnosis">{{row.diagnosis}} </span>
+                              </mat-cell>
+                          </ng-container>
+
+                          <ng-container matColumnDef="claimDate">
+                              <mat-header-cell *matHeaderCellDef mat-sort-header> Date Of Service </mat-header-cell>
+                              <mat-cell *matCellDef="let element" class="other-text">
+                                  {{element.claimDate | date: 'MM/dd/yyyy'}} </mat-cell>
+                          </ng-container>
+
+                          <ng-container matColumnDef="policyNo">
+                              <mat-header-cell *matHeaderCellDef mat-sort-header> Policy </mat-header-cell>
+                              <mat-cell *matCellDef="let element" class="other-text"> {{element.policyNo}}
+                              </mat-cell>
+                          </ng-container>
+
+                          <ng-container matColumnDef="name">
+                              <mat-header-cell *matHeaderCellDef mat-sort-header> Claimant </mat-header-cell>
+                              <mat-cell *matCellDef="let element" class="other-text">
+                                  {{element.name}}
+                              </mat-cell>
+                          </ng-container>
+                          <ng-container matColumnDef="benefitType">
+                              <mat-header-cell *matHeaderCellDef mat-sort-header>Benefit Type </mat-header-cell>
+                              <mat-cell *matCellDef="let element" class="other-text">
+                                  {{element.benefitType}}
+                              </mat-cell>
+                          </ng-container>
+                          <ng-container matColumnDef="totalCharges">
+                              <mat-header-cell *matHeaderCellDef mat-sort-header>Total Paid </mat-header-cell>
+                              <mat-cell *matCellDef="let element" class="other-text">
+                                  <span class="charge-text"> {{element.totalCharges | currency | gainLoss}}
+                                  </span>
+                              </mat-cell>
+                          </ng-container>
+                          <ng-container matColumnDef="pendCode">
+                              <mat-header-cell *matHeaderCellDef>
+                                  <div class="form-group form-header">
+                                      <label for="pendCodeHeader" class="pend-label">Pend Code </label>
+                                      <mat-select class="select header-dropdown pend-header" id="pendCodeHeader"
+                                          aria-label="Default select example" placeholder="Select Pend Code"
+                                          [disabled]="disableHeaderSelect" (click)="onSelectClicked()"
+                                          [formControl]="pendCodeHeaderControl" (openedChange)="onPendCodeHeaderClosed()">
+                                          <div class="search-div">
+                                              <div class="input-group">
+                                                  <div class="input-group-prepend">
+                                                      <span class="input-group-text">
+                                                          <fa-icon [icon]="faSearch" class="search-icon">
+                                                          </fa-icon>
+                                                      </span>
+                                                  </div>
+                                                  <input #inputPendCode autofocus type="text"
+                                                      class="form-control search-input-field"
+                                                      [formControl]="pendCodeHeaderSearchControl"
+                                                      (keydown)="helperMethods.onKeyPressinSearch($event)"
+                                                      placeholder="Filter Pend Codes">
+
+                                                  <div class="clear-search">
+                                                      <span class="input-group-text">
+                                                          <fa-icon [icon]="faTimes" class="search-icon"
+                                                              (click)="onClearHeaderSearch()"></fa-icon>
+                                                      </span>
+                                                  </div>
+                                              </div>
+                                          </div>
+                                          <div>
+                                              <mat-option
+                                                  *ngFor="let pendCode of pendCodes | filterOptions: pendCodeHeaderSearchControl.value"
+                                                  [value]="pendCode" (click)="onHeaderChanged(pendCode)">
+
+                                                  {{pendCode.pendCode}} - {{pendCode.description}}
+                                              </mat-option>
+                                          </div>
+                                      </mat-select>
+                                  </div>
+                              </mat-header-cell>
+                              <mat-cell *matCellDef="let element;let i=index" class="other-text">
+                                  <mat-select class="select" aria-label="Default select example"
+                                      (openedChange)="onPendCodeDropdownClosed(element.index)"
+                                      (click)="onChildPendCodeClicked(element.index)" placeholder="Select Pend Code"
+                                      [ngClass]="{'red-border':pendCodeControl.controls[element.index].invalid &&(isSubmitClicked)}"
+                                      [matTooltip]="helperMethods.getPendCodeTooltip(pendCodeControl.controls[element.index].value)"
+                                      [formControl]="pendCodeControl.controls[element.index]">
+                                      <div class="search-div">
+                                          <div class="input-group">
+                                              <div class="input-group-prepend">
+                                                  <span class="input-group-text">
+                                                      <fa-icon [icon]="faSearch" class="search-icon">
+                                                      </fa-icon>
+                                                  </span>
+                                              </div>
+                                              <input #inputChildPendCode autofocus type="text"
+                                                  [formControl]="pendCodeSearchControl.controls[element.index]"
+                                                  class="form-control search-input-field"
+                                                  (keydown)="helperMethods.onKeyPressinSearch($event)"
+                                                  placeholder="Filter Pend Codes">
+
+                                              <div class="clear-search">
+                                                  <span class="input-group-text">
+                                                      <fa-icon [icon]="faTimes" class="search-icon"
+                                                          (click)="onClearDropdownSearch(element.index)"></fa-icon>
+                                                  </span>
+                                              </div>
+                                          </div>
+                                      </div>
+                                      <div>
+                                          <mat-option
+                                              *ngFor="let pendCode of pendCodes | filterOptions: pendCodeSearchControl.controls[element.index].value"
+                                              [value]="pendCode">
+
+                                              {{pendCode.pendCode}} - {{pendCode.description}}
+                                          </mat-option>
+                                      </div>
+                                  </mat-select>
+                              </mat-cell>
+                          </ng-container>
+
+
+                          <mat-header-row *matHeaderRowDef="displayedColumns; sticky: true" class="header-row">
+                          </mat-header-row>
+                          <div>
+                              <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+                          </div>
+                      </mat-table>
+                  </div>
+              </div>
+              <div class="already-existing-div" *ngIf="claimDetails.length === 0 && alreadyExistingMessage">
+                  <h1>{{alreadyExistingMessage}}</h1>
+              </div>
+          </div>
+
+
+          <div class="button-div-footer popup-footer">
+              <button type="button" class="cancel-button"  mat-button mat-dialog-close>Cancel</button>
+              &nbsp; &nbsp;
+              <button mat-button type="button" class="save-button" (click)="onSubmit()">Attach</button>
+          </div>
+      </div>
+  </mat-dialog-content>
+</div>

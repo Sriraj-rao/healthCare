@@ -1,0 +1,19 @@
+<div class="main-container">
+    <div class="tabs">
+        <mat-tab-group [selectedIndex]="selectedTab" (selectedIndexChange)="tabSelectionChanged($event)"
+            [disableRipple]="true">
+            <mat-tab label="Role Management">
+                <cwb-role-management></cwb-role-management>
+            </mat-tab>
+            <!-- <mat-tab label="Document Requests">
+                <cwb-manage-document-requests [companies]="companies" [docTypes]="docTypes"></cwb-manage-document-requests>
+            </mat-tab>
+            <mat-tab label="Document Templates">
+                <cwb-manage-document-templates [companies]="companies" [docTypes]="docTypes"></cwb-manage-document-templates>
+            </mat-tab>
+            <mat-tab label="Document Properties">
+                <cwb-manage-documents [companies]="companies" [docTypes]="docTypes"></cwb-manage-documents>
+            </mat-tab> -->
+        </mat-tab-group>
+    </div>
+</div>

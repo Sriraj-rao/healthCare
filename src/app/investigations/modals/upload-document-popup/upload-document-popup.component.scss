@@ -1,0 +1,267 @@
+:host ::ng-deep .mat-form-field-underline {
+  position: absolute;
+  width: 75%;
+  pointer-events: none;
+  transform: scale3d(1, 1.0001, 1);
+}
+:host ::ng-deep .mat-form-field-flex {
+  display: inline-flex;
+  align-items: baseline;
+  box-sizing: border-box;
+  width: 75%;
+}
+
+:host ::ng-deep .mat-body p,
+.mat-body-1 p,
+.mat-typography p {
+  margin: 0 0 4px !important;
+}
+
+.doc-text {
+  font-weight: bold;
+}
+
+.root {
+  width: 600px;
+  max-height: calc(115vh - 90px);
+  height: auto;
+  // overflow: auto;
+  overflow-x: hidden;
+}
+
+.uploading-text {
+  margin: 0;
+  padding-right: 10px;
+}
+.upload-container{
+  margin-bottom: 35px;
+}
+
+.close {
+  margin-right: 10px;
+  margin-bottom: 0.5%;
+  font-size: 25px;
+  color: #000;
+  cursor: pointer;
+  margin-right: -10px;
+  margin-top: -11px;
+}
+
+.display {
+  display: flex;
+  padding-bottom: 10px;
+}
+
+.notes-error {
+  padding-right: 27%;
+  white-space: nowrap;
+}
+
+.dialog-content {
+  padding-top: 0;
+  padding-bottom: 0;
+  /* max-height: 82vh; */
+  height: auto;
+  overflow: unset;
+  width: 104.5%;
+  overflow-x: hidden;
+  overflow-y: auto;
+  max-height: 85vh;
+}
+
+.mat-dialog-content {
+  display: block;
+  // margin: 0 -24px;
+  // padding: 0 24px;
+  padding-right: 0;
+  max-height: 85vh;
+  overflow: unset;
+  overflow-x: hidden;
+  -webkit-overflow-scrolling: touch;
+}
+
+.div-padding {
+  display: flex;
+  white-space: nowrap;
+  padding-left: 10px;
+}
+
+.div-left {
+  // padding-left: 2%;
+  padding-right: 10px;
+}
+:host ::ng-deep .mat-select-value {
+  color: black;
+}
+
+.doc-text {
+  margin-bottom: 2px;
+  margin-top: 5px;
+  text-align: left;
+  /* font: normal normal normal 14px/21px Roboto; */
+  letter-spacing: 0px;
+  color: #000000;
+  opacity: 1;
+}
+
+.rec-text {
+  margin-top: 6px;
+  text-align: left;
+  letter-spacing: 0px;
+  color: #000000;
+  opacity: 1;
+  margin-bottom: 2px;
+}
+
+.empty-one {
+  width: 127%;
+  height: 23px;
+  border: 1px solid #929eb8;
+  border-radius: 2px;
+  opacity: 1;
+}
+
+.empty-two {
+  width: 127%;
+  height: 23px;
+  border: 1px solid #929eb8;
+  border-radius: 2px;
+  opacity: 1;
+}
+::-webkit-scrollbar {
+  width: 8px !important;
+  height: 6px !important;
+}
+::-webkit-scrollbar-thumb {
+  background: #666666 !important;
+  border-radius: 8px !important;
+}
+.date-piker {
+  height: 23px;
+  width: 130px;
+  background-color: white;
+  border: 1px solid #929eb8;
+  .form-control {
+    height: 21px;
+    background-color: white;
+    border-radius: 0;
+    font-size: 12px;
+  }
+  .input-group-text {
+    height: 21px;
+    background-color: white;
+    border-radius: 0;
+  }
+  .ng-fa-icon {
+    color: #147afc;
+  }
+}
+
+.del-text {
+  margin-bottom: 2px;
+  margin-top: 5px;
+  text-align: left;
+  letter-spacing: 0px;
+  color: #000000;
+  opacity: 1;
+  white-space: nowrap;
+}
+
+.provider-text {
+  text-align: left;
+  letter-spacing: 0px;
+  color: #000000;
+  opacity: 1;
+  margin: 0;
+}
+.provider-input {
+  font-weight: bold;
+  margin-bottom: 1%;
+  width: 98%;
+  background: #ffffff 0% 0% no-repeat padding-box;
+  // border: 1px solid #929eb8;
+  border: unset;
+  border-radius: 2px;
+  opacity: 1;
+  margin: 0;
+  color:#000000;
+}
+
+.provider-addr {
+  padding-top: 0.5%;
+  text-align: left;
+
+  letter-spacing: 0px;
+  color: #000000;
+  opacity: 1;
+  margin: 0;
+}
+
+.provider-textarea {
+  width: auto;
+  background: #ffffff 0% 0% no-repeat padding-box;
+  border: 1px solid #929eb8;
+  border-radius: 2px;
+  opacity: 1;
+  margin-bottom: 1%;
+  overflow: hidden;
+  padding: 1%;
+  padding-bottom: 4%;
+  outline: none;
+}
+
+.div-bottom {
+  padding-bottom: 1%;
+  padding-top: 1%;
+  display: grid;
+}
+
+.form-container {
+  padding-left: 10px;
+  padding-right: 10px;
+}
+.comments-hint {
+  padding-left: 31%;
+}
+.verify-doc {
+  // margin: 0 12px;
+  text-align: left;
+  letter-spacing: 0px;
+  color: #147afc;
+  opacity: 1;
+}
+
+.footer {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  margin-top: -20px;
+  margin-bottom: 10px;
+  justify-content: flex-end;
+  .first{
+    display: flex;
+    justify-content: flex-start;
+  }
+  .second{
+    display: flex;
+    justify-content: flex-end;
+  }
+}
+
+.cancel {
+  color: #024a6a;
+  background-color: white;
+  border-radius: 4px;
+  border: 1px solid #024a6a;
+  width: 85px;
+  height: 34px;
+}
+
+.submit {
+  color: white;
+  background-color: #147afc;
+  border-radius: 4px;
+  border: 1px solid #024a6a;
+  width: 125px;
+  height: 34px;
+}

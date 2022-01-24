@@ -1,0 +1,262 @@
+<div class="text-center no-records-div" *ngIf="(noRecords)">
+    <h1 class="no-records-header">No Investigations Found</h1>
+</div>
+
+<div *ngIf="!(noRecords)" class="main-container" [ngClass]="{'main-container-expanded':isInvestigationOrNoteExpanded || (!this.detailsSharing.permissionsCheck?.isViewNotes && this.detailsSharing.permissionsCheck?.isViewInvestigation)}">
+    <div class="row">
+        <div *ngIf="!isNotesExpanded && this.detailsSharing.permissionsCheck?.isViewInvestigation" [ngClass]="isInvestigationExpanded || (!this.detailsSharing.permissionsCheck?.isViewNotes && this.detailsSharing.permissionsCheck?.isViewInvestigation) ? 'col-lg-12 col-sm-12': 'col-lg-9 col-sm-12'">
+            <div class="row header-row-collapsed" *ngIf="investigationDetails"
+                [ngClass]="{'header-row-expanded':isInvestigationExpanded || (!this.detailsSharing.permissionsCheck?.isViewNotes && this.detailsSharing.permissionsCheck?.isViewInvestigation),'header-row-sidenav-expanded':isInvestigationExpanded && isSidenavExpanded,'header-row-coll-sidenav-expanded':!isInvestigationExpanded && isSidenavExpanded}">
+                <div class="col-sm-11">
+                    <div class="row inv-row">
+
+                        <div class="col-md-11">
+                            <div class="row inv-head-row">
+                                <span class="investigation-header-text">{{invName}}
+                                    <span class="header-text header-text-efdate inv-date"
+                                        *ngIf="effectiveDate">Investigation Date:
+                                        <span class="header-text header-text-date">
+                                            {{effectiveDate | date: 'MM/dd/yyyy'}}</span>
+                                    </span></span>
+                            </div>
+                        </div>
+                        <div class="col-md-1 second-col">
+
+                        </div>
+                    </div>
+                    <div class="row inv-det-row">
+                        <span class="header-text header-text-address">{{invAddress}}</span>
+                        <span class="header-text header-text-dash" *ngIf="policyEffectiveDate">|</span>
+                        <span class="header-text header-text-efdate" *ngIf="policyEffectiveDate">Policy Effective Date:
+                            <span class="header-text header-text-date">
+                                {{policyEffectiveDate | date: 'MM/dd/yyyy'}}</span>
+                        </span>
+                    </div>
+                </div>
+                <div class="col-sm-1  button-col expand-col">
+                    <fa-icon [icon]="faUserPlus" class="new-inv-type-icon" (click)="onAddInvestigation()"
+                    *ngIf ="this.detailsSharing.permissionsCheck?.isAddInvestigation"
+                        matTooltip="New Investigation"></fa-icon>
+                    <fa-icon [icon]="faSyncAlt" (click)="reloadCurrentPage()" class="refresh"
+                        matTooltip="Reload Investigation"></fa-icon>
+
+                    <div fxHide.lt-md>
+                        <fa-icon [icon]="faExpandArrowsAlt" class="add-icon expand-icon"
+                            (click)="onInvestigationExpand()" *ngIf="!isInvestigationExpanded && this.detailsSharing.permissionsCheck?.isViewNotes && this.detailsSharing.permissionsCheck?.isViewInvestigation "
+                            matTooltip="Expand Investigations"></fa-icon>
+                        <fa-icon [icon]="faCompressArrowsAlt" class="add-icon expand-icon"
+                            (click)="onInvestigationExpand()" *ngIf="isInvestigationExpanded && this.detailsSharing.permissionsCheck?.isViewNotes && this.detailsSharing.permissionsCheck?.isViewInvestigation"
+                            matTooltip="Collapse Investigations"></fa-icon>
+                    </div>
+                </div>
+            </div>
+
+            <div class="content-container">
+                <div class="row text-right view-all-row" *ngIf="isViewAllInvestigations">
+                    <div class="col-sm-12">
+                        <span class="full-text" (click)="onViewRelatedInvestigations()">
+                            <fa-icon [icon]="faEye" class="add-icon chevron"></fa-icon>View All Claim Related
+                            Investigations
+                        </span>
+                    </div>
+                </div>
+
+                <div class="row filter-row" *ngIf="!isViewAllInvestigations && investigationDetails.length > 1">
+                    <div class="col-md-2 filter-row-col filter-icon-col">
+                        <span class="filter-icon-row">
+                            <fa-icon [icon]="faFilter" class="add-icon"></fa-icon>
+                            <span class="filter-icon-text">Filter</span>
+                        </span>
+                    </div>
+                    <div class="col-md-2 filter-row-col">
+                        <mat-select [(value)]="selectedinvestigationTypes" class="form-control  status-search">
+                            <mat-option *ngFor="let investigationType of investigationTypes"
+                                [value]="investigationType">
+                                {{investigationType}}
+                            </mat-option>
+                        </mat-select>
+                    </div>
+                    <div class="col-md-2 filter-row-col">
+                        <mat-select [(value)]="selectedStatus" class="form-control status-search">
+                            <mat-option *ngFor="let status of statuses" [value]="status">
+                                {{status}}
+                            </mat-option>
+                        </mat-select>
+                    </div>
+                    <div class="col-md-2 filter-row-col">
+                        <input (click)="picker.open()" readonly [matDatepicker]="picker"
+                            class="form-control search-input-field" placeholder="Proof Of Loss"
+                            (dateChange)="onDateChange($event.value)" [value]="selectedProofOfLoss">
+                        <mat-datepicker #picker></mat-datepicker>
+                    </div>
+                    <div class="col-md-2 filter-row-col">
+                        <input type="text" class="form-control search-input-field" placeholder="Pend Code"
+                            (keyup)="onKeyUp($event.target.value)" [value]="selectedPendCode">
+                    </div>
+                    <div class="col-md-2 reset-col text-center" (click)="onResetFilters()">
+                        <span class="reset-text">Reset Filter</span>
+                    </div>
+                </div>
+                <ng-container
+                    *ngIf="( investigationDetails |  status: selectedStatus | investigationType: selectedinvestigationTypes | proofOfLoss: selectedProofOfLoss | pendCode: selectedPendCode) as result">
+                    <div *ngFor="let investigationDetail of result;let i=index"
+                        [ngClass]="{'all-colls-collapsed':this.detailsSharing.isSidnavExpanded}">
+                        <div class="row inv-details-row-collapsed" #invHeader
+                            [ngClass]="{'inv-details-row-expanded':isInvestigationExpanded,'fixed-table-header': isScrolled[i]}">
+                            <div class="col-lg-1 col-sm-1 icon-col"
+                                *ngIf="!investigationDetail.isInvestigationRowClicked"
+                                (click)="onSingleInvestigationExpanded(investigationDetail)">
+                                <fa-icon [icon]="faChevronRight" class="add-icon chevron"></fa-icon>
+                            </div>
+                            <div class="col-lg-1 col-sm-1 icon-col icon-col-expanded"
+                                *ngIf="investigationDetail.isInvestigationRowClicked"
+                                (click)="onSingleInvestigationExpanded(investigationDetail)">
+                                <fa-icon [icon]="faChevronDown" class="add-icon chevron"></fa-icon>
+                            </div>
+                            <div class="col-lg-11 col-sm-10 middle-info-container"
+                                [ngClass]="{'col-open':(detailsSharing.closedStatuses.includes(investigationDetail.investigationStatus.toUpperCase().trim()))}">
+                                <div class="row top-row-val">
+                                    <div class="table-header inv-cat-header top-row-divs">
+                                        <span class="inv-type-header"> Condition :
+                                        </span>
+                                        <span class="inv-type top-val">
+                                            {{investigationDetail.investigationSubCategory}}
+                                        </span>
+                                    </div>
+                                    <div class="table-header inv-cat-header top-row-divs">
+                                        <span class="inv-type-header"> ICD Category :
+                                        </span>
+                                        <span class="inv-type top-val">
+                                            {{investigationDetail.investigationCategory}}
+                                        </span>
+                                    </div>
+
+
+                                </div>
+                                <div class="row all-cols-col">
+                                    <div class="col-lg-11 middle-vals">
+                                        <div class="row">
+                                            <div class="col-sm-4 inv-no-col inv-col">
+                                                <div class="row table-header inv-no-head">
+                                                    Investigation No
+                                                </div>
+                                                <div class="row inv-id">
+                                                    {{investigationDetail.number}}
+                                                </div>
+                                            </div>
+                                            <div class="col-sm-4 status-col inv-col">
+                                                <div class="row table-header status-header">
+                                                    Status
+                                                </div>
+                                                <div class="row"
+                                                    [ngClass]="!(detailsSharing.closedStatuses.includes(investigationDetail.investigationStatus.toUpperCase().trim())) ? 'status-open': 'status-closed'">
+                                                    {{investigationDetail.investigationStatus==='Reopen' ? 'Open' : investigationDetail.investigationStatus}}
+                                                </div>
+                                            </div>
+                                            <div class="col-sm-4 last-act-col inv-col">
+                                                <div class="row table-header">
+                                                    Last Activity
+                                                </div>
+                                                <div class="row last-activity">
+                                                    {{investigationDetail.lastActivity | date: 'MM/dd/yyyy'}}
+                                                </div>
+                                            </div>
+                                            <div class="col-sm-2 pend-col inv-col">
+                                                <div class="row table-header">
+                                                    Pend Code
+                                                </div>
+                                                <div class="row last-activity">
+                                                    {{investigationDetail.pendCode}}
+                                                </div>
+                                            </div>
+                                            <div class="col-sm-2 proof-col inv-col">
+                                                <div class="row table-header">
+                                                    Proof of Loss
+                                                </div>
+                                                <div class="row last-activity">
+                                                    {{investigationDetail.proofOfLoss | date: 'MM/dd/yyyy'}}
+                                                </div>
+                                            </div>
+                                            <div class="col-sm-2 age-col inv-col" matTooltip="Age is in Days">
+                                                <div class="row table-header">
+                                                    Age*
+                                                </div>
+                                                <div class="row last-activity inv-age">
+                                                    {{investigationDetail.age}}
+                                                </div>
+                                            </div>
+                                            <div class="col-sm-3 total-charge-col inv-col">
+                                                <div class="row table-header">
+                                                    Total Charges
+                                                </div>
+                                                <div class="row last-activity">
+                                                    {{investigationDetail.totalCharges | currency | gainLoss}}
+                                                </div>
+                                            </div>
+                                            <div class="col-sm-3 total-amount-col inv-col">
+                                                <div class="row table-header">
+                                                    Pending After Discount
+                                                </div>
+                                                <div class="row last-activity">
+                                                    {{investigationDetail.totalAmountAfterDiscount | currency | gainLoss}}
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-1 col-sm-1 text-right button-col inv-col close-button-col"
+                                        *ngIf="!(detailsSharing.closedStatuses.includes(investigationDetail.investigationStatus.toUpperCase().trim()))">
+                                        <fa-icon [icon]="faEdit" class="inv-type-icon edit-icon"
+                                            (click)="onEditInvestigation(investigationDetail)"
+                                            *ngIf = " this.detailsSharing.permissionsCheck?.isUpdateInvestigation"
+                                            matTooltip="Edit Investigation">
+                                        </fa-icon>
+                                        <fa-icon [icon]="faWindowClose" class="inv-type-icon "
+                                        *ngIf = " this.detailsSharing.permissionsCheck?.isCloseInvestigation"
+                                            (click)="onCloseInvestigation(investigationDetail)" class="close-icon"
+                                            matTooltip="Claims Decision">
+                                        </fa-icon>
+
+                                    </div>
+                                    <div class="col-lg-1 col-sm-1 text-right button-col inv-col close-button-col"
+                                        *ngIf="detailsSharing.closedStatuses.includes(investigationDetail.investigationStatus.toUpperCase().trim())">
+                                        <fa-icon [icon]="faEnvelopeOpenText"
+                                        *ngIf= "this.detailsSharing.permissionsCheck?.isReOpenInvestigation"
+                                            (click)="onReopenInvestigation(investigationDetail)"
+                                            class="inv-type-icon edit-icon reopen-icon"
+                                            matTooltip="Reopen Investigation">
+                                        </fa-icon>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row" #invContent>
+                            <cwb-investigation-details *ngIf="investigationDetail.isInvestigationRowClicked &&( this.detailsSharing.permissionsCheck?.isViewDocumentRequests || this.detailsSharing.permissionsCheck?.isNewRequest || this.detailsSharing.permissionsCheck?.isAttachClaims|| this.detailsSharing.permissionsCheck?.isNewMiscDocuments || this.detailsSharing.permissionsCheck?.isViewMiscDocuments || this.detailsSharing.permissionsCheck?.isViewClaims) "
+                                class="investigation-details-div" [isInvestigationExpanded]="isInvestigationExpanded"
+                                [investigationId]="investigationDetail.investigationId" [parentInvestigationDetail]="investigationDetail"
+                                [investigationNumber]="investigationDetail.number"
+                                [policyNo]="investigationDetail.policyNo"
+                                [claimNo]="investigationDetail.claimNum.length > 1 ? investigationDetail.claimNum: currentClaimNumber"
+                                [isOpen]="!(detailsSharing.closedStatuses.includes(investigationDetail.investigationStatus.toUpperCase().trim()))"
+                                [investigationType]="investigationDetail.investigationSubCategory"
+                                [investigationGroupId]="investigationGroupId">
+                            </cwb-investigation-details>
+                        </div>
+                    </div>
+                    <div class="row text-center" *ngIf="result.length === 0 && investigationDetails.length > 0">
+                        <h1>No Investigations Found</h1>
+                    </div>
+                </ng-container>
+                <div class="row disclaimer-row" *ngIf="investigationDetails.length>0">
+                    *: Age is in Days
+                </div>
+
+            </div>
+
+        </div>
+        <div *ngIf="!isInvestigationExpanded && (this.detailsSharing.permissionsCheck?.isViewNotes) " 
+        [ngClass]="{'col-lg-12 col-sm-12 notes-section-expanded':isNotesExpanded || (this.detailsSharing.permissionsCheck?.isViewNotes && !this.detailsSharing.permissionsCheck?.isViewInvestigation),'col-lg-3 col-sm-12 notes-section':!isNotesExpanded ,'Notes-row-coll-sidenav-expanded':!isNotesExpanded && isSidenavExpanded}">
+
+            <cwb-notes *ngIf = "investigationGroupId" [investigationId] [(isNotesExpandedModel)]="isNotesExpanded" [investigationGroupId] = "investigationGroupId" ></cwb-notes>
+        </div>
+    </div>
+</div>

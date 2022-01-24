@@ -1,0 +1,500 @@
+.table-div {
+  width: 100%;
+  background: white;
+  padding: 1%;
+  border-radius: 2%;
+}
+
+.mat-form-field {
+  font-size: 14px;
+  width: 100%;
+}
+mat-divider {
+  margin-top: 1%;
+  margin-bottom: 1%;
+}
+mat-paginator {
+  border: none;
+}
+.table-header-text {
+  color: #fff;
+  font-weight: 500;
+}
+.table-blue-text {
+  color: #007bff !important;
+  font-weight: 600;
+}
+.table-black-text {
+  color: #000;
+}
+.table-header-text,
+.table-blue-text,
+.table-black-text {
+  font-size: 0.75rem;
+}
+.mat-column-claimNum {
+  width: 5%;
+  flex: 0 0 69px;
+}
+:host ::ng-deep .mat-column-claimDate {
+  width: 5%;
+  flex: 0 0 8%;
+  text-align: center;
+  display: flex;
+  justify-content: center;
+  .mat-sort-header-content {
+    padding-left: 25px !important;
+  }
+  .mat-sort-header-arrow {
+    margin-right: 10px;
+  }
+}
+.mat-column-policyNo {
+  width: 5%;
+  flex: 0 0 7%;
+}
+.mat-column-name {
+  width: 5%;
+  flex: 0 0 10%;
+}
+.mat-column-diagnosis {
+  width: 3%;
+  flex: 0 0 6%;
+}
+.mat-column-benefitType {
+  width: 4%;
+  flex: 0 0 4%;
+}
+
+.mat-table {
+  width: 100%;
+  font-size: 0.75rem;
+  margin-top: 0%;
+  border-top: none;
+  border: 1px solid rgba(0, 0, 0, 0.125) !important;
+  border-radius: 0.25rem !important;
+}
+
+:host ::ng-deep .mat-row:nth-child(2n) {
+  background-color: rgba(206, 212, 218, 0.63);
+  border-bottom: 1px solid rgba(0, 0, 0, 0.3);
+}
+:host ::ng-deep .mat-row:not(:nth-child(4n)) {
+  background-color: #ffffff;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.3);
+}
+
+.charge-text {
+  margin-right: 10px;
+}
+
+.mat-column-expand {
+  width: 2%;
+  flex: 0 0 2% !important;
+  padding-left: 0%;
+  .mat-icon {
+    cursor: pointer;
+    opacity: 0.6;
+    color: #000;
+  }
+  .mat-icon:hover {
+    color: #007bff !important;
+  }
+}
+
+:host ::ng-deep .mat-column-totalCharges {
+  width: 4%;
+  flex: 0 0 6%;
+  text-align: right;
+  display: flex;
+  justify-content: flex-end;
+  .mat-sort-header-content {
+    padding-left: 25px !important;
+  }
+}
+:host ::ng-deep .mat-column-totalDeductible {
+  width: 4%;
+  flex: 0 0 6%;
+  text-align: right;
+  display: flex;
+  justify-content: flex-end;
+  .mat-sort-header-content {
+    padding-left: 25px !important;
+  }
+}
+.mat-column-totalPaid {
+  width: 3%;
+  flex: 0 0 5%;
+  text-align: right;
+  display: flex;
+  justify-content: flex-end;
+}
+:host ::ng-deep .mat-column-processedDate {
+  width: 5%;
+  flex: 0 0 6%;
+  text-align: center !important;
+  display: flex;
+  justify-content: center;
+  .mat-sort-header-content {
+    padding-left: 25px !important;
+  }
+}
+.mat-column-receivedDate {
+  width: 5%;
+  flex: 0 0 6%;
+  text-align: center;
+  display: flex;
+  justify-content: center;
+}
+:host ::ng-deep .mat-column-pendCode {
+  width: 3%;
+  flex: 0 0 4%;
+  text-align: center;
+  display: flex;
+  justify-content: center;
+}
+
+.mat-column-investigationTypes {
+  width: 4%;
+  flex: 0 0 11%;
+}
+.mat-column-status {
+  width: 3%;
+  flex: 0 0 4%;
+  text-align: center;
+  display: flex;
+  justify-content: center;
+}
+.mat-column-actions {
+  width: 3%;
+  flex: 0 0 7%;
+  display: flex;
+  justify-content: center;
+}
+.mat-column-miscInfo {
+  width: 5%;
+  flex: 0 0 4%;
+  display: flex;
+  justify-content: center;
+}
+.misc-icon {
+  font-size: 16px;
+  cursor: pointer;
+}
+.action-button {
+  border: 1px solid #0c6692;
+  border-radius: 4px;
+  height: 50%;
+  width: 55px;
+  padding: 0%;
+}
+
+.action-button-text {
+  color: #0c6692;
+  font-size: 11px;
+  border: 1px solid #0c6692;
+  border-radius: 4px;
+  cursor: pointer;
+  background-color: white;
+  padding: 1px 4px;
+}
+.add-icon {
+  font-size: 11px;
+}
+.filter-row {
+  border: 1px solid rgba(0, 0, 0, 0.125);
+  border-radius: 4px;
+  margin-left: 0%;
+  margin-right: 0%;
+  margin-bottom: 25px;
+}
+.filter-row-col {
+  padding: 0%;
+}
+:host ::ng-deep .cdk-overlay-pane {
+  width: 142.25px !important;
+}
+
+::placeholder {
+  /* Chrome, Firefox, Opera, Safari 10.1+ */
+  color: #354052;
+}
+.filter-icon-row {
+  color: #0065b3;
+  white-space: nowrap;
+}
+.filter-icon-text {
+  font: normal normal 600 14px/18px Segoe UI;
+  margin-left: 5%;
+}
+.filter-icon-col {
+  padding: 0.25rem 1rem;
+  background-color: #f2f4f7;
+}
+.reset-col {
+  background-color: #6c757d;
+  border-color: #6c757d;
+  //    background-color:  #147AFC;
+  padding: 0.25rem 1rem;
+  cursor: pointer;
+  white-space: nowrap;
+  border-top-right-radius: 4%;
+  border-bottom-right-radius: 4%;
+}
+.reset-text {
+  font: normal normal 600 16px/18px Segoe UI;
+  color: #ffffff;
+  font-size: 14px;
+  font-weight: 400;
+}
+.input-group > .custom-select:not(:first-child),
+.input-group > .form-control:not(:first-child) {
+  border-top-left-radius: 0;
+  border-bottom-left-radius: 0;
+}
+.input-group > .custom-select:not(:last-child),
+.input-group > .form-control:not(:last-child) {
+  border-top-right-radius: 0;
+  border-bottom-right-radius: 0;
+}
+.form-control {
+  height: calc(1.5em + 0.5rem + 2px);
+  font-size: 0.8rem !important;
+  display: block;
+  width: 100%;
+  padding: 0.375rem 0.75rem;
+  font-size: 1rem;
+  font-weight: 400;
+  line-height: 1.5;
+  color: #212529;
+  background-color: #fff;
+  background-clip: padding-box;
+  border-top: 0px;
+  border-bottom: 0px;
+  border-right: 0px;
+  border-left: 1px solid #ced4da;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+}
+
+.table-container {
+  overflow-x: hidden;
+  overflow-y: hidden;
+  padding-right: 0%;
+  margin-top: 5px;
+}
+
+.form-control:focus {
+  border: none;
+  border-radius: 0%;
+  //   box-shadow:none;
+}
+.search-input-field {
+  color: #354052;
+  //   height: 5vh;
+}
+
+.input-group-sm > .custom-select,
+.input-group-sm > .form-control:not(textarea) {
+  height: calc(1.5em + 0.5rem + 2px);
+}
+
+.expand-icon {
+  color: #898989;
+}
+
+.sub-table-div {
+  width: 100%;
+  padding: 0% 1% 0% 1%;
+  background: #deeeff;
+}
+.sub-table-cell {
+  padding: 0%;
+}
+@media (min-width: 900px) {
+}
+@media (max-width: 768px) {
+  .reset-col {
+    text-align: center;
+  }
+  .filter-icon-text {
+    margin-left: 0%;
+    font-size: 14px;
+    margin-left: 5px;
+  }
+  .add-icon {
+    font-size: 13px;
+  }
+}
+@media (min-width: 768px) and(max-width:950px) {
+  .reset-text {
+    font-size: 10px;
+  }
+}
+@media (max-width: 1100px) {
+  .table-container {
+    overflow-x: auto;
+    overflow-y: hidden;
+    padding-right: 0%;
+    margin-top: 5px;
+  }
+  .mat-table {
+    width: 120%;
+  }
+}
+@media (max-width: 900px) {
+  .mat-table {
+    width: 250%;
+  }
+}
+@media (max-width: 630px) {
+  .mat-table {
+    width: 300%;
+  }
+}
+@media (max-width: 992px) {
+  .details-div {
+    padding-left: 0%;
+    padding-top: 1%;
+  }
+}
+@media (min-width: 768px) and(max-width:992px) {
+  .add-icon {
+    font-size: 10px;
+  }
+  .filter-icon-text {
+    font-size: 11px;
+  }
+}
+
+@media (min-width: 992px) {
+  .col-lg-10 {
+    flex: 0 0 auto;
+    width: 83.3333333333%;
+    // padding-top: 1%;
+  }
+}
+
+.expand-row {
+  min-height: 0px;
+  height: 0px;
+}
+
+.no-record-div {
+  text-align: center;
+  .h1 {
+    font-size: 18px;
+  }
+}
+
+:host ::ng-deep .element-row:hover,
+.mat-footer-row {
+  background-color: yellow !important;
+}
+
+.exp-col {
+  overflow: hidden;
+}
+
+.claim-hover:hover {
+  background-color: #e6ebef;
+  cursor: pointer;
+}
+
+.note {
+  padding-left: 1.2%;
+  padding-top: 1%;
+  text-align: left;
+  text-align: left;
+  letter-spacing: 0px;
+  color: #797979;
+
+  .note-bold {
+    text-align: left;
+    letter-spacing: 0px;
+    color: #354052;
+    font-weight: 500;
+  }
+  .view-claims {
+    color: #147bfa;
+    display: flex;
+    justify-content: flex-end;
+    .both-items {
+      cursor: pointer;
+      .text {
+        text-decoration: none;
+        margin-left: 5px;
+      }
+    }
+  }
+}
+.expanded {
+  height: auto;
+  visibility: visible;
+  :hover {
+    background-color: #deeeff;
+  }
+}
+.collapsed {
+  height: 0px;
+  min-height: 0;
+  visibility: hidden;
+  :hover {
+    background-color: #deeeff;
+  }
+}
+:host :ng-deep .mat-sort-header-arrow {
+  margin-left: 0px !important;
+}
+
+.less-colummns {
+  .mat-column-claimNum {
+    flex: 0 0 69px;
+  }
+  .mat-column-claimDate {
+    flex: 0 0 10%;
+  }
+  .mat-column-policyNo {
+    flex: 0 0 8%;
+  }
+  .mat-column-name {
+    flex: 0 0 13%;
+  }
+  .mat-column-diagnosis {
+    flex: 0 0 7%;
+  }
+  .mat-column-benefitType {
+    flex: 0 0 6%;
+  }
+
+  .mat-column-expand {
+    flex: 0 0 3% !important;
+  }
+
+  .mat-column-totalCharges {
+    flex: 0 0 7%;
+  }
+  .mat-column-totalDeductible {
+    flex: 0 0 8%;
+  }
+  .mat-column-totalPaid {
+    flex: 0 0 5%;
+  }
+  .mat-column-processedDate {
+    flex: 0 0 9%;
+  }
+  .mat-column-receivedDate {
+    flex: 0 0 7%;
+  }
+  .mat-column-pendCode {
+    flex: 0 0 5%;
+  }
+
+  .mat-column-investigationTypes {
+    flex: 0 0 12%;
+  }
+  .mat-column-status {
+    flex: 0 0 7%;
+  }
+}

@@ -1,0 +1,14 @@
+<div class="main-container">
+
+    <div class="data-container">
+        <div autoFocus #tablesContainer class="tables-container"
+            *ngIf="!noRecords &&!hasError && coverageSummaries?.length>0">
+            <cwb-insured-details [coverageSummaries]="coverageSummaries" [currentPolicyNo]="currentPolicyNo"
+                [totalResults]="totalResults" [fromDate]="fromDate" [noRecords]="noRecords"
+                (isNameClicked)="onNameClicked()" (reloadEmitter)="onReloadInsured()"></cwb-insured-details>
+        </div>
+        <div class="tables-container no-record-div" *ngIf="(noRecords && !hasError) || detailsSharing.errorOccurred">
+            <h1 class="no-records-header">No Records To Display</h1>
+        </div>
+    </div>
+</div>

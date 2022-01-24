@@ -1,0 +1,85 @@
+<div class="main-modal-div">
+  <div class="modal-header">
+    <h2 class="header-text">Attach Document</h2>
+    <div mat-dialog-close class="dialog-close">&times;</div>
+  </div>
+
+  <mat-dialog-content>
+    <form
+      class="addForm"
+      [formGroup]="uploadForm"
+      #formDirective="ngForm"
+      (ngSubmit)="onSubmit()"
+    >
+      <div class="row form-row">
+        <div class="col-sm-6">
+          <p
+            class="doc-p"
+            [ngClass]="{
+              red: uploadForm.get('docTypeControl').invalid && isSubmitClicked
+            }"
+          >
+            Document Type:
+          </p>
+          <mat-select
+            class="empty"
+            aria-label="Default select example"
+            class="doc-type-sel"
+            placeholder="Select Document Type"
+            formControlName="docTypeControl"
+            [ngClass]="{
+              'red-border':
+                uploadForm.get('docTypeControl').invalid && isSubmitClicked
+            }"
+          >
+            <mat-option
+              *ngFor="let docType of docTypes"
+              [value]="docType"
+              (click)="onDocTypeSelected(docType)"
+            >
+              {{ docType.type }}
+            </mat-option>
+          </mat-select>
+        </div>
+        <div class="col-sm-6" *ngIf="isDocTypeSelected">
+          <p
+            class="req-p"
+            [ngClass]="{
+              red:
+                uploadForm.get('requestTypeControl').invalid && isSubmitClicked
+            }"
+          >
+            Request ID:
+          </p>
+          <mat-select
+            class="empty"
+            aria-label="Default select example"
+            class="req-sel"
+            placeholder="Select Request Id"
+            formControlName="requestTypeControl"
+            [ngClass]="{
+              'red-border':
+                uploadForm.get('requestTypeControl').invalid && isSubmitClicked
+            }"
+          >
+            <mat-option
+              *ngFor="let request of requests"
+              [value]="request"
+              (click)="onSelectionChange()"
+            >
+              {{ request.requestNumber }}
+            </mat-option>
+          </mat-select>
+        </div>
+      </div>
+
+      <div class="modal-footer modal-div">
+        <button type="button" mat-button (click)="onClear()" class="clear">
+          Clear
+        </button>
+        &nbsp; &nbsp;
+        <button mat-button type="submit" class="submit-button">Submit</button>
+      </div>
+    </form>
+  </mat-dialog-content>
+</div>

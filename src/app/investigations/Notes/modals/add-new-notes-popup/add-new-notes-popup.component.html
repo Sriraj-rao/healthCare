@@ -1,0 +1,70 @@
+<div class="top-header">
+
+
+    <div class="modal-header ">
+
+        <h2 class="header-text padding-header">Add Notes</h2>
+        <div mat-dialog-close class="close">&times;</div>
+    </div>
+
+    <mat-dialog-content class="dialog-content">
+        <form class="addForm" [formGroup]="addInvForm" (ngSubmit)="onSubmit()">
+
+
+            <div class="padding-div">
+                <span class="input-header">Input:<span class="red">*</span></span>
+                <input #title placeholder="Enter Title" maxlength="150" class="title"
+                    [ngClass]="{'red-border':addInvForm.get('titleControl').invalid &&(isSubmitClicked)}"
+                    formControlName="titleControl">
+                    <div class="row hint-row">
+                   
+                        <div class="col-sm-9">
+                          <mat-error class="desc-error" *ngIf="
+                              this.addInvForm.controls['titleControl'].invalid &&
+                              this.addInvForm.controls['titleControl'].dirty &&
+                              isSubmitClicked
+                            ">The above field should contain atleast one character
+                          </mat-error>
+                        </div>
+                        <div class="col-sm-3 hint-col">
+                            <mat-hint class="hint">{{title.value.length}} / 150</mat-hint>
+                        </div>
+                    </div>
+            </div>
+
+
+
+            <div class="text-area-div text-box-padding">
+                <span class="input-header">Description:<span class="red">*</span></span>
+
+                <textarea #description maxlength="1000"
+                    [ngClass]="{'red-border':addInvForm.get('descriptionControl').invalid &&(isSubmitClicked)}"
+                    placeholder="Enter Your notes here..." class="description"
+                    formControlName="descriptionControl"></textarea>
+
+                    <div class="row hint-row">
+                   
+                        <div class="col-sm-9">
+                          <mat-error class="desc-error" *ngIf="
+                              this.addInvForm.controls['descriptionControl'].invalid &&
+                              this.addInvForm.controls['descriptionControl'].dirty &&
+                              isSubmitClicked
+                            ">The above field should contain atleast one character
+                          </mat-error>
+                        </div>
+                        <div class="col-sm-3 hint-col">
+                            <!-- <mat-error *ngIf="title.value.length == 150"> Maximum Length reached</mat-error> -->
+                            <mat-hint class="hint">{{description.value.length}} / 1000</mat-hint>
+                        </div>
+                    </div>
+
+            </div>
+            <div class="modal-footer footer popup-footer">
+                <button type="button" class="cancel-button" mat-button mat-dialog-close>Cancel</button>
+                &nbsp; &nbsp;
+                <button mat-button type="submit" class="save">Save </button>
+            </div>
+
+        </form>
+    </mat-dialog-content>
+</div>

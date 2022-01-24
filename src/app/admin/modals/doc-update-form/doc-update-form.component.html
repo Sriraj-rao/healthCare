@@ -1,0 +1,42 @@
+<div class="main-modal-div">
+    <div class="modal-header ">
+        <h2 class="header-text">{{docUpdateData.header}}</h2>
+        <div (click)="onCloseDialog()" class="close">&times;</div>
+    </div>
+
+    <mat-dialog-content class="dialog-content">
+        <form class="addForm" [formGroup]="docForm" #formDirective="ngForm" (ngSubmit)="onSubmit()">
+            <div class="main-div">
+                <div class="row field-row" *ngFor="let formField of formFields;let i=index">
+                    <div class="col-sm-4 name">
+                        {{formField.fieldName}}
+                    </div>
+                    <div class="col-sm-8">
+                        <div formArrayName="fieldsControl">
+                            <input class="form-control" type="text" *ngIf="formField.fieldType === 'TextBox'"
+                                formControlName="{{i}}">
+                            <input class="form-control" type="number" *ngIf="formField.fieldType === 'Number'"
+                                formControlName="{{i}}">
+                            <mat-radio-group aria-label="Select an option" *ngIf="formField.fieldType === 'Radio'"
+                                formControlName="{{i}}">
+                                <mat-radio-button [value]="1">True &nbsp;</mat-radio-button>
+                                <mat-radio-button [value]="2">False &nbsp;</mat-radio-button>
+                            </mat-radio-group>
+                            <mat-select [placeholder]="'Select' +' '+formField.fieldName" formControlName="{{i}}"
+                                class="form-control" *ngIf="formField.fieldType === 'Dropdown'">
+                                <mat-option *ngFor="let value of formField.dropdownValues" [value]="value">
+                                    {{ value }}
+                                </mat-option>
+                            </mat-select>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer popup-footer">
+                <button type="button" class="clear-button btn btn-warning" mat-button (click)="onClear()">Clear</button>
+                &nbsp; &nbsp;
+                <button mat-button type="submit" class="submit-button">Submit</button>
+            </div>
+        </form>
+    </mat-dialog-content>
+</div>

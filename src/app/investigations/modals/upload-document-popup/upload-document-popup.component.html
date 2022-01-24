@@ -1,0 +1,126 @@
+<div class="main-modal-div">
+  <div class="modal-header">
+    <h2 class="header-text">Upload Document</h2>
+    <div mat-dialog-close class="dialog-close">&times;</div>
+  </div>
+
+  <mat-dialog-content class="dialog-content">
+    <form class="addForm form-container" [formGroup]="uploadForm" #formDirective="ngForm" (ngSubmit)="onSubmit()">
+      <div class="display">
+        <div class="div-padding-doc">
+          <span>Document Type: <span class="doc-text">{{ docType }}</span></span>
+        </div>
+        <!-- <div formArrayName="propertiesControl">
+          <div class="div-padding" *ngFor="let property of properties; let i = index">
+            <p class="provider-text" *ngIf="property.propertyName !== 'Provider Address'" [ngClass]="{
+                red:
+                  propertiesFormArray().controls[i].invalid && isSubmitClicked
+              }">
+              {{ property.propertyName }}
+              <input placeholder="Enter Title" class="provider-input" *ngIf="property.propertyType === 'TextBox'"
+                formControlName="{{ i }}" [ngClass]="{
+                  'red-border':
+                    propertiesFormArray().controls[i].invalid && isSubmitClicked
+                }" />
+
+              <textarea matInput *ngIf="
+                  property.propertyType === 'TextArea' &&
+                  property.propertyName !== 'Provider Address'
+                " formControlName="{{ i }}" cdkTextareaAutosize #autosize="cdkTextareaAutosize" cdkAutosizeMinRows="1"
+                cdkAutosizeMaxRows="15" placeholder="Enter Your Address" class="provider-textarea"></textarea>
+            </p>
+          </div>
+        </div> -->
+      </div>
+
+      <div class="display">
+        <div class="div-left">
+          <p class="rec-text" [ngClass]="{
+              red:
+                uploadForm.get('receivedDateControl').invalid && isSubmitClicked
+            }">
+            Received Date:<span class="red">*</span>
+          </p>
+          <div>
+            <div class="input-group date-piker" (click)="picker.open()" [ngClass]="{
+                'red-border':
+                  uploadForm.get('receivedDateControl').invalid &&
+                  isSubmitClicked
+              }" (dateChange)="onSelectionChange()">
+              <input readonly class="form-control" [matDatepicker]="picker" [max]="maxDate"
+                formControlName="receivedDateControl" />
+              <div class="input-group-prepend">
+                <span class="input-group-text" id="basic-addon1">
+                  <fa-icon [icon]="faCalendarAlt" class="search-icon"></fa-icon>
+                </span>
+              </div>
+            </div>
+            <mat-datepicker #picker></mat-datepicker>
+          </div>
+        </div>
+
+        <div>
+          <p class="del-text" [ngClass]="{
+              red:
+                uploadForm.get('deliveryMethodControl').invalid &&
+                isSubmitClicked
+            }">
+            Delivery Method:<span class="red">*</span>
+          </p>
+          <mat-select class="empty empty-two" formControlName="deliveryMethodControl" [ngClass]="{
+              'red-border':
+                uploadForm.get('deliveryMethodControl').invalid &&
+                isSubmitClicked
+            }" aria-label="Default select example" placeholder="Select Delivery Method">
+            <mat-option *ngFor="let method of deliveryMethods" [value]="method" (click)="onSelectionChange()">
+              {{ method.name }}
+            </mat-option>
+          </mat-select>
+        </div>
+      </div>
+
+      <div class="div-padding-doc div-bottom" *ngIf="this.detailsSharing.permissionsCheck?.isAddNotes">
+        <p class="provider-text" [ngClass]="{
+            red:
+              this.uploadForm.controls['commentsControl'].invalid &&
+              isSubmitClicked
+          }">
+          Notes<span class="red">*</span>
+        </p>
+        <textarea matInput #description maxlength="1000" cdkTextareaAutosize #autosize="cdkTextareaAutosize"
+          cdkAutosizeMinRows="1" formControlName="commentsControl" [ngClass]="{
+            'red-border':
+              this.uploadForm.controls['commentsControl'].invalid &&
+              isSubmitClicked
+          }" cdkAutosizeMaxRows="15" placeholder="Enter Your Notes" class="provider-textarea"></textarea>
+        <div class="row">
+          <div class="col-sm-9">
+            <mat-error class="notes-error" *ngIf="
+                this.uploadForm.controls['commentsControl'].invalid &&
+                this.uploadForm.controls['commentsControl'].dirty &&
+                isSubmitClicked
+              ">The above field should contain atleast one character
+            </mat-error>
+          </div>
+          <div class="col-sm-3">
+            <mat-hint class="comments-hint">{{ description.value.length }} / 1000</mat-hint>
+          </div>
+        </div>
+      </div>
+      <div class="upload-container">
+        <cwb-document-uploader (filesEmitter)="onFileEmitted($event)" (filesDeleted)="onFileDeleted($event)"
+          [isMultipleAllowed]="true" [fileuploaded]="fileuploaded"></cwb-document-uploader>
+      </div>
+      <!-- <mat-checkbox class="verify-doc" (click)="onCheckboxClicked()">Verify Document</mat-checkbox> &nbsp;&nbsp; -->
+      <mat-checkbox #closeReq class="verify-doc" (click)="onCloseRequestClicked($event)">Close Request
+      </mat-checkbox>
+      <div class="footer popup-footer">
+        <button type="button" mat-button (click)="onClear()">Clear</button>
+        &nbsp; &nbsp;
+        <button mat-button type="button" class="submit" type="submit">
+          Submit
+        </button>
+      </div>
+    </form>
+  </mat-dialog-content>
+</div>

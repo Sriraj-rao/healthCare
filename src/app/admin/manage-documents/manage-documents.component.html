@@ -1,0 +1,114 @@
+<div class="container-fluid main-container">
+    <form class="addForm" [formGroup]="docForm" #formDirective="ngForm">
+        <div class="row dropdown-row">
+            <div class="col-sm-4">
+                <mat-select placeholder="Select Company" formControlName="companyControl" class="roles-dropdown"
+                    (selectionChange)="onCompanyChanged($event.value)"
+                    [ngClass]="{'red-border':docForm.controls['companyControl'].invalid && isSubmitClicked}">
+                    <mat-option *ngFor="let company of companies" [value]="company">
+                        {{ company.name }}
+                    </mat-option>
+                </mat-select>
+            </div>
+            <div class="col-sm-4" *ngIf="isCompanyChanged">
+                <mat-select placeholder="Select Document Type" formControlName="docControl" class="roles-dropdown"
+                    (selectionChange)="onDocTypeChanged($event.value)"
+                    [ngClass]="{'red-border':docForm.controls['docControl'].invalid && isSubmitClicked}">
+                    <mat-option *ngFor="let docType of docTypes" [value]="docType">
+                        {{ docType.type }}
+                    </mat-option>
+                </mat-select>
+            </div>
+        </div>
+        <div class="row" *ngIf="isDocTypeChanged">
+            <div class="add-button-div">
+                <button mat-button class="submit-button" (click)="onAddDocTemplate()">Add Document Property</button>
+            </div>
+        </div>
+        <div class="row table-row" *ngIf="isDocTypeChanged">
+            <div formArrayName="tableControl" class="table-div">
+                <mat-table matSort [dataSource]="dataSource">
+
+                    <ng-container matColumnDef="propertyName">
+                        <mat-header-cell *matHeaderCellDef mat-sort-header> Property Name </mat-header-cell>
+                        <mat-cell *matCellDef="let element;let i=index" class="table-text">
+                            <span *ngIf="!isEditMode"> {{element.propertyName}}</span>
+                            <span *ngIf="isEditMode">
+                                <div [formGroupName]="i">
+                                    <input class="form-control" formControlName="propertyNameControl">
+                                </div>
+                            </span>
+                        </mat-cell>
+                    </ng-container>
+
+                    <ng-container matColumnDef="propertyType">
+                        <mat-header-cell *matHeaderCellDef mat-sort-header> Property Type </mat-header-cell>
+                        <mat-cell *matCellDef="let element" class="table-text">
+                            {{element.propertyType}}
+                        </mat-cell>
+                    </ng-container>
+
+                    <ng-container matColumnDef="parentId">
+                        <mat-header-cell *matHeaderCellDef mat-sort-header> Parent </mat-header-cell>
+                        <mat-cell *matCellDef="let element" class="table-text">
+                            {{element.parentId}}
+                        </mat-cell>
+                    </ng-container>
+
+                    <ng-container matColumnDef="orderBy">
+                        <mat-header-cell *matHeaderCellDef mat-sort-header> Order By </mat-header-cell>
+                        <mat-cell *matCellDef="let element" class="table-text">
+                            {{element.orderBy}}
+                        </mat-cell>
+                    </ng-container>
+
+                    <ng-container matColumnDef="length">
+                        <mat-header-cell *matHeaderCellDef mat-sort-header> Max Length </mat-header-cell>
+                        <mat-cell *matCellDef="let element" class="table-text">
+                            {{element.length}}
+                        </mat-cell>
+                    </ng-container>
+
+
+                    <ng-container matColumnDef="apiPropertyName">
+                        <mat-header-cell *matHeaderCellDef mat-sort-header> API Property Name </mat-header-cell>
+                        <mat-cell *matCellDef="let element" class="table-text">
+                            {{element.apiPropertyName}}
+                        </mat-cell>
+                    </ng-container>
+
+                    <ng-container matColumnDef="isRequired">
+                        <mat-header-cell *matHeaderCellDef mat-sort-header> Required Field </mat-header-cell>
+                        <mat-cell *matCellDef="let element" class="table-text">
+                            {{element.isRequired}}
+                        </mat-cell>
+                    </ng-container>
+
+                    <ng-container matColumnDef="isVisibleOnUI">
+                        <mat-header-cell *matHeaderCellDef mat-sort-header> Visible On UI </mat-header-cell>
+                        <mat-cell *matCellDef="let element" class="table-text">
+                            {{element.isVisibleOnUI}}
+                        </mat-cell>
+                    </ng-container>
+
+                    <!-- <ng-container matColumnDef="actions">
+                        <mat-header-cell *matHeaderCellDef mat-sort-header> File Name </mat-header-cell>
+                        <mat-cell *matCellDef="let element" class="table-text">
+                            {{element.fileName}}
+                        </mat-cell>
+                    </ng-container> -->
+
+                    <mat-header-row *matHeaderRowDef="displayedColumns" class="header-row"></mat-header-row>
+                    <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+                </mat-table>
+            </div>
+        </div>
+        <div class="row submit-row">
+            <button type="button" class="clear-button btn btn-warning" (click)="onClear()">Clear</button>
+            <button mat-button type="submit" class="submit-button" *ngIf="isDocTypeChanged && !isEditMode"
+                (click)="onEditTable()">Edit Table</button>
+            <button mat-button type="submit" class="submit-button" *ngIf="isDocTypeChanged && isEditMode"
+                (click)="onSubmit()">Save Table</button>
+        </div>
+    </form>
+</div>

@@ -1,0 +1,439 @@
+.claims-header{
+    padding-left: 1%;
+    flex: 0 0 12.666667%;
+}
+.claims-header-text{
+    font: normal normal bold 41px/55px Roboto;
+    font-size: 28px;
+}
+.claims-header-showing-results{
+    font: normal normal normal 17px/23px Open Sans;
+    color: #797979;
+    font-size: 14px;
+}
+.claims-header-results-bold{
+    font: normal normal bold 17px/23px Open Sans;
+color: #354052;
+font-size: 14px;
+}
+.table-div{
+    // width: 100%;
+    width: 100%;
+    background: white;
+    padding: 1%;
+     // margin-top: 1%;
+    border-radius: 2%;
+}
+
+  
+  .mat-form-field {
+    font-size: 14px;
+    width: 100%;
+  }
+  
+.details-text{
+    font: normal normal bold 28px/33px Roboto;
+color: #006692;
+font-size: 24px;
+}
+
+.document-expiry-text{
+    font: normal normal medium 18px/21px Roboto;
+    color: #747474;
+    font-size: 12px;
+}
+mat-divider{
+    margin-top: 1%;
+    margin-bottom: 1%;
+}
+mat-paginator{
+    border: 1px solid rgba(0, 0, 0, 0.12);
+    // padding: 2% 0% 2% 0%;
+}
+.table-header-text{
+    font: normal normal bold 20px/24px Roboto;
+    color: #6296EF;
+    // font-size: 15px;
+    font-size: .75rem;
+    font-weight: 500;
+}
+.table-blue-text{
+    font: normal normal bold 20px/24px Roboto;
+    color: #006692;
+    // font-size: 16px;
+    font-size: .75rem;
+    font-weight: 500;
+}
+
+
+.table-black-text{
+    font: normal normal medium 18px/21px Roboto;
+    color: #747474;
+    // font-size: 15px;
+    font-size: .75rem;
+    font-weight: 500;
+}
+.mat-column-claimNo{
+    width: 5%;
+    flex: 0 0 6%;
+  }
+.mat-column-dateOfService{
+    width: 5%;
+    flex: 0 0 7%;
+    display: flex;
+    justify-content: center;
+}
+.mat-column-policyNo{
+    width: 5%;
+    flex: 0 0 6%;
+}
+.mat-column-claimantName{
+    width: 5%;
+    flex: 0 0 9%;
+}
+.mat-column-diagnosis{
+    width: 3%;
+    flex: 0 0 5%;
+}
+.mat-column-benefitType{
+    width: 4%;
+    flex: 0 0 6%;
+}
+:host ::ng-deep th.mat-header-cell, td.mat-cell, td.mat-footer-cell {
+    padding: 8px 0px 8px 16px !important;
+}
+.mat-table{
+    width: 130%;
+    font-size: .75rem;
+    margin-top: 0%;
+    border:  1px solid #D0D0D0;
+    border-top: none;
+    border-radius: 3px;
+}
+.mat-header-row{
+    border-top:  1px solid #D0D0D0;
+    border-radius: 3px;
+}
+.mat-column-expand{
+    width: 2% ;
+    flex: 0 0 4% !important;
+    .mat-icon{
+        cursor: pointer;
+    }
+}
+.middle-container{
+    margin-left: 2%;
+    margin-right: 1%;
+}
+.mat-column-totalCharges{
+    width: 4%;
+    flex: 0 0 6%;
+    display: flex;
+    justify-content: flex-end;
+}
+.mat-column-totalDeductible{
+    width: 4%;
+    flex: 0 0 7%;
+    display: flex;
+    justify-content: flex-end;
+}
+.mat-column-totalPaid{
+    width: 3%;
+    flex: 0 0 5%;
+    display: flex;
+    justify-content: flex-end;
+}
+.mat-column-processedDate{
+    width: 5%;
+    flex: 0 0 7%;
+    display: flex;
+    justify-content: center;
+}
+.mat-column-receivedDate{
+    width: 5%;
+    flex: 0 0 7%;
+    display: flex;
+    justify-content: center;
+}
+.mat-column-pendCode{
+    width: 3%;
+    flex: 0 0 6%;
+    display: flex;
+    justify-content: center;
+}
+.mat-column-investigationType{
+    width: 4%;
+    flex: 0 0 10%;
+}
+.mat-column-status{
+    width: 3%;
+    flex: 0 0 4%;
+    display: flex;
+    justify-content: center;
+}
+.mat-column-actions{
+    width: 3%;
+    flex: 0 0 6%;
+}
+// .mat-column-claimNo{
+//     width: 5%;
+//   }
+// .mat-column-dateOfService{
+//     width: 5%;
+// }
+// .mat-column-policyNo{
+//     width: 5%;
+// }
+// .mat-column-claimantName{
+//     width: 5%;
+// }
+// .mat-column-diagnosis{
+//     width: 3%;
+// }
+// .mat-column-benefitType{
+//     width: 4%;
+// }
+// .mat-table{
+//     width: 180%;
+//     font-size: .75rem;
+//     margin-top: 0%;
+//     border:  1px solid #D0D0D0;
+//     border-top: none;
+//     border-radius: 3px;
+// }
+// .mat-header-row{
+//     border-top:  1px solid #D0D0D0;
+//     border-radius: 3px;
+// }
+// .mat-column-expand{
+//     width: 2% ;
+//     flex: 0 0 3% !important;
+//     .mat-icon{
+//         cursor: pointer;
+//     }
+// }
+// .mat-column-totalCharges{
+//     width: 4%
+// }
+// .mat-column-totalDeductible{
+//     width: 4%;
+// }
+// .mat-column-totalPaid{
+//     width: 3%;
+// }
+// .mat-column-processedDate{
+//     width: 5%;
+// }
+// .mat-column-receivedDate{
+//     width: 5%;
+// }
+// .mat-column-pendCode{
+//     width: 3%;
+// }
+// .mat-column-investigationType{
+//     width: 4%;
+// }
+// .mat-column-status{
+//     width: 3%;
+// }
+// .mat-column-actions{
+//     width: 3%;
+// }
+// th.mat-header-cell, td.mat-cell, td.mat-footer-cell {
+//     width: 200px!important;
+// }
+.action-button{
+    border: 1px solid #0C6692;
+    border-radius: 4px;
+    height: 50%;
+    width: 55px;
+    padding: 0%;
+}
+
+.action-button-text{
+    color: #0C6692;
+    font-size: 12px;
+}
+.add-icon{
+    font-size: 15px;
+    margin-left: -6px;
+    margin-right: 2px;
+}
+.filter-row{
+    border: 1px solid #093155;
+    border-radius: 4px;
+    margin-left: 0%;
+    margin-right: 0%;
+    margin-bottom: 1%;
+}
+.filter-row-col{
+    border-right: 1px solid #093155;
+    padding: 0%;
+}:host ::ng-deep .cdk-overlay-pane{
+    width: 142.25px !important;
+    // left: 334.375px !important;
+}
+    ::-webkit-scrollbar {
+        width: 6px !important;; 
+        height: 6px !important; ;
+    }
+    ::-webkit-scrollbar-thumb {
+        background: #666666 !important;; 
+        border-radius: 8px !important;;
+    }
+
+::placeholder { /* Chrome, Firefox, Opera, Safari 10.1+ */
+    color: #354052;
+    font: normal normal 600 14px/18px Segoe UI;
+  }
+.filter-icon-row{
+    color:#0065B3;
+    white-space: nowrap;
+}
+.filter-icon-text{
+    font: normal normal 600 14px/18px Segoe UI;
+    margin-left: 5%;
+}
+.filter-icon-col{
+    padding: 0.7% 2% 0% 2%;
+}
+.reset-col{
+   background-color:  #0C6692;
+   padding-top: 0.7%;
+   cursor: pointer;
+   white-space: nowrap;
+}
+.reset-text{
+    font: normal normal 600 16px/18px Segoe UI;
+    color: #FFFFFF;
+    font-size: 14px;
+    font-weight: 400;
+}
+.table-container{
+    padding-right: 0%;
+    margin-top: 1%;
+    overflow: scroll;
+    overflow-y: hidden;
+}
+::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+  }
+  
+  /* Handle */
+  ::-webkit-scrollbar-thumb {
+    background: #666666; 
+    border-radius: 8px;
+  }
+//   .mat-paginator-sticky {
+//     bottom: 0px;
+//     position: sticky;
+//     z-index: 10;
+//   }
+  .form-control{
+      transition: none;
+  }
+  .form-control:focus{
+      border:none;
+      border-radius: 0%;
+      box-shadow:none;
+    }
+.search-input-field{
+    color: #354052;
+    font: normal normal 600 14px/18px Segoe UI;
+}
+.expand-icon{
+   color: #898989;
+}
+
+.sub-table-div{
+    width: 100%;
+    padding: 0.5% 1% 0.5% 1%;
+    background: #DEEEFF;
+}
+.sub-table-cell{
+    padding: 0%;
+}
+
+@media(max-width:768px){
+    .reset-col{
+        text-align: center;
+    }
+    .filter-icon-text{
+        margin-left: 0%;
+    }
+}
+@media(min-width:768px)and(max-width:950px){
+    .reset-text{
+        font-size: 10px;
+    }
+}
+@media(max-width:900px){
+    .mat-table{
+        width: 250%;
+    }
+
+}
+@media(max-width:630px){
+    .mat-table{
+        width: 300%;
+    }
+
+}
+@media(max-width:992px){
+    .details-div{
+        padding-left: 0%;
+        padding-top: 1%;
+    }
+}
+
+@media (min-width: 992px)
+{
+.col-lg-10 {
+    flex: 0 0 auto;
+    width: 83.3333333333%;
+    padding-top: 1%;
+}
+}
+
+.expand-row{
+    min-height: 0px;
+    height: 0px;
+}
+
+
+.no-record-div{
+    text-align:center;
+}
+
+.diagnosis-text{
+    cursor: pointer
+}
+.diagnosis-text:hover{
+    color: #6296EF !important;
+}
+
+.span-text{
+    width: auto;
+    margin-right: -2%;
+}
+
+.note
+{
+    // padding-bottom: 0.5%;
+    padding-left: 1.2%;
+    padding-top: 1%;
+    text-align: left;
+    text-align: left;
+    letter-spacing: 0px;
+    color: #797979;
+
+    .note-bold
+    {
+        text-align: left;
+        letter-spacing: 0px;
+        color: #354052;
+        font-weight: 500;
+        
+    }
+}

@@ -1,0 +1,100 @@
+
+<mat-card class="card">
+    <div class="modal-header ">
+
+        <h2 class="header-text form-header-text">Investigation Review Form</h2>
+        <div  class="close">&times;</div>
+    </div>
+
+    <form [formGroup]="InvForm" #formDirective="ngForm" (ngSubmit)="onSubmit()">
+    <div class="row text-row">
+        <div class="col-sm-6  col-display">
+            <p class="date-name">App Date:</p>
+            <input (click)="picker.open()" readonly [matDatepicker]="picker"
+            class="form-control search-input-field" placeholder="App Date"
+            (dateChange)="onSelectedAppDate($event.value)" [value]="selectedAppDate" formControlName = "appDate">
+        <mat-datepicker #picker></mat-datepicker>
+        </div>
+        <div class="col-sm-6  col-display">
+            <p class="date-name">V- Call Date:</p>
+            <input (click)="picker2.open()" readonly [matDatepicker]="picker2"
+            class="form-control search-input-field" placeholder="V-call Date"
+            (dateChange)="onSelectedVCallDate($event.value)" [value]="selectedVCallDate" formControlName = "VCallDate">
+        <mat-datepicker #picker2></mat-datepicker>
+        </div>
+    </div>
+    <div class="row text-row">
+        <div class="col-sm  col-display">
+        <p class="carrier-name">Medical Hx & Info Disclosed:</p>
+        
+        <textarea matInput  cdkTextareaAutosize
+        #autosize="cdkTextareaAutosize"
+        cdkAutosizeMinRows="1"
+        cdkAutosizeMaxRows="15" placeholder="Enter Your Medical Hx & Info Disclosed here..." class="textarea" formControlName = "infoDisclosed"></textarea>
+    </div>
+</div>
+    <div class="row text-row">
+        <div class="col-sm col-display">
+        <p class="carrier-name">Ap Dr.</p>
+        <input class="form-control modal-form-control" #input type="text" 
+         placeholder="Enter Ap Dr"  class="textarea" formControlName = "apDr">
+        </div>
+    </div>
+
+    <div class="row text-row">
+        <div class="col-sm-6 col-display">
+        <p class="carrier-name">A P.S.:</p>
+        <input class="form-control modal-form-control" #input type="text" 
+        placeholder="Enter Ap Dr"  class="textarea" formControlName = "aps">
+      </div>
+    
+        <div class="col-sm-5 col-display">
+        <mat-checkbox class="check-box" formControlName = "apsYes">Yes</mat-checkbox>
+          <mat-checkbox class="check-box" formControlName = "apsNo">No</mat-checkbox>
+        
+          <span class="text-name" >If "Yes", Dr:</span>
+          <input class="form-control modal-form-control" #input type="text" 
+          placeholder="Enter Ap Dr"  class="textarea" formControlName = "dr">
+        
+    </div>
+    </div>
+    <div class="row text-row">
+        <div class="col-sm-2 col-display">
+        <p class="prior-covg-name">Prior Covg:</p>
+        <mat-checkbox class="check-box" formControlName = "priorNo" >No</mat-checkbox>
+        <mat-checkbox class="check-box" formControlName = "priorYes">Yes - </mat-checkbox>
+      </div>
+    
+        <div class="col-sm-10 col-display">
+      
+        
+          <span class="carrier-name">Carrier Name:</span>
+          <input class="form-control modal-form-control" #input type="text" 
+          placeholder="Enter Ap Dr"  class="textarea" formControlName = "carrierName">
+        
+    </div>
+    </div>
+    <div class="row text-row">
+        <div class="col-sm-3 col-display">
+        <p class="prior-covg-name">Standard Issue:</p>
+        <mat-checkbox class="check-box" formControlName = "standardYes">Yes</mat-checkbox>
+        <mat-checkbox class="check-box" formControlName = "standardNo">No</mat-checkbox>
+      </div>
+    
+        <div class="col-sm-9 col-display">
+      
+        
+          <span class="carrier-name">Exclusion Rider(s):</span>
+          <input class="form-control modal-form-control" #input type="text" 
+          placeholder="Enter Exclusion Rider"  class="textarea" formControlName = "exclusionRider" >
+        
+    </div>
+    </div>
+    
+    <div class="modal-footer">
+        <button type="button" class="cancel-button" mat-button (click) = "onClear()">Clear</button>
+        &nbsp; &nbsp;
+        <button mat-button type="submit" class="submit-button" >Submit</button>
+    </div>
+</form>
+</mat-card>

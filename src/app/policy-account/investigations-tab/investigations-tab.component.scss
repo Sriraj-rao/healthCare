@@ -1,0 +1,94 @@
+@import "src/app/policy-account/claims/claims-details/claims-details.component.oz.scss";
+.main-container {
+    overflow-x: hidden;
+}
+.mat-column-number {
+    width: 5%;
+    flex: 0 0 135px;
+    padding-left: 10px;
+}
+
+.mat-column-investigationSubCategory {
+    width: 5%;
+    flex: 0 0 10%;
+}
+.mat-column-investigationCategory {
+    width: 5%;
+    flex: 0 0 13%;
+}
+.mat-column-investigationStatus {
+    width: 3%;
+    flex: 0 0 11%;
+}
+.mat-column-lastActivity {
+    width: 4%;
+    flex: 0 0 7%;
+}
+
+:host ::ng-deep .mat-column-totalCharges {
+    width: 4%;
+    flex: 0 0 6%;
+    text-align: right;
+    display: flex;
+    justify-content: flex-end;
+    .mat-sort-header-content {
+        padding-left: 25px !important;
+    }
+}
+:host ::ng-deep .mat-column-totalAmountAfterDiscount {
+    width: 4%;
+    flex: 0 0 9%;
+    text-align: right;
+    display: flex;
+    justify-content: flex-end;
+    .mat-sort-header-content {
+        padding-left: 25px !important;
+    }
+}
+
+:host ::ng-deep .mat-column-proofOfLoss {
+    width: 5%;
+    flex: 0 0 9%;
+    text-align: center !important;
+    display: flex;
+    justify-content: center;
+    .mat-sort-header-content {
+        padding-left: 25px !important;
+    }
+}
+.mat-column-age {
+    width: 5%;
+    flex: 0 0 4%;
+    text-align: center;
+    display: flex;
+    justify-content: center;
+}
+:host ::ng-deep .mat-column-pendCode {
+    width: 3%;
+    flex: 0 0 6% !important;
+    text-align: center;
+    display: flex;
+    justify-content: center;
+}
+
+.mat-column-effectiveDate {
+    width: 3%;
+    flex: 0 0 8%;
+    text-align: center;
+    display: flex;
+    justify-content: center;
+}
+.mat-column-view {
+    width: 3%;
+    flex: 0 0 7%;
+    display: flex;
+    justify-content: center;
+}
+:host ::ng-deep .mat-row:nth-child(odd) {
+    background-color: rgba(206, 212, 218, 0.63);
+    border-bottom: 1px solid rgba(0, 0, 0, 0.3);
+  }
+  :host ::ng-deep .mat-row:nth-child(even) {
+    background-color: #ffffff;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.3);
+  }
